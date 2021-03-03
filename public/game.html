@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="bootstrap-4.3.1/css/bootstrap.min.css" >
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="bootstrap-4.3.1/js/bootstrap.min.js" ></script>
+
+    <link rel="stylesheet" href="css/game.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/colors.css" />
+    <link rel="stylesheet" href="css/navigation.css" />
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/main_socket_connection.js"></script>
+    <script src="js/alerts.js"></script>
+    <script src="js/color_setup.js"></script>
+    <script src="js/game.js"></script>
+
+    <title>Game</title>
+</head>
+<body >
+<div id="centered">
+    <div id="centered_centered">
+        <h1 > Create design  witch fits for you :) </h1>
+        <div class="row justify-content-center">
+            <div class="color_container ">
+                <p >background color</p>
+                <label >
+                    <input type="color" class="hidden"  onchange="set_colors_them(this,'body_bg_color')">
+                </label>
+            </div>
+            <div class="color_container ">
+                <p >background card color</p>
+                <label >
+                    <input type="color" class="hidden"  onchange="set_colors_them(this,'card_bg_color')">
+                </label>
+            </div>
+            <div class="color_container ">
+                <p >button and navigation color</p>
+                <label >
+                    <input type="color" class="hidden"  onchange="set_colors_them(this,'button_color')">
+                </label>
+            </div>
+            <div class="color_container ">
+                <p >text color</p>
+                <label >
+                    <input type="color" class="hidden"  onchange="set_colors_them(this,'text_black_color')">
+                </label>
+            </div>
+        </div>
+        <button class="btn btn-default bg-success ht70 wd150 text-light" onclick="change_colors_them()">apply</button>
+        <button class="btn btn-default bg-primary  ht70 wd150 text-light" onclick="restart_color_them()">reset</button>
+    </div>
+</div>
+
+<div id="centered_win">
+    <div id="centered_centered_win">
+        <h1 id="win_lost" class="mb20"></h1>
+        <div id="opponent_profile_card" class="card  wd200 ht300 ">
+            <div class="card-body pd_all0">
+            <div class=" card-title text-center  ht100 mb0">
+                <img id="opponent_profile_img" class="wd100 ht100" src="#" alt="img">
+            </div>
+
+            </div>
+            <div class="text-center">
+                <p id="opponent_name" class="mt30 pd_all0 ">XXX</p>
+
+            </div>
+        </div>
+        <button class="btn btn-default bg-success ht70 mb20 text-light" id="again" onclick="play_again()">play again</button>
+        <button class="btn btn-default bg-danger ht70 mb20 text-light" id="leave" onclick="leave_game()">leave</button>
+        <button class="btn btn-default bg-success ht70 wd70 mb20 text-light" id="yes" onclick="answer_to_question(true)">YES</button>
+        <img class="wd70 ht70 ml30 mr30 mb20" id="asked_img_question" src="./images/question_mark.png" alt="question img" >
+        <button class="btn btn-default bg-danger ht70 wd70 mb20 text-light" id="no"  onclick="answer_to_question(false)">NO</button>
+    </div>
+</div>
+<div id="alert" class="alert alert-success alert-dismissible fade show fixed-top d-none" role="alert" >
+    <span id="text">Holy guacamole! </span>
+    <button type="button" class="close" id="close" onclick="close_alert()" >
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<nav class="navbar btn-primary no_btn" style="">
+    <div class="d-flex">
+        <div id="background_your_img"><img class="wd70" id="image" src="./images/Users/def.png" alt="user img" ></div>
+        <h3 id="name" class="text-light mt20 ml10" > user name </h3>
+    </div>
+    <div class="d-flex">
+        <h3  id="coins" class="text-light  " > coin </h3>
+        <img id="coin_img" class="ml10 " src="./images/coin.png"  alt="coins" >
+        <img  id="shopping_card_img" class=" ml10 mr10" src="./images/shopping_card.png"  alt="shopping card" onclick="shop()" >
+        <img  id="log_out_img" class="" src="./images/log_out.png"  alt="log out" onclick="log_out()" >
+    </div>
+</nav>
+
+<div class="container" id="main">
+    <div class="row" id="top_title_container">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto ">
+            <h1 class="text-center text_black " id="title"> Guess</h1>
+        </div>
+        <button class="btn btn-default bg-danger position-absolute text-light " id="leave_now" style="height: 48px; right:1px" onclick="leave_game()">leave game</button>
+        <div class="card col card_kid_img position-absolute" id="your_image" >
+            <h6 class="card-title" id="title_your_image">YOUR IMAGE IS</h6>
+            <img id="my_img_guessed_by_opponent" class="task_img" src="./images/question_mark.png"   alt="img" title="this is your selected image">
+        </div>
+    </div>
+</div>
+
+<div class="container" onselectstart="return false;">
+    <div  id="chat_box_top_div" class="wd30_p">
+        <div class="ml20" id="chat_box" >
+            <h2 class="text-center  btn-primary no_btn text-light" id="chat_title"> Chat</h2>
+            <div   id="chat_for_kids">
+            </div>
+            <div class="d-flex " id="chat_box_input">
+                <input type="text" id="chat_input_box" maxlength="100" name="chat_input_box" class="form-control" placeholder="write text ..." onchange="send_massage()" >
+                <label for="chat_input_box"></label>
+                <button class="btn btn-default bg-primary text-light"  id="chat_send_btn" onclick="send_massage()">send</button>
+            </div>
+        </div>
+    </div>
+    <div class="row wd70_p"  >
+        <div class="card col "  onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"  alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+    </div>
+    <div class="row wd70_p">
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"  alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+    </div>
+    <div class="row wd70_p">
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"  alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+    </div>
+    <div class="row wd70_p">
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"  alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+    </div>
+    <div class="row wd70_p">
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"  alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+    </div>
+    <div class="row wd70_p">
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"  alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+        <div class="card col " onclick="hide(this);">
+            <img class="possible_image" src="./images/error.png"   alt="img" title="null">
+        </div>
+    </div>
+</div>
+<div class="container btn-light no_btn" id="guess" onselectstart="return false;">
+<!--    container-fluid-->
+        <div  id="guess_box">
+            <p class="text-center btn-primary no_btn text-light" id="guess_title"> Guess</p>
+            <div class="row m-auto justify-content-center" id="guess_button_box">
+                <button class="btn btn-default bg-success guess_btn text-light" id="guess_certain" disabled onclick="guess_certain()">guess</button>
+                <button class="btn btn-default bg-danger guess_btn text-light" id="guess_back" onclick="guess_back()">back</button>
+            </div>
+    </div>
+</div>
+
+
+<label id="settings" class="btn-light"> <img src="./images/setting.png" alt="settings" title="settings" onclick="show_settings()"></label>
+</body>
+</html>

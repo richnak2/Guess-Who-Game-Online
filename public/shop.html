@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="bootstrap-4.3.1/css/bootstrap.min.css" >
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="bootstrap-4.3.1/js/bootstrap.min.js" ></script>
+
+    <link rel="stylesheet" href="css/shop.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/colors.css" />
+    <link rel="stylesheet" href="css/navigation.css" />
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/main_socket_connection.js"></script>
+    <script src="js/alerts.js"></script>
+    <script src="js/color_setup.js"></script>
+    <script src="js/shop.js"></script>
+
+    <title>Guess Who shop</title>
+</head>
+<body>
+<div id="centered">
+    <div id="centered_centered">
+        <h1 id="win_lost"> Create design  witch fits for you :) </h1>
+        <div class="row justify-content-center">
+            <div class="color_container ">
+                <p >background color</p>
+                <label >
+                    <input type="color" class="hidden"  onchange="set_colors_them(this,'body_bg_color')">
+                </label>
+            </div>
+            <div class="color_container ">
+                <p >background card color</p>
+                <label >
+                    <input type="color" class="hidden"  onchange="set_colors_them(this,'card_bg_color')">
+                </label>
+            </div>
+            <div class="color_container ">
+                <p >button and navigation color</p>
+                <label >
+                    <input type="color" class="hidden"  onchange="set_colors_them(this,'button_color')">
+                </label>
+            </div>
+            <div class="color_container ">
+                <p >text color</p>
+                <label >
+                    <input type="color" class="hidden"  onchange="set_colors_them(this,'text_black_color')">
+                </label>
+            </div>
+        </div>
+
+        <button class="btn btn-default bg-success ht70 wd150 text-light" onclick="change_colors_them()">apply</button>
+        <button class="btn btn-default bg-primary  ht70 wd150 text-light" onclick="restart_color_them()">reset</button>
+    </div>
+</div>
+
+<nav class="navbar btn-primary no_btn" style="">
+    <div class="d-flex">
+        <div id="background_your_img"><img class="wd70" id="image" src="./images/Users/def.png" alt="user img" ></div>
+        <h3 id="name" class="text-light mt20 ml10" > user name </h3>
+    </div>
+    <div class="d-flex">
+        <h3  id="coins" class="text-light  " > coin </h3>
+        <img id="coin_img" class="ml10 " src="./images/coin.png"  alt="coins" >
+        <img  id="shopping_card_img" class="ml10 mr10" src="./images/menu.png"  alt="shopping card" onclick="menu()" >
+        <img  id="log_out_img" class="" src="./images/log_out.png"  alt="log out" onclick="log_out()" >
+    </div>
+</nav>
+
+
+
+<div id="main_card" class="card btn-light no_btn wd200 ht200 m-auto">
+    <div class=" card-title text-center  ">
+        <img id="main_character_img" src="#" class="wd100 ht100 ">
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-default bg-success mb20" onclick="restart_your_img()">restart</button>
+    </div>
+</div>
+
+<h1 class="text-center text_black">Background Color</h1>
+<div  class="all_items">
+<!--   TUNA BUDE IKONA NA IMPLEMENTACIU VLASTNEJ farby -->
+<!--    <div class="card card_color wd150 ht130">-->
+
+<!--        <div class="card-body text-center">-->
+<!--            <p class="  mb0 text_black" >Create <span><img  class="wd20 ht20 ml10" src="./images/coin.png"  alt="coins" ></span></p>-->
+<!--        </div>-->
+<!--        <div class="text-center">-->
+<!--            <button class="btn btn-default bg-success mb10"  onclick="buy_color()">buy</button>-->
+<!--            <button class="btn btn-default bg-success mb10"  onclick="equip_color()">equip</button>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+<h1 class="text-center text_black">Characters</h1>
+<div class="all_items mb30" >
+
+</div>
+
+<div class="container">
+</div>
+<label id="settings" class="btn-light"> <img src="./images/setting.png" alt="settings" title="settings" onclick="show_settings()"></label>
+
+</body>
+</html>

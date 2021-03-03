@@ -1,0 +1,20 @@
+.card{
+    height: 340px;
+    max-width: 300px;
+    min-width: 300px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+#for_teacher{
+    display: none;
+}
+#all_games{
+    margin-left: 10%;
+    margin-right: 10%;
+    /*display: contents;*/
+}
+.game_card{
+    float: left;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}

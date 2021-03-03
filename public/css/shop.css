@@ -1,0 +1,24 @@
+.all_items{
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+    overflow-y : scroll;
+    height: 300px;
+}
+.card_color{
+    float: left;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+.buy_text{
+    z-index: 20;
+}
+#my_color{
+    width: 70px;
+    height: 70px;
+    z-index: -10;
+}
+.buy_text{
+    background-color: white;
+    border-radius: 1rem;
+}

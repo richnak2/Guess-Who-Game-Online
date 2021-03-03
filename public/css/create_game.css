@@ -1,0 +1,55 @@
+
+.table td, .table th {
+    vertical-align: middle;
+}
+.automatic_descriptor{
+    text-align: initial;
+}
+.automatic_descriptors_titles{
+    border-radius: 25px;
+}
+#main_automatic_descriptor{
+    text-align: center;
+}
+.card{
+    max-width: 200px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+#for_teacher{
+    display: none;
+}
+#all_games{
+    display: contents;
+}
+.label_for_cretin_option{
+    margin-bottom: 0;
+}
+.buttons_for_configuration{
+    display: none;
+    width: 25px;
+    height: 25px;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+#menu_for_config_game{
+    margin-bottom: 20px;
+}
+#check_1,#check_2,#check_3,#save,#status,#menu_for_config_game{
+    display: none;
+}
+.col-2-sm{
+    display: inline-flex;
+}
+#show_atomic{
+    color: black;
+}
+
+input[type="file"] {
+    visibility: hidden;
+    display: none;
+}
+.label_options{
+    /*overflow : scroll;*/
+    overflow-y: scroll;
+}

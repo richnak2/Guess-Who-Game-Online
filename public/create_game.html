@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="bootstrap-4.3.1/css/bootstrap.min.css" >
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="bootstrap-4.3.1/js/bootstrap.min.js" ></script>
+
+
+    <link rel="stylesheet" href="css/create_game.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/colors.css" />
+    <link rel="stylesheet" href="css/navigation.css" />
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/color_setup.js"></script>
+    <script src="js/main_socket_connection.js"></script>
+    <script src="js/create_game/create_game.js"></script>
+    <script src="js/create_game/create_game_check_1.js"></script>
+    <script src="js/create_game/create_game_check_2.js"></script>
+    <script src="js/create_game/create_game_check_3.js"></script>
+    <script src="js/create_game/status.js"></script>
+    <script src="js/alerts.js"></script>
+
+    <title>Create Game</title>
+</head>
+<body>
+<div id="centered">
+    <div id="centered_centered">
+        <h1 id="win_lost"> Create design  witch fits for you :) </h1>
+        <div class="row justify-content-center">
+            <div class="color_container ">
+                <p >background color</p>
+                <label >
+                    <input type="color" class="hidden"  onchange="set_colors_them(this,'body_bg_color')">
+                </label>
+            </div>
+            <div class="color_container ">
+                <p >background card color</p>
+                <label >
+                    <input type="color" class="hidden"  onchange="set_colors_them(this,'card_bg_color')">
+                </label>
+            </div>
+            <div class="color_container ">
+                <p >button and navigation color</p>
+                <label >
+                    <input type="color" class="hidden"  onchange="set_colors_them(this,'button_color')">
+                </label>
+            </div>
+            <div class="color_container ">
+                <p >text color</p>
+                <label >
+                    <input type="color" class="hidden"  onchange="set_colors_them(this,'text_black_color')">
+                </label>
+            </div>
+        </div>
+
+        <button class="btn btn-default bg-success ht70 wd150 text-light" onclick="change_colors_them()">apply</button>
+        <button class="btn btn-default bg-primary  ht70 wd150 text-light" onclick="restart_color_them()">reset</button>
+    </div>
+</div>
+
+<div id="alert" class="alert alert-success alert-dismissible fade show fixed-top d-none" role="alert" >
+    <span id="text">Holy guacamole! </span>
+    <button type="button" class="close" id="close" onclick="close_alert()" >
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<nav class="navbar btn-primary no_btn" style="">
+    <div class="d-flex">
+        <div id="background_your_img"><img class="wd70" id="image" src="./images/Users/def.png" alt="user img" ></div>
+        <h3 id="name" class="text-light mt20 ml10" > user name </h3>
+    </div>
+    <div class="d-flex">
+        <h3  id="coins" class="text-light  " > coin </h3>
+        <img id="coin_img" class="ml10 " src="./images/coin.png"  alt="coins" >
+        <img  id="shopping_card_img" class=" ml10 mr10" src="./images/menu.png"  alt="shopping card" onclick="menu()" >
+        <img  id="log_out_img" class="" src="./images/log_out.png"  alt="log out" onclick="log_out()" >
+    </div>
+</nav>
+
+
+<div id="all_games" class="card-columns">
+    <div class="card btn-light no_btn">
+        <div class=" card-title text-center mb0" >
+            <img class="ht80 wd80 mt10" src="./images/create_game.png"  alt=""></div>
+        <div class="card-body">
+            <p class=" text-center mb0 text_black" >Create Game</p>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-default bg-primary mb10 text-light"  onclick="create_new_game()">create</button>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<div id="menu_for_config_game" >
+<div class="container  text-center" >
+    <div class="col-2-sm mr20 mb20" >
+        <button class="btn btn-default bg-success text-light" id="main_button_allow_check1" onclick="display('check_1')">main</button>
+    </div>
+    <div class="col-2-sm mr20 mb20" >
+        <button class="btn btn-default bg-success text-light" id="main_button_allow_check2" onclick="display('check_2')">descriptors</button>
+    </div>
+    <div class="col-2-sm mr20 mb20" >
+        <button class="btn btn-default bg-success text-light" id="main_button_allow_check3" onclick="display('check_3')">images</button>
+    </div>
+    <div class="col-2-sm mr20 mb20" >
+        <button class="btn btn-default bg-success text-light" id="main_button_allow_save"  onclick="display('save')">save</button>
+    </div>
+    <div class="col-2-sm mr20 mb20" >
+        <button class="btn btn-default bg-success text-light" id="main_button_allow_test" onclick="display('status')">status</button>
+    </div>
+</div>
+</div>
+<div class="container text_black" id="check_1">
+    <p>Please follow the flow of creating the game step by step.</p>
+    <p>Do not skip <span><button class="btn btn-default bg-success text-light" >chek</button></span> , these buttons allows u to save your progress of creating the game. If there is a problem with the game or something went wrong or ok you will get warning massage bak with the problem witch occurs.</p>
+    <p>if you change something in certain part of game for example ("Title of your game"  ==> check 1 ) please check if with certain section button </p>
+    <p>make sure your image names are not the same if image name is olready obtaind the aplication will rewrite the image with the new image !</p>
+
+    <h1 class="text-center">Create you own game</h1>
+
+    <div class="form-label-group mt20" >
+        <input type="text" id="game_name" minlength="5" maxlength="30" class="form-control" placeholder="Title of your game"  >
+        <label for="game_name"></label>
+    </div>
+    <div class="form-label-group"  >
+        <input type="text" id="game_description"  maxlength="65" class="form-control" placeholder="Short description under your title"  >
+        <label for="game_description"></label>
+    </div>
+
+    <div class="card m-auto" id="main_img_card">
+        <div class=" card-title text-center mb0">
+
+        </div>
+        <div class="text-center">
+            <label for="input_main_img">
+                <img class="ht80 wd80 mt10" id="main_img_of_game" src="./images/create_game.png"  alt="main image">
+            </label>
+            <input type="file" class="form-control-file" id="input_main_img"  accept=".png, .jpg, .jpeg"  onchange="check_file_img(this,document.getElementById('main_img_of_game'))" >
+        </div>
+        <div class="card-body">
+            <p class=" text-center mb0 text_black" >add main img</p>
+        </div>
+
+
+    </div>
+    <div class="text-center">
+        <button class="btn btn-default bg-success mt20 wd300 text-light"  onclick="check_box_1()">chek 1</button>
+    </div>
+
+    <br>
+    <br>
+</div>
+<div class="container text_black" id="check_2">
+    <p>if you dont set any of this column <strong>"image"</strong> and <strong>"descriptor/question"</strong> and <strong>"type"</strong> for this section the game will automaticli ajust settings above to be playable only with <strong>Student</strong> after you <strong>check 2</strong> in this section section</p>
+    <p>if your wont your game to be considered as playable with <strong>PC</strong> you need to set filed for "type" and "descriptor/question" </p>
+    <p>filed "type" is the name of button witch u click to to display questions or images with descriotion names</p>
+    <p>filed "descriptor/question" is for creating of questions witch realts to button type , the text in this column coppyed in next part of game where u are setting the decription of images of the game </p>
+    <p>if your wont your game to be considered as playable with <strong>Kids</strong> you need to set all filed </p>
+    <p class="text-success">you can have multiple same type of buttons , if button is with same name the game will dispaly the multiple question/images under this button</p>
+    <p class="text-danger">If u making a game for certain type (PC / kids / students ) make sure you do not mix the options </p>
+    <p><strong>Student</strong> - skip this section by clicking on check 2</p>
+    <p><strong>PC</strong> - fill the "type" and "descriptor/question" (make sure each row has this assigned ) and then click on on check 2 </p>
+    <p><strong>KID</strong> - fill the "image" , "type" and "descriptor/question" (make sure each row has this assigned ) and then click on on check 2</p>
+    <p class="text-danger">Be sure you delete unesed rows </p>
+    <p> if you making question game type of game do not use characters as  /\'"?| , the questiton will be formated for as follow : Your image  " is/has + part of your question (is an piano player / has a piano )" ?</p>
+    <br>
+<!--    <p>if you use option of multiple images <span><button class="btn btn-default bg-danger" >Select MULTIPLE Image</button> </span>all descriptor images witch u added before will be removed !!! and new list witch you selected will be added</p>-->
+    <h1 class="text-center">Create question for the game</h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped   bg-light text-center" id="images_of_the_game_descriptors">
+            <caption>
+                <button class="btn btn-default bg-success text-light" onclick="add_descriptor()">add next</button>
+            </caption>
+            <thead>
+
+            </thead>
+            <tbody>
+            <tr>
+                <td class="font-weight-bold">image</td>
+                <td class="font-weight-bold">type</td>
+                <td class="font-weight-bold">descriptor/question</td>
+                <td class="font-weight-bold">delete</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-default bg-success mt20 wd300 text-light" onclick="check_box_2()">chek 2</button>
+    </div>
+    <br>
+    <br>
+</div>
+<div class="container text_black" id="check_3">
+    <p>minimum amount of images is 25  optimal is 30 if there is more then 30 the game will pick random 30 images from your possible images</p>
+    <p class="text-danger">if game has less then <strong>25</strong> images the game will considerd as "Game in development" witch means only you can play this game</p>
+    <p class="text-danger">Be sure you delete unesed rows </p>
+    <p class="text-success">To find out faster witch "automatic descriptor" u selected move mouse over the image to find out witch u had selected</p>
+
+    <h1 class="text-center">Create images of the game</h1>
+    <div class="table-responsive">
+        <table class="table table-striped   bg-light text-center" id="images_of_the_game">
+            <caption>
+                <button class="btn btn-default bg-success text-light" onclick="add_row_image_to_game()">add next</button>
+                <input id="more_files" type="file" accept=".png, .jpg, .jpeg, .gif" class="images_of_game" onchange="save_more_files(this)" multiple>
+                <button class="btn btn-default bg-success text-light" onclick="add_more_images()">add more</button>
+            </caption>
+            <thead>
+<!--            <tr>-->
+<!--                <th scope="col">#</th>-->
+<!--                <th scope="col">image</th>-->
+<!--                <th scope="col" >text descriptor</th>-->
+<!--                <th scope="col" >automatic descriptor</th>-->
+<!--                <th scope="col">delete</th>-->
+<!--            </tr>-->
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="font-weight-bold">#</td>
+                    <td class="font-weight-bold">image</td>
+                    <td class="text_descriptor font-weight-bold" >text descriptor</td>
+                    <td id="main_automatic_descriptor" class="automatic_descriptor font-weight-bold" >automatic descriptor</td>
+                    <td class="font-weight-bold">delete</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center text_black">
+        <button class="btn btn-default bg-success mt20 wd300 text-light" onclick="check_box_3()">chek 3</button>
+    </div>
+</div>
+
+<br>
+<br>
+<div class="container text_black" id="save">
+    <p><button class="btn btn-default bg-success mt20 wd300 text-light" onclick="save_game()">save / create game</button></p>
+</div>
+<br>
+<br>
+<div class="container text_black" id="status">
+    <p><span class="text-danger">this section will be affected after you check in descriptors or images </span></p>
+    <p>this game is for : <span id="game_is_for"></span> </p>
+    <p>development state : <span id="game_state"></span> </p>
+    <p class="atom">worst case atomicity of the game : <span id="game_atomicity"></span> </p>
+    <p class="atom" >lesser % of atomicity === better game experience for player if % is higher then 20% please consider changing your automatic descriptor is section  <button class="btn btn-default bg-success "  onclick="display('check_3')">images</button></p>
+    <button id="show_atomic" class="btn btn-default bg-success atom text-light"  onclick="show_same_automatic_descriptor()">show pair of same automatic descriptor</button>
+</div>
+<label id="settings" class="btn-light"> <img src="./images/setting.png" alt="settings" title="settings" onclick="show_settings()"></label>
+</body>
+</html>

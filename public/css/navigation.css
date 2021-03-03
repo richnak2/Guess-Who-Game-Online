@@ -1,0 +1,85 @@
+.navbar{
+    z-index: 100; margin-bottom: 20px
+}
+#shopping_card_img,#log_out_img,#for_teacher{
+    background-color: #fefefe;
+    padding: 10px;
+    border-radius: 10px;
+}
+#shopping_card_img:hover,#log_out_img:hover,#for_teacher:hover{
+    background-color: #cbc9c9;
+}
+#shopping_card_img,#log_out_img,#coin_img,#for_teacher{
+    width: 50px;
+    height: 50px;
+}
+#coins{
+    margin-top: 13px;
+}
+
+@media (min-width: 576px) {
+    #name,#coins{
+        font-size: 20px;
+    }
+    #shopping_card_img{
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+    #shopping_card_img,#log_out_img,#coin_img,#for_teacher{
+        width: 50px;
+        height: 50px;
+    }
+    #for_teacher{
+        margin-right: 30px;
+    }
+}
+
+/*// Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) {
+    #name,#coins{
+        font-size: 25px;
+    }
+    #shopping_card_img,#log_out_img,#coin_img,#for_teacher{
+        width: 60px;
+        height: 60px;
+    }
+    #for_teacher{
+        margin-right: 100px;
+    }
+}
+
+/*// Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) {
+    #name,#coins{
+        font-size: 30px;
+    }
+    #shopping_card_img{
+        margin-right: 30px;
+        margin-left: 30px;
+    }
+    #shopping_card_img,#log_out_img,#coin_img,#for_teacher{
+        width: 70px;
+        height: 70px;
+    }
+    #for_teacher{
+        margin-right: 200px;
+    }
+}
+/*// Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {
+    #name,#coins{
+        font-size: 35px;
+    }
+    #shopping_card_img{
+        margin-right: 40px;
+        margin-left: 40px;
+    }
+    #shopping_card_img,#log_out_img,#coin_img,#for_teacher{
+        width: 80px;
+        height: 80px;
+    }
+    #for_teacher{
+        margin-right: 300px;
+    }
+}
+

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<link rel="stylesheet" href="bootstrap-4.3.1/css/bootstrap.min.css" >
+		<script src="js/jquery-3.5.1.min.js"></script>
+		<script src="bootstrap-4.3.1/js/bootstrap.min.js" ></script>
+
+		<script src="/socket.io/socket.io.js"></script>
+
+		<link rel="stylesheet" href="css/login.css" />
+		<link rel="stylesheet" href="css/global.css" />
+		<link rel="stylesheet" href="css/colors.css" />
+
+
+		<script src="js/alerts.js"></script>
+		<script src="js/color_setup.js"></script>
+		<script src="js/login_page.js"></script>
+
+		<title>Guess Who???</title>
+	</head>
+	<body>
+	<div id="centered">
+		<div id="centered_centered">
+			<h1 id="win_lost"> Create design  witch fits for you :) </h1>
+			<div class="row justify-content-center">
+				<div class="color_container ">
+					<p >background color</p>
+					<label >
+						<input type="color" class="hidden"  onchange="set_colors_them(this,'body_bg_color')">
+					</label>
+				</div>
+				<div class="color_container ">
+					<p >background card color</p>
+					<label >
+						<input type="color" class="hidden"  onchange="set_colors_them(this,'card_bg_color')">
+					</label>
+				</div>
+				<div class="color_container ">
+					<p >button and navigation color</p>
+					<label >
+						<input type="color" class="hidden"  onchange="set_colors_them(this,'button_color')">
+					</label>
+				</div>
+				<div class="color_container ">
+					<p >text color</p>
+					<label >
+						<input type="color" class="hidden"  onchange="set_colors_them(this,'text_black_color')">
+					</label>
+				</div>
+			</div>
+
+			<button class="btn btn-default bg-success ht70 wd150 text-light" onclick="change_colors_them()">apply</button>
+			<button class="btn btn-default bg-primary  ht70 wd150 text-light" onclick="restart_color_them()">reset</button>
+		</div>
+	</div>
+
+	<div id="alert" class="alert alert-success alert-dismissible fade show fixed-top d-none" role="alert" >
+		<span id="text">Holy guacamole! </span>
+		<button type="button" class="close" id="close" onclick="close_alert()" >
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="container" id="log_in">
+		<div class="row">
+			<div class="col-sm-9 col-md-7 col-lg-5 mx-auto ">
+				<div class="card  my-5 ">
+					<div class="card-body btn-light no_btn">
+						<h5 class="card-title text-center text_black">Guess Who ???</h5>
+						<div class="form-label-group"  >
+							<input type="text" id="name" name="name" maxlength="14" class="form-control" placeholder="User game name" required >
+							<label for="name"></label>
+						</div>
+
+						<div class="form-label-group">
+							<input type="password" id="password" maxlength="99" name="password" class="form-control" placeholder="Password" required>
+							<label for="password"></label>
+						</div>
+						<div class="form-label-group create">
+							<input type="password" id="repeat_password" maxlength="99" class="form-control" placeholder="Repeat password" required>
+							<label for="repeat_password"></label>
+						</div>
+						<div class="form-group create" >
+							<label for="select_role" id="role_label"></label>
+							<select class="form-control" id="select_role"  >
+								<option>Student</option>
+								<option>Teacher</option>
+							</select>
+						</div>
+						<button class="btn btn-lg btn-primary btn-block " id="sign" type="button" onclick="log_in()">Sign in</button>
+						<button class="btn btn-lg btn-primary btn-block create" type="button" onclick="create_user()">Create profile</button>
+						<button class="btn btn-lg btn-danger btn-block " type="button" onclick="back_to_main()">Back</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div class="container" id="main">
+		<div class="row">
+			<div class="col-sm-9 col-md-7 col-lg-5 mx-auto ">
+				<div class="card  my-5 ">
+					<div class="card-body btn-light no_btn">
+						<h5 class="card-title text-center text_black">Guess Who ???</h5>
+						<button class="btn btn-lg btn-primary btn-block " onclick="open_game()">Play as guest</button>
+						<button class="btn btn-lg btn-primary btn-block " onclick="show_log_in('none')">Log in to profile</button>
+						<button class="btn btn-lg btn-primary btn-block " onclick="show_log_in('revert')">Create profile</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<label id="settings" class="btn-light"> <img src="./images/setting.png" alt="settings" title="settings" onclick="show_settings()"></label>
+	</body>
+</html>
