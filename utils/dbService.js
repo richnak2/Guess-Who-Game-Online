@@ -3,11 +3,11 @@ const fs = require('fs');
 let instance = null;
 
 const connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : 'usbw',
-    database : 'guesswho',
-    port     : 3307
+    host     : 'eu-cdbr-west-03.cleardb.net',
+    user     : 'b6ad123aa3cdad',
+    password : '67d10f64',
+    database : 'heroku_3f4e76140d45542',
+    port     : 3306
 });
 
 connection.connect((err) => {
