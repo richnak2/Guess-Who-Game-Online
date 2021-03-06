@@ -1,5 +1,5 @@
 // Vytvorenie Express aplikacie
-const express = require("express");
+const express = require("./express");
 const app = express();
 
 // Potrebne kniznice na nastavenie ciest
@@ -7,14 +7,14 @@ const http = require('http');
 const path = require('path');
 
 // Kniznica na spracovanie requestov
-const bodyParser = require("body-parser");
+const bodyParser = require("./body-parser");
 
 // Include file s DB
 const dbService = require('./utils/dbService');
 
 
 // Vytvorenie a spracovanie socketovej stranky
-const socket_io = require('socket.io');
+const socket_io = require('./socket.io');
 const server = http.createServer(app);
 const io = socket_io(server);
 
