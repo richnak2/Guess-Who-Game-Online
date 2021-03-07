@@ -75,9 +75,9 @@ class DbService {
         }else{
             try {
                 return await new Promise((resolve, reject) => {
-                    const query = "UPDATE users SET type_of_character = ? , bought_characters = ?   where id = ? ";
+                    const query = "UPDATE users SET type_of_character = ? , bought_characters = ?  , points = ?  where id = ? ";
 
-                    connection.query(query, [player.character ,player.bought_characters , player.id], (err, results) => {
+                    connection.query(query, [player.character ,player.bought_characters , player.points ,player.id], (err, results) => {
                         if (err) reject(new Error(err.message));
                         resolve(results);
                     })
