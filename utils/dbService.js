@@ -1,21 +1,46 @@
-const mysql = require('mysql');
+const mysql = require('./mysql');
 const fs = require('fs');
 let instance = null;
 
-const connection = mysql.createConnection({
+const db_config  = {
     host     : 'eu-cdbr-west-03.cleardb.net',
     user     : 'b6ad123aa3cdad',
     password : '67d10f64',
     database : 'heroku_3f4e76140d45542',
     port     : 3306
-});
+};
+let connection;
+function handleDisconnect() {
+    connection = mysql.createConnection(db_config); // Recreate the connection, since
+                                                    // the old one cannot be reused.
 
-connection.connect((err) => {
-    if (err) {
-        console.log(err.message);
-    }
-    console.log('db ' + connection.state + ' id '+connection.threadId);
-});
+    connection.connect(function(err) {              // The server is either down
+        if(err) {                                     // or restarting (takes a while sometimes).
+            console.log('error when connecting to db:', err);
+            setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
+        }                                     // to avoid a hot loop, and to allow our node script to
+        else{
+            console.log('db ' + connection.state + ' id '+connection.threadId);
+        }
+    });                                     // process asynchronous requests in the meantime.
+                                            // If you're also serving http, display a 503 error.
+    connection.on('error', function(err) {
+        console.log('db error', err);
+        if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+            handleDisconnect();                         // lost due to either server restart, or a
+        } else {                                      // connnection idle timeout (the wait_timeout
+            throw err;                                  // server variable configures this)
+        }
+    });
+}
+
+handleDisconnect();
+// connection.connect((err) => {
+//     if (err) {
+//         console.log(err.message);
+//     }
+//     console.log('db ' + connection.state + ' id '+connection.threadId);
+// });
 
 
 class DbService {
