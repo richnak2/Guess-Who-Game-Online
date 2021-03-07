@@ -200,6 +200,7 @@ function remove_all_check_3(){
 }
 
 function recreate_check_3(game,path){
+    console.log(path)
     automatic_config_setter();
     status_of_game_check_3 = true;
     for (let existing_image = 0 ; existing_image < game.game_images.length ; existing_image++){

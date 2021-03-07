@@ -644,8 +644,9 @@ function make_question_for_opponent(question){
     document.getElementById('no').style.display = 'revert';
     document.getElementById('asked_img_question').style.display = 'revert';
 
-    console.log('KOLI TESTU NA MOBILE !!! LOCAL HOST','.'+question.src.split(':3000')[1] );
-    document.getElementById('asked_img_question').src = '.'+question.src.split(':3000')[1];
+    // console.log('KOLI TESTU NA MOBILE !!! LOCAL HOST','.'+question.src.split(':3000')[1] );
+    console.log(question.src)
+    document.getElementById('asked_img_question').src = '.'+question.src;
     document.getElementById('again').disable = false;
     document.getElementById('leave').disable = false;
 }

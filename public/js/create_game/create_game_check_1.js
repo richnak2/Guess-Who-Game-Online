@@ -34,7 +34,7 @@ function recreate_check_1(game){
     let main_img = document.getElementById('main_img_of_game');
     let path = './images/'+game.title+'/';
     main_img.src = path+'default.png';
-
+    console.log(path)
     change_allow_button_primary_success('main_button_allow_check1');
 
     recreate_check_2(game,path);

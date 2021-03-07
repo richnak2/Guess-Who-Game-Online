@@ -120,6 +120,7 @@ function recreate_check_2(game,path){
             definers_images.push(blob);
         }
     }
+    console.log(path)
     recreate_check_3(game,path+'images/');
 
 }
