@@ -646,7 +646,7 @@ function make_question_for_opponent(question){
 
     // console.log('KOLI TESTU NA MOBILE !!! LOCAL HOST','.'+question.src.split(':3000')[1] );
     console.log(question.src)
-    document.getElementById('asked_img_question').src = '.'+question.src;
+    document.getElementById('asked_img_question').src = '.'+question.src.split('.com')[1];
     document.getElementById('again').disable = false;
     document.getElementById('leave').disable = false;
 }
