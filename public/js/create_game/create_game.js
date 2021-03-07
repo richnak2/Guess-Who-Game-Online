@@ -248,13 +248,13 @@ function make_form_data(){
     }
     return form_data_create_game
 }
-function save_game(){
+async function save_game() {
     let form_data_create_game = make_form_data();
-    if (form_data_create_game === undefined){
-        return create_exception('somthing wand wnog fith formating of request',10, 'warning')
+    if (form_data_create_game === undefined) {
+        return create_exception('somthing wand wnog fith formating of request', 10, 'warning')
     }
-    if (already_created_game){
-        fetch('http://localhost:3000/upload_game', {
+    if (already_created_game) {
+        const response = await fetch('http://localhost:3000/upload_game', {
             method: 'POST',
             body: form_data_create_game
         }).then(response => response.json())
@@ -264,19 +264,22 @@ function save_game(){
                     delete_all_html_games();
                 }
             }).catch(err => console.log(err));
-    }else{
-        fetch('http://localhost:3000/upload_new_game', {
+        console.log(response)
+    } else {
+        const response = await fetch('http://localhost:3000/upload_new_game', {
             method: 'POST',
-            body:form_data_create_game
+            body: form_data_create_game
         }).then(response => response.json())
             .then(data => {
-                if (data){
-                    create_exception(data.data,data.time_of_exception,data.type_of_exception);
+                if (data) {
+                    create_exception(data.data, data.time_of_exception, data.type_of_exception);
                     delete_all_html_games();
 
                 }
             }).catch(err => console.log(err));
+        console.log(response)
     }
+
 }
 
 function check_file_img(which,add_to_this_elem){
