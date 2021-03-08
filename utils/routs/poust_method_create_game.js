@@ -296,6 +296,7 @@ function set_game_category(category){
 router.post('/upload_new_game', function(req, res) {
     // TUNA MUSI BYT SERVEROVA KONTROLA CI SU DANe FIles OK  a ci data ktore sa posielaju su tiez oki !!!
     let user = check_current_user(req.body.my_socket_id)
+    res.send(user);
     if (user.id === undefined){
         return res.send(user);
     }
