@@ -378,8 +378,10 @@ router.post('/upload_new_game', function(req, res) {
 
 
 router.post('/upload_game', function(req, res) {
-    console.log('UPDATUJEM ');
+    console.log('UPDATUJEM NOVU HRU');
+
     let user = check_current_user(req.body.my_socket_id)
+    res.send(user);
     if (user.id === undefined){
         return res.send(user);
     }
