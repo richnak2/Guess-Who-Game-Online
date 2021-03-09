@@ -20,7 +20,7 @@ function back_to_list_of_your_games(){
     allow_buttons.forEach(elem_btn => {
         document.getElementById(elem_btn).style.display = 'none';
     })
-
+    document.getElementById('all_games').style.display = 'revert';
     socket.emit('get_all_games_by_you',{my_socket_id});
 }
 // find all posible games for users
@@ -123,6 +123,7 @@ function create_new_game(){
         document.getElementById(elem_btn).style.display = 'revert';
     });
     display('check_1');
+    document.getElementById('all_games').style.display = 'none';
 
 }
 function change_allow_button_danger_primary(id_elem_btn){
@@ -188,6 +189,7 @@ function edit_game(witch_game){
     document.getElementById('menu_for_config_game').style.display = 'revert';
     recreate_check_1(witch_game);
     display('check_1');
+    document.getElementById('all_games').style.display = 'none';
 }
 function do_you_wont_to_delete_game(game_id, title){
 
