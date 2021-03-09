@@ -1,6 +1,6 @@
 let html_all_games = undefined;
 const possible_extensions = ['image/png','image/jpeg','image/PNG','image/JPEG',"image/jpg","image/JPG"];
-const allow_buttons = ['main_button_allow_check1','main_button_allow_check2','main_button_allow_check3','main_button_allow_save','main_button_allow_test']
+const allow_buttons = ['main_button_allow_check1','main_button_allow_check2','main_button_allow_check3','main_button_allow_save','main_button_allow_test','back_to_list_of_games']
 const main_config_divs = ['check_1','check_2','check_3','save','status'];
 const illegal_characters = ['-', ':', '<', '>','|' ,'.' , '/' , '\\'];
 let already_created_game = false;
@@ -17,6 +17,10 @@ function back_to_list_of_your_games(){
     while (all_games.length > 0 ){
         all_games.remove(0);
     }
+    allow_buttons.forEach(elem_btn => {
+        document.getElementById(elem_btn).style.display = 'none';
+    })
+
     socket.emit('get_all_games_by_you',{my_socket_id});
 }
 // find all posible games for users
