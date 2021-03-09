@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+function back_to_list_of_your_games(){
+    let all_games = document.getElementsByClassName('html_game_card');
+    while (all_games.length > 0 ){
+        all_games.remove(0);
+    }
+    socket.emit('get_all_games_by_you',{my_socket_id});
+}
 // find all posible games for users
 socket.emit('get_all_games_by_you',{my_socket_id});
 socket.on('get_all_games_by_you' , ({games}) => {
@@ -110,7 +117,9 @@ function create_new_game(){
     allow_buttons.forEach(elem_btn => {
         document.getElementById(elem_btn).className = document.getElementById(elem_btn).className.replace(' bg-success',' bg-danger');
         document.getElementById(elem_btn).style.display = 'revert';
-    })
+    });
+    display('check_1');
+
 }
 function change_allow_button_danger_primary(id_elem_btn){
     document.getElementById(id_elem_btn).className = document.getElementById(id_elem_btn).className.replace(' bg-danger',' bg-primary');
@@ -143,7 +152,7 @@ function display(witch){
             create_exception('Please check in this section <button class="btn btn-default bg-success "  onclick="display(\'check_2\')">descriptors</button>',10,'warning')
         }
     }else if (witch === 'save'){
-        if (status_of_game_check_3){
+        if (status_of_game_check_1){
             document.getElementById(witch).style.display = 'revert';
         }else{
             create_exception('Please check in this section <button class="btn btn-default bg-success "  onclick="display(\'check_3\')">descriptors</button>',10,'warning')
@@ -157,8 +166,6 @@ function display(witch){
             create_exception('Please check in this section <button class="btn btn-default bg-success "  onclick="display(\'check_3\')">descriptors</button>',10,'warning')
         }
     }
-
-
 }
 
 
@@ -176,6 +183,7 @@ function edit_game(witch_game){
     })
     document.getElementById('menu_for_config_game').style.display = 'revert';
     recreate_check_1(witch_game);
+    display('check_1');
 }
 function do_you_wont_to_delete_game(game_id, title){
 

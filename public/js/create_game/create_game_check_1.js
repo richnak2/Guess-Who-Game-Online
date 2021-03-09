@@ -1,10 +1,13 @@
 let status_of_game_check_1 = false;
+
 socket.on('exist_dir',({exist})=>{
     if (exist){
         if (currently_edited_game){
             if (currently_edited_game.title === document.getElementById('game_name').value){
                 status_of_game_check_1 = true;
                 change_allow_button_primary_success('main_button_allow_check1');
+                change_allow_button_danger_primary('main_button_allow_save');
+                change_allow_button_primary_success('main_button_allow_save');
                 change_allow_button_danger_primary('main_button_allow_check2');
                 hide_all_divs();
             }else {
@@ -18,6 +21,7 @@ socket.on('exist_dir',({exist})=>{
         }
 
     }else{
+        display('check_2');
         // console.log('no existing folder')
         status_of_game_check_1 = true;
         change_allow_button_primary_success('main_button_allow_check1');

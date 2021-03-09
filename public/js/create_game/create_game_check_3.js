@@ -404,7 +404,8 @@ function check_box_3(){
             status_of_game_check_3 = true;
             create_exception(warning_text+'Please do not forget to <strong>save</strong> your Game.',20,'warning');
             change_allow_button_primary_success('main_button_allow_check3');
-            change_allow_button_danger_primary('main_button_allow_save');
+            // change_allow_button_danger_primary('main_button_allow_save');
+            // change_allow_button_danger_primary('main_button_allow_save');
             change_allow_button_danger_primary('main_button_allow_test');
             hide_all_divs();
         }else{
@@ -425,7 +426,9 @@ function check_box_3(){
         hide_all_divs();
     }else{
         create_exception('Not allowed operation something want wrong .',20,'warning');
+        return ;
     }
+    display('save');
 }
 
 function create_check_able_box(image,inner_text,already_created){

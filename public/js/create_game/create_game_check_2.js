@@ -283,6 +283,7 @@ function check_box_2(){
         change_allow_button_danger_primary('main_button_allow_check3');
         hide_all_divs();
     }
+    display('check_3');
 
     automatic_config_setter();
 
