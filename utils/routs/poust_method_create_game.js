@@ -24,6 +24,7 @@ function check_current_user(id_user){
 
 function make_main_dir(main_img,old_path, new_path, path_is_renamed) {
     if (!fs.existsSync(new_path)){
+        console.log('Vytvaram novu zalozku : ',new_path)
         fs.mkdirSync(new_path);
     }
     if (path_is_renamed){
