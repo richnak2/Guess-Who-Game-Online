@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function back_to_list_of_your_games(){
     let all_games = document.getElementsByClassName('html_game_card');
     while (all_games.length > 0 ){
-        all_games.remove(0);
+        all_games[0].remove();
     }
     allow_buttons.forEach(elem_btn => {
         document.getElementById(elem_btn).style.display = 'none';
