@@ -17,7 +17,7 @@ function handleDisconnect() {
     connection.connect(function(err) {              // The server is either down
         if(err) {                                     // or restarting (takes a while sometimes).
             console.log('error when connecting to db:', err);
-            setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
+            setTimeout(handleDisconnect, 500); // We introduce a delay before attempting to reconnect,  -original je 2000
         }                                     // to avoid a hot loop, and to allow our node script to
         else{
             console.log('db ' + connection.state + ' id '+connection.threadId);

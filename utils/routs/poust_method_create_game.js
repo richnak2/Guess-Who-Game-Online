@@ -45,13 +45,18 @@ function make_main_dir(main_img,old_path, new_path, path_is_renamed) {
             console.log('NAhradazam iba hlavni obrazok ')
             main_img.mv(new_path+ '/default.png');
         }else{
+            console.log('Nova hra ',main_img.name)
             if (main_img.name === 'create_game.png') {
-                fs.copyFile('./public/images/create_game.png', new_path + '/create_game.png', (err) => {
+                // fs.copyFile('./public/images/create_game.png', new_path + '/create_game.png', (err) => {
+                //     if (err) {
+                //         return {data: `Something is want wrong with main img file ${err}`, time_of_exception: 10, type_of_exception: 'danger'};
+                //     }
+                //     fs.renameSync(new_path + '/create_game.png', new_path + '/default.png');
+                // });
+                fs.copyFile('./public/images/create_game.png', new_path + '/default.png', (err) => {
                     if (err) {
                         return {data: `Something is want wrong with main img file ${err}`, time_of_exception: 10, type_of_exception: 'danger'};
-                    }
-                    fs.renameSync(new_path + '/create_game.png', new_path + '/default.png');
-                });
+                    }});
             }
         }
     }
@@ -323,7 +328,7 @@ router.post('/upload_new_game', function(req, res) {
     }
 
     const db = dbService.getDbServiceInstance();
-    let result = db.createGameMain(decodeURI(main_game_name),game_category_of_players,'default.png',main_game_description,user.id,created);//get_current_user.id,
+    let result = db.createGameMain(decodeURI(main_game_name[0]),game_category_of_players,'default.png',main_game_description,user.id,created);//get_current_user.id,
     result.then(data => {
         // console.log('ID OF GAME : ',data.inserted_id)
         id_of_new_game = data.inserted_id;
