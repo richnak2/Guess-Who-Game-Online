@@ -159,7 +159,10 @@ function display(witch){
         }
     }else if (witch === 'save'){
         if (status_of_game_check_1){
-            document.getElementById(witch).style.display = 'revert';
+            save_game().then(data => console.log(
+                'hotovo ulozene'
+            ));
+            // document.getElementById(witch).style.display = 'revert';
         }else{
             create_exception('Please check in this section <button class="btn btn-default bg-success "  onclick="display(\'check_3\')">descriptors</button>',10,'warning')
         }

@@ -5,10 +5,10 @@ let status_of_game_check_2 = undefined;
 
 let id_of_descriptor = 0;
 function add_descriptor(existing_img_src,path){
-    let row = document.getElementById('images_of_the_game_descriptors').insertRow(1);
+    let row = document.getElementById('images_of_the_game_descriptors').insertRow();
     row.className = 'row_for_descriptor';
 
-    let cell1 = row.insertCell();
+    let cell1 = row.insertCell(0);
     cell1.className = 'wd50';
     let cell2 = row.insertCell(1);
     let cell3 = row.insertCell(2);
