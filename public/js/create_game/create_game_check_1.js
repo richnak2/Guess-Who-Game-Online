@@ -10,6 +10,7 @@ socket.on('exist_dir',({exist})=>{
                 change_allow_button_primary_success('main_button_allow_save');
                 change_allow_button_danger_primary('main_button_allow_check2');
                 hide_all_divs();
+                display('check_2');
             }else {
                 status_of_game_check_1 = false;
                 create_exception('Game title already exist',5,'warning');
@@ -22,12 +23,12 @@ socket.on('exist_dir',({exist})=>{
 
     }else{
         status_of_game_check_1 = true;
-        display('check_2');
         // console.log('no existing folder')
         // status_of_game_check_1 = true;
         change_allow_button_primary_success('main_button_allow_check1');
         change_allow_button_danger_primary('main_button_allow_check2');
         hide_all_divs();
+        display('check_2');
     }
 })
 function recreate_check_1(game){

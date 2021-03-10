@@ -20,7 +20,7 @@ function back_to_list_of_your_games(){
     allow_buttons.forEach(elem_btn => {
         document.getElementById(elem_btn).style.display = 'none';
     })
-    document.getElementById('all_games').style.display = 'revert';
+    document.getElementById('all_games').style.display = 'contents';
     hide_all_divs();
     socket.emit('get_all_games_by_you',{my_socket_id});
 }
