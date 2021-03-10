@@ -53,7 +53,7 @@ function delete_all_html_games(){
     recreate_html()
     setTimeout(function (){
         socket.emit('get_all_games_by_you',{my_socket_id});
-    },1000)
+    },3000)
 
 }
 function recreate_html(){
@@ -159,9 +159,7 @@ function display(witch){
         }
     }else if (witch === 'save'){
         if (status_of_game_check_1){
-            save_game().then(data => console.log(
-                'hotovo ulozene'
-            ));
+            save_game();
             // document.getElementById(witch).style.display = 'revert';
         }else{
             create_exception('Please check in this section <button class="btn btn-default bg-success "  onclick="display(\'check_3\')">descriptors</button>',10,'warning')
@@ -218,11 +216,12 @@ function make_form_data(){
     let main_img_file = document.getElementById('input_main_img');
     let main_game_img = document.getElementById('main_img_of_game');
 
-    if (status_of_game_check_1 === false || status_of_game_check_2 === undefined || status_of_game_check_3 === undefined){
-        if (game_name_value.value === "" ) {
-            create_exception('You must set game title in "main" button',5,'danger');
-            status_of_game_check_1 = false;
-        }
+    if (status_of_game_check_1 === false ){//|| status_of_game_check_2 === undefined || status_of_game_check_3 === undefined)
+        // if (game_name_value.value === "" ) {
+        //     create_exception('You must set game title in "main" button',5,'danger');
+        //     status_of_game_check_1 = false;
+        // }
+        return undefined;
     }else {
         if (main_img_file.files[0] !== undefined) {
             form_data_create_game.append('main_img_file', main_img_file.files[0]);
