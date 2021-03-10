@@ -98,7 +98,7 @@ class DbService {
             const insertId = await new Promise((resolve, reject) => {
                 const query = "INSERT INTO games (title,type,image,description,owner_id,state) VALUES (?,?,?,?,?,?);";
 
-                connection.query(query, [title[0],type,image,description,owner_id,is_created] , (err, result) => {
+                connection.query(query, [title,type,image,description,owner_id,is_created] , (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId);
                 })
