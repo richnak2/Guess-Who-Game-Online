@@ -21,6 +21,7 @@ function back_to_list_of_your_games(){
         document.getElementById(elem_btn).style.display = 'none';
     })
     document.getElementById('all_games').style.display = 'revert';
+    hide_all_divs();
     socket.emit('get_all_games_by_you',{my_socket_id});
 }
 // find all posible games for users
@@ -193,7 +194,7 @@ function edit_game(witch_game){
 }
 function do_you_wont_to_delete_game(game_id, title){
 
-   create_exception(`Do you wont to delete this game ${game_id}${title} ? <button class="btn btn-default bg-success text-light" onclick="delete_game(\`${game_id}\`,\`${title}\`)">YES</button>`,6,'warning')
+   create_exception(`Do you wont to delete this game ${game_id}${title} ? <button class="btn btn-default bg-success text-light" onclick="delete_game(\`${game_id}\`,\`${title}\`)">YES</button>`,30,'warning')
 }
 function delete_game(game_id, title){
     socket.emit('delete_game' , {game_id,title,my_socket_id})

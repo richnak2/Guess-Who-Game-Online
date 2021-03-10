@@ -322,7 +322,7 @@ function check_if_img_is_picket(elem,time){
         return;
     }
     if (document.getElementById('my_img_guessed_by_opponent').src.includes( '/images/question_mark.png')){
-        setTimeout(check_if_img_is_picket,1000,elem,time-5);
+        setTimeout(check_if_img_is_picket,1000,elem,time-1);
     }else{
         fate_question(elem,3);
     }
