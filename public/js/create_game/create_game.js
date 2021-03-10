@@ -56,7 +56,9 @@ function delete_all_html_games(){
 }
 function get_all_games_after_time(){
     console.log('ziskavame');
-    socket.emit('get_all_games_by_you',{my_socket_id});
+    location.reload();
+    // socket.emit('get_all_games_by_you',{my_socket_id});
+    // document.getElementById('all_games').style.display = 'contents';
 }
 function recreate_html(){
     allow_buttons.forEach(elem_btn => {
