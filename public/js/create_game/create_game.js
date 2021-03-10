@@ -51,10 +51,12 @@ function delete_all_html_games(){
         cards[0].remove();
     }
     recreate_html()
-    setTimeout(function (){
-        socket.emit('get_all_games_by_you',{my_socket_id});
-    },3000)
-
+    console.log('mazeme');
+    setTimeout(get_all_games_after_time,5000);
+}
+function get_all_games_after_time(){
+    console.log('ziskavame');
+    socket.emit('get_all_games_by_you',{my_socket_id});
 }
 function recreate_html(){
     allow_buttons.forEach(elem_btn => {
@@ -200,6 +202,7 @@ function do_you_wont_to_delete_game(game_id, title){
 function delete_game(game_id, title){
     socket.emit('delete_game' , {game_id,title,my_socket_id})
     delete_all_html_games();
+    create_exception('game has been deleted',5,'success');
 }
 function make_form_data(){
     let form_data_create_game = new FormData();

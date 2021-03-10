@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `games` (
   `owner_id` int(11) NOT NULL,
   `state` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
 
 --
 -- Dumping data for table `games`
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `game_help_descriptors` (
   `description` varchar(500) NOT NULL,
   `image` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=893 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=893 ;
 
 --
 -- Dumping data for table `game_help_descriptors`
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `game_images` (
   `image` varchar(100) NOT NULL,
   `description_control` varchar(500) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1216 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1216 ;
 
 --
 -- Dumping data for table `game_images`
@@ -270,7 +270,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `type_of_character` varchar(50) NOT NULL DEFAULT '#00000000 def.png ',
   `bought_characters` varchar(1000) NOT NULL DEFAULT '#00000000 def.png	',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `users`

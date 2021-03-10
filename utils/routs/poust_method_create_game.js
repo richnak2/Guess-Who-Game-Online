@@ -311,8 +311,9 @@ router.post('/upload_new_game', function(req, res) {
 
     // vytvorenie hlavneho herneho priecinka
 
-    let old_path = './public/images/'+main_game_name[0];
-    let new_path = './public/images/'+main_game_name[1];
+    let old_path = './public/images/'+decodeURI(main_game_name[0]);
+    let new_path = './public/images/'+decodeURI(main_game_name[1]);
+    console.log(old_path,new_path)
     let path_is_renamed = old_path!==new_path;
 
     // CHECK 1
@@ -322,7 +323,7 @@ router.post('/upload_new_game', function(req, res) {
     }
 
     const db = dbService.getDbServiceInstance();
-    let result = db.createGameMain(main_game_name,game_category_of_players,'default.png',main_game_description,user.id,created);//get_current_user.id,
+    let result = db.createGameMain(decodeURI(main_game_name),game_category_of_players,'default.png',main_game_description,user.id,created);//get_current_user.id,
     result.then(data => {
         // console.log('ID OF GAME : ',data.inserted_id)
         id_of_new_game = data.inserted_id;
