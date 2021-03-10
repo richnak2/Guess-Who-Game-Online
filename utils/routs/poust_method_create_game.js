@@ -315,9 +315,9 @@ router.post('/upload_new_game', function(req, res) {
 
 
     // vytvorenie hlavneho herneho priecinka
-
+    console.log(main_game_name)
     let old_path = './public/images/'+main_game_name[0];//decodeURI(main_game_name[0]);
-    let new_path = './public/images/'+main_game_name[1];decodeURI(main_game_name[1]);
+    let new_path = './public/images/'+main_game_name[1];//decodeURI(main_game_name[1]);
     console.log(old_path,new_path)
     let path_is_renamed = old_path!==new_path;
 
