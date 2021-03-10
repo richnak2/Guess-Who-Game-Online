@@ -330,7 +330,7 @@ router.post('/upload_new_game', function(req, res) {
 
     const db = dbService.getDbServiceInstance();
     console.log('CO UKLADAM DO DB : ',decodeURI(main_game_name[0]),game_category_of_players,'default.png',main_game_description,user.id,created)
-    let result = db.createGameMain(decodeURI(main_game_name[0]),game_category_of_players,'default.png',main_game_description,user.id,created);//get_current_user.id,
+    let result = db.createGameMain(main_game_name[0],game_category_of_players,'default.png',main_game_description,user.id,created);//get_current_user.id,
     result.then(data => {
         // console.log('ID OF GAME : ',data.inserted_id)
         id_of_new_game = data.inserted_id;
