@@ -8,7 +8,7 @@ function add_descriptor(existing_img_src,path){
     let row = document.getElementById('images_of_the_game_descriptors').insertRow(1);
     row.className = 'row_for_descriptor';
 
-    let cell1 = row.insertCell(0);
+    let cell1 = row.insertCell();
     cell1.className = 'wd50';
     let cell2 = row.insertCell(1);
     let cell3 = row.insertCell(2);
