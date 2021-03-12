@@ -259,6 +259,8 @@ class Game {
     }
     answer_to_question(player_name,massage){
         if (this.define_end_of_the_game !== undefined){
+            // if (ce)
+            console.log('pytam sa ak uz bola odpoved certain');
             this.state = true;
             leave_game(this.id)
             console.log('CERTAIN ACTUAL QUESTION ',this.define_end_of_the_game,player_name,massage,this.ask_counter_player2,this.ask_counter_player1);

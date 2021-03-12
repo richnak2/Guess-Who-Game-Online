@@ -349,6 +349,7 @@ io.on('connection', socket => {
             let broadcast_massage = {}
             let game = is_existing_game(game_id);
             let answer = game.answer_to_question(my_socket_id,massage);
+            console.log('answer to certain : ',answer)
             if (answer){ // 1000 bude asi parameter max game reword vivod do buducna
                 add_points(1000,game.player1.id_socket,game.ask_counter_player1+(game.player1.id_socket === my_socket_id ? 10:0))
                 add_points(1000,game.player2.id_socket,game.ask_counter_player2+(game.player1.id_socket === my_socket_id ? 0:10))
