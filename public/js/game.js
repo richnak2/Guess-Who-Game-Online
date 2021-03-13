@@ -182,7 +182,7 @@ function make_waiting_box(option){
         html_leave.style.display = 'revert';
         html_play_again.style.display = 'none';
         // html_report_btn.style.display = 'none';
-        html_win_lost.innerHTML = 'weating for other player to join ';
+        html_win_lost.innerHTML = 'waiting for other player to join ';
         run_animation_waiting(0);
     }else{
         setTimeout(make_waiting_box,100,option);
