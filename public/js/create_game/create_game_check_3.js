@@ -24,8 +24,9 @@ function save_more_files(elem){
     remove_item_form_array_files(first_index);
     document.getElementById(first_index).remove();
     remake_indexes_because_of_anomaly();
+    remove_all_titles();
     sort_auto_descriptors();
-    // make_titles_for_automatic_descriptors();
+    make_titles_for_automatic_descriptors();
 }
 
 
@@ -273,9 +274,10 @@ function remove_all_titles(){
 
     let all_titles = document.getElementsByClassName('automatic_descriptors_titles');
     while (all_titles.length > 0 ){
-        console.log('aaaa');
+        console.log('mazem');
         all_titles[0].remove();
     }
+    console.log('Hotovo mazem');
 }
 
 function make_titles_for_automatic_descriptors(){
