@@ -25,7 +25,7 @@ function save_more_files(elem){
     document.getElementById(first_index).remove();
     remake_indexes_because_of_anomaly();
     sort_auto_descriptors();
-    make_titles_for_automatic_descriptors();
+    // make_titles_for_automatic_descriptors();
 }
 
 
