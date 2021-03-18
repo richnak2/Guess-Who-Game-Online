@@ -22,7 +22,7 @@ function userJoin(id_socket , id, game_name, role , points , character , bought_
   // };
   let user = { id_socket: id_socket,
     id : id ,
-    game_name : (game_name === undefined?game_name:user_names[Math.floor(Math.random() * user_names.length)]) ,
+    game_name : (game_name === undefined?user_names[Math.floor(Math.random() * user_names.length)]:game_name) ,
     role : role ,
     points : points ,
     character: character ,
