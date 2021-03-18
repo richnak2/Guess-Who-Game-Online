@@ -665,7 +665,7 @@ function leave_game(){
         if (my_game.state){
             leave()
         }else if (my_game.state === false && my_game.player2 !== undefined){
-            create_exception('Are u sure tou want to leave the game ? If you leave unfinished game your score will be affected <button class="bg-success text-light" onclick="leave()"> YES </button>',5,'danger')
+            create_exception('Are u sure tou want to leave the game ? If you leave unfinished game your score will be affected <button class="bg-success text-light" onclick="leave()"> YES </button>',10,'danger')
         }else{
             leave()
         }
