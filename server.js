@@ -83,7 +83,9 @@ io.on('connection', socket => {
     //// PLAEYER MANAGMENT
 
     socket.on('user_join_as', () => {
-        userJoin(socket.id,undefined,socket.id,undefined,0,'#00000000 def.png','#00000000 def.png');
+        // userJoin(socket.id,undefined,socket.id,undefined,0,'#00000000 def.png','#00000000 def.png');
+        userJoin(socket.id,undefined,undefined,undefined,0,'#00000000 def.png','#00000000 def.png');
+
     });
 
     socket.on('login_as_user', ({name_value , password_value}) => {

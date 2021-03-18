@@ -55,10 +55,15 @@ function leave_game(game_id){
             console.log('LEAVE game id id_game state true')
             games.splice(index_game, 1)
 
+        }else if (games[index_game].id === game_id){
+            console.log('LEAVE game id id_game just leave becouse other player is not connecting');
+            games.splice(index_game, 1);
+            return undefined
         }else{
             console.log('LEAVE game id id_game state undefined')
             return undefined
         }
+
         // if (games[index_game].id === game_id){
         //     console.log('removing game !!!');
         //     games.splice(index_game, 1)

@@ -6,6 +6,7 @@ const color_pallet = [['#00000000',0],// base color default
   ['#ffffffff',700],['#0013ffff',750],['#e04970ff',800],['#30ff02ff',850],
   ['#02ffecff',900],['#fcb045ff',950],['#fffe1eff',1000],['#833ab4ff',1050],
   ['#000000ff',1100],['#ff00e7ff',1150],['#d58ffdff',1200]]; // full colors
+const user_names = ['Ondrej','Barbora','Dusan','Fedor','Chorche','Britni','Julia','Sara','Hazelnut','RushB','Guess','Filomena'];
 //get all users
 function getAll(){
   return users;
@@ -21,7 +22,7 @@ function userJoin(id_socket , id, game_name, role , points , character , bought_
   // };
   let user = { id_socket: id_socket,
     id : id ,
-    game_name : game_name ,
+    game_name : (game_name === undefined?game_name:user_names[Math.floor(Math.random() * user_names.length)]) ,
     role : role ,
     points : points ,
     character: character ,
