@@ -59,9 +59,9 @@ function log_in(){
     }
 }
 function create_user(){
-    let name = document.getElementById('name');
-    let password = document.getElementById('password');
-    let repeat_password = document.getElementById('repeat_password');
+    let name = document.getElementById('name_r');
+    let password = document.getElementById('password_r');
+    let repeat_password = document.getElementById('repeat_password_r');
     let name_value = name.value;
     let password_value = password.value;
     let repeat_password_value = repeat_password.value;
@@ -103,20 +103,30 @@ function create_user(){
     }
 }
 function show_log_in(witch){
-
-    for (let elem = 0 ; elem < create_elements.length; elem ++){
-        create_elements[elem].style.display = witch;
-    }
-
-    document.getElementById('log_in').style.display = 'revert';
-    if (witch === 'none'){
-        document.getElementById('sign').style.display = 'revert';
+    if (witch === 'register'){
+        document.getElementById('register').style.display = 'revert';
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('main').style.display = 'none';
     }else{
-        document.getElementById('sign').style.display = 'none';
+        document.getElementById('register').style.display = 'none';
+        document.getElementById('login').style.display = 'revert';
+        document.getElementById('main').style.display = 'none';
     }
-    document.getElementById('main').style.display = 'none';
+
+    // for (let elem = 0 ; elem < create_elements.length; elem ++){
+    //     create_elements[elem].style.display = witch;
+    // }
+    //
+    // document.getElementById('log_in').style.display = 'revert';
+    // if (witch === 'none'){
+    //     document.getElementById('sign').style.display = 'revert';
+    // }else{
+    //     document.getElementById('sign').style.display = 'none';
+    // }
+    // document.getElementById('main').style.display = 'none';
 }
 function back_to_main(){
-    document.getElementById('log_in').style.display = 'none';
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('register').style.display = 'none';
     document.getElementById('main').style.display = 'revert';
 }

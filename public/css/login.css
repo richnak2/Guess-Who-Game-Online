@@ -1,4 +1,7 @@
-#log_in{
+#login{
+    display: none;
+}
+#register{
     display: none;
 }
 #role_label{
