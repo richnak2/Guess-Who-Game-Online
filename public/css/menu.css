@@ -5,9 +5,9 @@
     margin-left: 10px;
     margin-right: 10px;
 }
-/*#for_teacher{*/
-/*    display: none;*/
-/*}*/
+#for_teacher{
+    display: none;
+}
 #all_games{
     margin-left: 10%;
     margin-right: 10%;
