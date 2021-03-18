@@ -52,9 +52,11 @@ function leave_game(game_id){
             return 'inform_second_player';
 
         }else if (games[index_game].id === game_id && games[index_game].state === true){//(  games[index_game].type === 'kid' ||  games[index_game].type === 'kid')){
+            console.log('LEAVE game id id_game state true')
             games.splice(index_game, 1)
 
         }else{
+            console.log('LEAVE game id id_game state undefined')
             return undefined
         }
         // if (games[index_game].id === game_id){

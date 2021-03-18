@@ -170,7 +170,7 @@ io.on('connection', socket => {
             const db = dbService.getDbServiceInstance();
             const result = db.getAllYourGames(get_current_user.id);
             result.then(data => {
-                console.log('CHEM get_all_games_by_you ');
+                // console.log('CHEM get_all_games_by_you ');
                 // let data_with_images = get_all_files_in_game(data,game.title);
                 socket.emit('get_all_games_by_you', {games : data});//data_with_images
             }).catch(err => console.log(err));
@@ -204,7 +204,7 @@ io.on('connection', socket => {
     });
 
     function is_ready_game(game_id){
-        console.log('w8 for game')
+        // console.log('w8 for game')
         let game = is_existing_game(game_id);
         if (game){
             let game_copy  = JSON.parse(JSON.stringify(game)); // Create Deep copy of object
@@ -233,9 +233,9 @@ io.on('connection', socket => {
         if (player === undefined){
             console.log('LUCK FOR GAME PLAYER UNDEFINED ',my_socket_id);
         }else {
-            console.log('LUCK FOR GAME :',game_name, game_type, player,my_socket_id);
+            // console.log('LUCK FOR GAME :',game_name, game_type, player,my_socket_id);
             search_for_free_game(game_name, game_type, player).then(answer => {
-                console.log('ANSWER FOR GAME SUCCESS:',game_name, game_type, player,my_socket_id);
+                // console.log('ANSWER FOR GAME SUCCESS:',game_name, game_type, player,my_socket_id);
                 // socket.emit('game_buffer_answer', {answer: answer});
                 if (answer !== undefined){
                     let game_copy  = JSON.parse(JSON.stringify(answer)); // Create Deep copy of object
@@ -266,7 +266,7 @@ io.on('connection', socket => {
             let game = is_existing_game(game_id);
             if (game){
                 // console.log(all_games().length);
-                all_games().forEach(g => console.log(g.id))
+                // all_games().forEach(g => console.log(g.id))
                 console.log('ALL GAMSE IN PROCES create singlpayer : ',all_games().length,);//all_games()
                 socket.emit('obtain_game', {game:game});
             }else{
@@ -279,12 +279,12 @@ io.on('connection', socket => {
 
     socket.on('ask_single_player_game',({game_id,massage}) =>{
         let game = is_existing_game(game_id);
-        console.log('SINGEL ',game.player1);
+        // console.log('SINGEL ',game.player1);
         // console.log('ask_single_player_game',game)
         if (game) {
             let is_you_picture = game.is_your_picture_question(massage);
             if (massage.certain === true && is_you_picture === true){
-                console.log('SINGEL PRESIEL ',game.player1.id_socket)
+                // console.log('SINGEL PRESIEL ',game.player1.id_socket)
                 add_points(1000,game.player1.id_socket,game.ask_counter_player1)
                 if (game.player1.id !== undefined){
                     const db = dbService.getDbServiceInstance();
@@ -302,7 +302,7 @@ io.on('connection', socket => {
     socket.on('get_character',({my_socket_id}) => {
 
         const player = getCurrentUser(my_socket_id);
-        console.log(player)
+        // console.log(player)
         if (player === undefined){
         }else {
             // console.log('som tuuuu',player.bought_characters,)
@@ -330,7 +330,7 @@ io.on('connection', socket => {
     socket.on('broadcast_massage',({game_id,my_socket_id,massage}) =>{
         console.log(game_id,my_socket_id,massage)
         if (massage === 'block'){
-            console.log('ANO POSLAL SOM BLOCK')
+            // console.log('ANO POSLAL SOM BLOCK')
 
             let broadcast_massage = {}
             broadcast_massage.game_id = game_id;
@@ -338,18 +338,18 @@ io.on('connection', socket => {
             broadcast_massage.massage = 'unlock_btn';
             socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
         }else if (massage === 'connected'){
-            console.log('broadcast_massage',my_socket_id)
+            // console.log('broadcast_massage',my_socket_id)
             let broadcast_massage = {}
             broadcast_massage.game_id = game_id;
             broadcast_massage.player_name = my_socket_id;
             broadcast_massage.massage = massage;
             socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
         }else if (massage === true || massage === false ){
-            console.log('ODPOVED NA SERVERI ')
+            // console.log('ODPOVED NA SERVERI ')
             let broadcast_massage = {}
             let game = is_existing_game(game_id);
             let answer = game.answer_to_question(my_socket_id,massage);
-            console.log('answer to certain : ',answer)
+            // console.log('answer to certain : ',answer)
             if (answer){ // 1000 bude asi parameter max game reword vivod do buducna
                 add_points(1000,game.player1.id_socket,game.ask_counter_player1+(game.player1.id_socket === my_socket_id ? 10:0))
                 add_points(1000,game.player2.id_socket,game.ask_counter_player2+(game.player1.id_socket === my_socket_id ? 0:10))
@@ -384,7 +384,7 @@ io.on('connection', socket => {
     })
 
     socket.on('leave_game',({game_id,my_socket_id}) => {
-        console.log('LEFT GAME',game_id);
+        // console.log('LEFT GAME',game_id);
         let game = is_existing_game(game_id);
         let answer_if_game_is_multiplayer = leave_game(game_id)
         // console.log(answer_if_game_is_multiplayer);
@@ -407,7 +407,7 @@ io.on('connection', socket => {
             }
             socket.broadcast.emit('opponent_left', {who_left:game_id});
         }
-        all_games().forEach(g => console.log(g.id))
+        // all_games().forEach(g => console.log(g.id))
         console.log('ALL GAMSE IN PROCES  leave game : ',all_games().length,);//all_games()
 
     });
