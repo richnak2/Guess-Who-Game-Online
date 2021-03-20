@@ -6,7 +6,10 @@ const color_pallet = [['#00000000',0],// base color default
   ['#ffffffff',700],['#0013ffff',750],['#e04970ff',800],['#30ff02ff',850],
   ['#02ffecff',900],['#fcb045ff',950],['#fffe1eff',1000],['#833ab4ff',1050],
   ['#000000ff',1100],['#ff00e7ff',1150],['#d58ffdff',1200]]; // full colors
-const user_names = ['Ondrej','Barbora','Dusan','Fedor','Chorche','Britni','Julia','Sara','Hazelnut','RushB','Guess','Filomena'];
+const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter','White',
+                    'Jesse','Pinkman','Skyler','Gus','Michael','Tuco','Hector',
+                    'Trevor', 'Amanda','Tracey','Christina','Margot','Chloe','Hermione',
+                    'Harry Potter', 'Eric Clapton', 'Nicolas Cage','Will Smith'];
 //get all users
 function getAll(){
   return users;
