@@ -256,19 +256,23 @@ function create_html_for_game(){
         }
     }
     if (game_type !== 'student'){
-        let created_buttons = [];
+        // let created_buttons = [];
         for (const [key, value] of Object.entries(guessed_images)) {
             let button = document.createElement('BUTTON');
             button.className = 'btn btn-default bg-primary guess_btn guess_dir text-light';
             button.innerHTML = key;
-            created_buttons.push(button);
-        }
-        for (let index_btn = 0 ; index_btn < created_buttons.length ; index_btn ++){
-            created_buttons[index_btn].onclick = function (){
-                created_images_form_buttons(created_buttons[index_btn].innerHTML);
+            button.onclick = function (){
+                created_images_form_buttons(key);
             }
-            html_button_elem_guess.append(created_buttons[index_btn]);
+            html_button_elem_guess.append(button);
+            // created_buttons.push(button);
         }
+        // for (let index_btn = 0 ; index_btn < created_buttons.length ; index_btn ++){
+        //     created_buttons[index_btn].onclick = function (){
+        //         created_images_form_buttons(created_buttons[index_btn].innerHTML);
+        //     }
+        //     html_button_elem_guess.append(created_buttons[index_btn]);
+        // }
     }
     document.getElementById('guess_back').style.display = 'none';
     // console.log('MY GAME TYPE HERE IS : ',game_type,my_game.type)
