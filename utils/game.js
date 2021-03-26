@@ -43,10 +43,12 @@ function is_existing_game(game_id){
 }
 async function leave_game(game_id){
     console.log('ALL GAMSES : '+games.length)
+    console.log('REMOVING GAME : ',game_id)
     for (let index_game = 0; index_game < games.length; index_game++) {
         if (games[index_game].id === game_id && games[index_game].type === 'pc'){
             console.log('LEAVE PC')
             games.splice(index_game, 1)
+            return;
         }else if (games[index_game].id === game_id && games[index_game].state === false){//(  games[index_game].type === 'kid' ||  games[index_game].type === 'kid')){
             console.log('LEAVE game id id_game state false')
             games.splice(index_game, 1)
@@ -55,14 +57,15 @@ async function leave_game(game_id){
         }else if (games[index_game].id === game_id && games[index_game].state === true){//(  games[index_game].type === 'kid' ||  games[index_game].type === 'kid')){
             console.log('LEAVE game id id_game state true')
             games.splice(index_game, 1)
+            return;
 
         }else if (games[index_game].id === game_id){
             console.log('LEAVE game id id_game just leave becouse other player is not connecting');
             games.splice(index_game, 1);
             return undefined
         }else{
-            console.log('LEAVE game id id_game state undefined',game_id)
-            return undefined
+            console.log('Did not find game with id :', game_id,' != ',games[index_game].id);
+            // return undefined
         }
 
         // if (games[index_game].id === game_id){
@@ -70,9 +73,10 @@ async function leave_game(game_id){
         //     games.splice(index_game, 1)
         // }
     }
+    return;
 }
 function create_game(game,type,id,player1){
-    console.log('CREATING GAME : ',game,type,id,player1)
+    console.log('CREATING GAME : ',game,type,id)//,player1
     new Game(game,type,id,player1);
     // try {
     //     const response = await new Promise((resolve, reject) => {
@@ -96,8 +100,7 @@ class Game {
         this.list_of_images = undefined;
         this.list_of_definers = undefined;
         this.state = false;
-        this.player1 = player1 //{...player1};
-        // this.player1.id_socket = undefined;
+        this.player1 = player1
         this.player2 = undefined;
         this.picket_picture_player1 = undefined;
         this.picket_picture_player2 = undefined;
