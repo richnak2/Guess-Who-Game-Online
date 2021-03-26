@@ -23,11 +23,11 @@ const io = socket_io(server);
 const {
     userJoin,
     getCurrentUser,
-    set_character,
-    buy_character,
+    setCharacter,
+    buyCharacter,
     getAll,
     userLeave,
-    add_points
+    addPoints
 } = require('./utils/users');
 
 const {create_game,is_existing_game,all_games,search_for_free_game,leave_game,game} = require('./utils/game');
@@ -181,7 +181,7 @@ io.on('connection', socket => {
 
     });
     socket.on('restart_character',({my_socket_id}) => {
-        const player = set_character(my_socket_id,'bg-#00000000 def.png');
+        const player = setCharacter(my_socket_id,'bg-#00000000 def.png');
         // db
         if (player.id !== undefined){
             const db = dbService.getDbServiceInstance();
@@ -189,7 +189,7 @@ io.on('connection', socket => {
         }
     });
     socket.on('set_character_or_color',({my_socket_id,character_in_game}) => {
-        const player = set_character(my_socket_id,character_in_game);
+        const player = setCharacter(my_socket_id,character_in_game);
         // db
         if (player.id !== undefined){
             const db = dbService.getDbServiceInstance();
@@ -197,7 +197,7 @@ io.on('connection', socket => {
         }
     });
     socket.on('buy_character_or_color',({my_socket_id,item}) => {
-        const player = buy_character(my_socket_id,item);
+        const player = buyCharacter(my_socket_id,item);
         // db
         if (player.id !== undefined){
             const db = dbService.getDbServiceInstance();
@@ -287,7 +287,7 @@ io.on('connection', socket => {
             let is_you_picture = game.is_your_picture_question(massage);
             if (massage.certain === true && is_you_picture === true){
                 // console.log('SINGEL PRESIEL ',game.player1.id_socket)
-                add_points(1000,game.player1.id_socket,game.ask_counter_player1)
+                addPoints(1000,game.player1.id_socket,game.ask_counter_player1)
                 if (game.player1.id !== undefined){
                     const db = dbService.getDbServiceInstance();
                     const result = db.updateUserPoints(getCurrentUser(game.player1.id_socket));
@@ -353,8 +353,8 @@ io.on('connection', socket => {
             let answer = game.answer_to_question(my_socket_id,massage);
             // console.log('answer to certain : ',answer)
             if (answer){ // 1000 bude asi parameter max game reword vivod do buducna
-                add_points(1000,game.player1.id_socket,game.ask_counter_player1+(game.player1.id_socket === my_socket_id ? 10:0))
-                add_points(1000,game.player2.id_socket,game.ask_counter_player2+(game.player1.id_socket === my_socket_id ? 0:10))
+                addPoints(1000,game.player1.id_socket,game.ask_counter_player1+(game.player1.id_socket === my_socket_id ? 10:0))
+                addPoints(1000,game.player2.id_socket,game.ask_counter_player2+(game.player1.id_socket === my_socket_id ? 0:10))
                 if (game.player1.id !== undefined){
                     const db = dbService.getDbServiceInstance();
                     const result = db.updateUserPoints(getCurrentUser(game.player1.id_socket));
@@ -392,9 +392,9 @@ io.on('connection', socket => {
         // console.log(answer_if_game_is_multiplayer);
         if (answer_if_game_is_multiplayer === 'inform_second_player' && game.player2 !== undefined){
             if (game.player1.id_socket === my_socket_id){
-                add_points(1000,game.player2.id_socket,10);
+                addPoints(1000,game.player2.id_socket,10);
             }else if (game.player2.id_socket === my_socket_id){
-                add_points(1000,game.player1.id_socket,10);
+                addPoints(1000,game.player1.id_socket,10);
             }else{
                 console.log('ERROR LEFT GAME');
             }

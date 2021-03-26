@@ -611,7 +611,7 @@ function make_win_multiplier(text){
 
     document.getElementById('yes').disable = false;
     document.getElementById('no').disable = false;
-
+    my_game.state = true;
 
 }
 

@@ -40,7 +40,7 @@ function userJoin(id_socket , id, game_name, role , points , character , bought_
 
   return user;
 }
-function buy_character(socket_id,character_or_color) {
+function buyCharacter(socket_id, character_or_color) {
   const index = users.findIndex(user => user.id_socket === socket_id);
   if (index !== -1) {
     if (character_or_color.charAt(0) === '#'){ // color
@@ -64,7 +64,7 @@ function buy_character(socket_id,character_or_color) {
   return users[index];
 }
 
-function set_character(socket_id,character) {
+function setCharacter(socket_id, character) {
   const index = users.findIndex(user => user.id_socket === socket_id);
   if (index !== -1) {
     users[index].character = character;
@@ -87,7 +87,7 @@ function userLeave(socket_id) {
     return users.splice(index, 1)[0];
   }
 }
-function add_points(time_of_complete,my_socket_id,guess_count){
+function addPoints(time_of_complete, my_socket_id, guess_count){
   console.log(time_of_complete,my_socket_id,guess_count)
   const get_current_user = getCurrentUser(my_socket_id);
   if (get_current_user !== undefined){
@@ -104,9 +104,9 @@ function add_points(time_of_complete,my_socket_id,guess_count){
 module.exports = {
   userJoin,
   getCurrentUser,
-  set_character,
-  buy_character,
+  setCharacter,
+  buyCharacter,
   getAll,
   userLeave,
-  add_points
+  addPoints
 };

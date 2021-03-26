@@ -40,7 +40,7 @@ function is_existing_game(game_id){
         }
     }
 }
-function leave_game(game_id){
+async function leave_game(game_id){
     console.log('ALL GAMSES : '+games.length)
     for (let index_game = 0; index_game < games.length; index_game++) {
         if (games[index_game].id === game_id && games[index_game].type === 'pc'){
@@ -60,7 +60,7 @@ function leave_game(game_id){
             games.splice(index_game, 1);
             return undefined
         }else{
-            console.log('LEAVE game id id_game state undefined')
+            console.log('LEAVE game id id_game state undefined',game_id)
             return undefined
         }
 
@@ -240,7 +240,7 @@ class Game {
             console.log('SG IS YOUR P CERTAIN ',this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop(), this.picket_picture_pc.image.split('/').pop(), massage.src.split('/').pop())
             let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
             if (you_found_picture){
-                leave_game(this.id);
+                leave_game(this.id).then(r => console.log('deleted game id:'+this.id));
                 return you_found_picture;
             }
 
@@ -269,7 +269,7 @@ class Game {
             if (massage){
                 console.log('pytam sa ak uz bola odpoved certain');
                 this.state = true;
-                leave_game(this.id)
+                leave_game(this.id).then(r => console.log('deleted game id:'+this.id));
                 console.log('CERTAIN ACTUAL QUESTION ',this.define_end_of_the_game,player_name,massage,this.ask_counter_player2,this.ask_counter_player1);
                 return massage
             }
