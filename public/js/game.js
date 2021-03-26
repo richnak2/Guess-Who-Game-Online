@@ -38,7 +38,7 @@ function create_game(){
     if (sessionStorage.getItem('type_of_game')){
         game_name = sessionStorage.getItem('game_name');
         game_type = sessionStorage.getItem('type_of_game');
-        sessionStorage.setItem('game_id',make_id(5))
+        sessionStorage.setItem('game_id',make_id(20))
         game_id = sessionStorage.getItem('game_id');
         if (game_type === 'pc'){
             socket.emit('create_single_player' , {game_name,game_type,game_id,my_socket_id}, );

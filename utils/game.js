@@ -8,21 +8,22 @@ function all_games(){
 
 async function search_for_free_game(game_name,game_type,player){ // tuna asi chyba id hry pre zistenie komu patry hra
     for (let index_game = 0; index_game < games.length; index_game++) {
-        // console.log('Game title : ', game_name , games[index_game].game_name)
-        // console.log('Game type : ', game_type , games[index_game].type )
-        // console.log('Game player 2 : ', games[index_game].picket_picture_player2)
-        if (games[index_game].player1 === player || games[index_game].player2 === player){ //.id_socket
-            console.log('SAME PLayer reconnecting')
-            return games[index_game];
-        }
+        // // console.log('Game title : ', game_name , games[index_game].game_name)
+        // // console.log('Game type : ', game_type , games[index_game].type )
+        // // console.log('Game player 2 : ', games[index_game].picket_picture_player2)
+        // if (games[index_game].player1 === player || games[index_game].player2 === player){ //.id_socket
+        //     console.log('SAME PLayer reconnecting')
+        //     return games[index_game];
+        // }
         if (game_name === games[index_game].game_name && game_type === games[index_game].type && games[index_game].player2 === undefined){//  || games[index_game].player1 === undefined
-            console.log('I FOND A GAME !!!!!!');
+            console.log('serach for game : Found Game ');
             // mozno  nutna uprava player odstranenie urcitich parametrov
             games[index_game].player2 = player//{...player}
             // games[index_game].player2.id_socket = undefined;
             return games[index_game];
         }
     }
+    console.log('serach for game : Not Found Game  ');
     // games.forEach(game =>{
     //
     // });
