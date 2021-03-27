@@ -29,6 +29,7 @@ const {
     userLeave,
     addPoints
 } = require('./utils/users');
+const {format_message} = require('./utils/messages');
 
 const {create_game,is_existing_game,all_games,search_for_free_game,leave_game,game} = require('./utils/game');
 const {look_folders,delete_folder_r,get_all_files_in_game,remove_dirs} = require('./utils/create_game');
@@ -280,21 +281,23 @@ io.on('connection', socket => {
 
     // spracovanie posielania sprav pre celu hru
     // : BM
-    socket.on('broadcast_massage',({game_id,my_socket_id,massage}) =>{ // posli spravu na hru s id "game_id" od hraca "my_socket_id" a content == "massage"
-        // console.log(game_id,my_socket_id,massage)
+    socket.on('broadcast_massage',({game_id,my_socket_id,massage}) =>{
+        // posli spravu na hru s id "game_id" od hraca "my_socket_id" a content == "massage"
         let broadcast_massage = {}
 
         if (massage === 'block'){
             // zablokuj druhemu hracovi moznost klikania
-            broadcast_massage.game_id = game_id;
-            broadcast_massage.player_name = my_socket_id;
-            broadcast_massage.massage = 'unlock_btn';
+            broadcast_massage = format_message(game_id,my_socket_id,'unlock_btn');
+            // broadcast_massage.game_id = game_id;
+            // broadcast_massage.player_name = my_socket_id;
+            // broadcast_massage.massage = 'unlock_btn';
             socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
         }else if (massage === 'connected'){
             // pripojenie hraca do hry
-            broadcast_massage.game_id = game_id;
-            broadcast_massage.player_name = my_socket_id;
-            broadcast_massage.massage = massage;
+            broadcast_massage = format_message(game_id,my_socket_id,massage);
+            // broadcast_massage.game_id = game_id;
+            // broadcast_massage.player_name = my_socket_id;
+            // broadcast_massage.massage = massage;
             socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
         }else if (massage === true || massage === false ){
             // otazka na ktora prichadza od hraca na server certain image pod tlacidlom guess
@@ -312,18 +315,20 @@ io.on('connection', socket => {
                     db.updateUserPoints(getCurrentUser(game.player2.id_socket)).then();
                 }
             }
-            broadcast_massage.game_id = game_id;
-            broadcast_massage.player_name = my_socket_id;
-            broadcast_massage.massage = massage;
+            broadcast_massage = format_message(game_id,my_socket_id,massage);
+            // broadcast_massage.game_id = game_id;
+            // broadcast_massage.player_name = my_socket_id;
+            // broadcast_massage.massage = massage;
             socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
         }else{
             // vytvorenie obicajnej otazky
             let game = is_existing_game(game_id);
             if (game !== undefined){
                 game.add_question(my_socket_id,massage);
-                broadcast_massage.game_id = game_id;
-                broadcast_massage.player_name = my_socket_id;
-                broadcast_massage.massage = massage;
+                broadcast_massage = format_message(game_id,my_socket_id,massage);
+                // broadcast_massage.game_id = game_id;
+                // broadcast_massage.player_name = my_socket_id;
+                // broadcast_massage.massage = massage;
                 socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
             }
         }

@@ -1,9 +1,10 @@
 
-function formatMessage(username, text) {
+function format_message(game_id, socket_id,massage) {
   return {
-    username,
-    text,
+    game_id:game_id,
+    player_name:socket_id,
+    massage:massage
   };
 }
 
-module.exports = formatMessage;
+module.exports = {format_message};
