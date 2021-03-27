@@ -202,7 +202,12 @@ io.on('connection', socket => {
     function is_ready_game(game_id){
         let game = is_existing_game(game_id);
         if (game){
-            let game_copy  = remove_player_identity(JSON.parse(JSON.stringify(game))); // Create Deep copy of object
+            let game_copy  = JSON.parse(JSON.stringify(game)); // Create Deep copy of object
+            game_copy.picket_picture_pc = undefined;
+            game_copy.player1.id_socket = undefined;
+            if (game_copy.player2 !== undefined){
+                game_copy.player2.id_socket = undefined;
+            }
             console.log('IRG : ',game_id)
             socket.emit('obtain_game', {game:game_copy});
         }else{
@@ -221,7 +226,12 @@ io.on('connection', socket => {
             search_for_free_game(game_name, game_type, player).then(answer => {
 
                 if (answer !== undefined){
-                    let game_copy  = remove_player_identity(JSON.parse(JSON.stringify(game))); // Create Deep copy of object
+                    let game_copy  = JSON.parse(JSON.stringify(game)); // Create Deep copy of object
+                    game_copy.picket_picture_pc = undefined;
+                    game_copy.player1.id_socket = undefined;
+                    if (game_copy.player2 !== undefined){
+                        game_copy.player2.id_socket = undefined;
+                    }
                     socket.emit('game_buffer_answer', {answer: game_copy});
                 }else{
                     console.log('LUCK TO GAME ERRROR :',answer);
@@ -233,15 +243,6 @@ io.on('connection', socket => {
             })
         }
     })
-    // zmena udajou pre bezpecnost profilu hraca
-        function remove_player_identity(game){
-            game.picket_picture_pc = undefined;
-            game.player1.id_socket = undefined;
-            if (game.player2 !== undefined){
-                game.player2.id_socket = undefined;
-            }
-            return game
-        }
     // : CSP
     socket.on('create_single_player' , ({game_name,game_type,game_id,my_socket_id}) => {
         const player = getCurrentUser(my_socket_id);
