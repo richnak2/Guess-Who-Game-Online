@@ -226,7 +226,7 @@ io.on('connection', socket => {
             search_for_free_game(game_name, game_type, player).then(answer => {
 
                 if (answer !== undefined){
-                    let game_copy  = JSON.parse(JSON.stringify(game)); // Create Deep copy of object
+                    let game_copy  = JSON.parse(JSON.stringify(answer)); // Create Deep copy of object
                     game_copy.picket_picture_pc = undefined;
                     game_copy.player1.id_socket = undefined;
                     if (game_copy.player2 !== undefined){
