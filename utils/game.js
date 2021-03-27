@@ -8,38 +8,29 @@ function all_games(){
 
 async function search_for_free_game(game_name,game_type,player){ // tuna asi chyba id hry pre zistenie komu patry hra
     for (let index_game = 0; index_game < games.length; index_game++) {
-        // // console.log('Game title : ', game_name , games[index_game].game_name)
-        // // console.log('Game type : ', game_type , games[index_game].type )
-        // // console.log('Game player 2 : ', games[index_game].picket_picture_player2)
-        // if (games[index_game].player1 === player || games[index_game].player2 === player){ //.id_socket
-        //     console.log('SAME PLayer reconnecting')
-        //     return games[index_game];
-        // }
+        if (games[index_game].player1 === player ){ //.id_socket
+            console.log('serach for game : Found New Created Game ');
+            return games[index_game];
+        }
         if (game_name === games[index_game].game_name && game_type === games[index_game].type && games[index_game].player2 === undefined){//  || games[index_game].player1 === undefined
             console.log('serach for game : Found Game ');
-            // mozno  nutna uprava player odstranenie urcitich parametrov
-            games[index_game].player2 = player//{...player}
-            // games[index_game].player2.id_socket = undefined;
+            games[index_game].player2 = player
             return games[index_game];
         }
     }
     console.log('serach for game : Not Found Game  ');
-    // games.forEach(game =>{
-    //
-    // });
     return undefined;
 
 }
 function is_existing_game(game_id){
-    // console.log(games);
-
+    console.log('ALL GAMSE : ',games.length,);//all_games()
     for (let index_game = 0 ; index_game < games.length; index_game++){
-        // console.log('GAME IM LOOKING FOR : ',games[index_game].id, game_id );
         if (games[index_game].id === game_id){
-
             return games[index_game];
         }
     }
+    console.log('game does not exist ', game_id );
+    return undefined;
 }
 async function leave_game(game_id){
     console.log('ALL GAMSES : '+games.length)
@@ -204,7 +195,7 @@ class Game {
 
                 index = Math.floor(Math.random() * this.list_of_images.length)
                 this.picket_picture_pc = this.list_of_images[index];
-                console.log("POKIAL HRA PC SELECTED PICTURE : ",this.picket_picture_pc , this.list_of_images.length);
+                // console.log("POKIAL HRA PC SELECTED PICTURE : ",this.picket_picture_pc , this.list_of_images.length);
 
                 // this.picket_picture_pc = this.list_of_images[Math.floor(Math.random() * this.list_of_images.length)];
                 games.push(this);
@@ -213,7 +204,7 @@ class Game {
         }else{
             let max_length = (this.list_of_images.length >= 30) ? 30 : 25;
             if (this.list_of_images.length < 25){
-                console.log("GAME HAS LESS IMAGES !!!");
+                // console.log("GAME HAS LESS IMAGES !!!");
                 max_length = this.list_of_images.length;
             }
             // console.log('MAX LENGTH : ',max_length);
@@ -233,7 +224,7 @@ class Game {
 
                 // this.picket_picture_pc = this.list_of_images[Math.floor(Math.random() * this.list_of_images.length)];
                 games.push(this);
-                console.log("POKIAL HRA MEDZI HRACMI  ??? KOLKO JE HIER : ",games.length);
+                // console.log("POKIAL HRA MEDZI HRACMI  ??? KOLKO JE HIER : ",games.length);
             }
             // return 'player';
         }
@@ -241,7 +232,7 @@ class Game {
     is_your_picture_question( massage ){
         if (massage.certain){
             this.ask_counter_player1 ++;
-            console.log('SG IS YOUR P CERTAIN ',this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop(), this.picket_picture_pc.image.split('/').pop(), massage.src.split('/').pop())
+            // console.log('SG IS YOUR P CERTAIN ',this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop(), this.picket_picture_pc.image.split('/').pop(), massage.src.split('/').pop())
             let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
             if (you_found_picture){
                 leave_game(this.id).then(r => console.log('deleted game id:'+this.id));

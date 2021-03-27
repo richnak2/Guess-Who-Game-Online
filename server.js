@@ -53,20 +53,18 @@ io.on('connection', socket => {
 
 
 
-    ///// CREATE GAME MANAGMET
+    ///// CREATE GAME MANAGMET : CGM
     socket.on('exist_dir',({dir_name})=>{
         socket.emit('exist_dir',{exist:look_folders(dir_name)});
     })
     socket.on('delete_game' , ({game_id,title,my_socket_id}) =>{
-        // delete dirs
         const get_current_user = getCurrentUser(my_socket_id);
-        // console.log('CURRENT USER ',get_current_user);
         if (get_current_user === undefined){
-            // console.log('Canot find user');
+            console.log("CGM : Something want wrong with user")
         }else{
-            delete_folder_r('public/images/'+title);
+            delete_folder_r('public/images/' + title).then(r  => console.log('CGM : Deleting folders'));
 
-            // delete game forom db
+            // delete game from db
             const db = dbService.getDbServiceInstance();
             const result = db.delete_game(game_id,get_current_user.id);
             result.then(data => { }).catch(err => console.log(err));
@@ -83,22 +81,24 @@ io.on('connection', socket => {
     //// PLAEYER MANAGMENT
 
     socket.on('user_join_as', () => {
-        // userJoin(socket.id,undefined,socket.id,undefined,0,'#00000000 def.png','#00000000 def.png');
         userJoin(socket.id,undefined,undefined,undefined,0,'#00000000 def.png','#00000000 def.png');
 
     });
 
     socket.on('login_as_user', ({name_value , password_value}) => {
         const db = dbService.getDbServiceInstance();
-        const result = db.find_user(name_value,password_value);
+        const result = db.find_user(name_value, password_value);
         result.then(data => {
-            if (data[0] !== undefined){
-                // console.log(data[0]['type_of_character'])
-                // console.log(decodeURI(data[0]['type_of_character']).split('?'))
-                userJoin(socket.id,data[0]['id'],data[0]['game_name'],data[0]['role'],data[0]['points'] ,data[0]['type_of_character'] ,data[0]['bought_characters']);
-                socket.emit('log_in',{massage:'You are logged in',time:10,type:'success'});
-            }else{
-                socket.emit('log_in',{massage:'<strong>User game name</strong> or <strong>password</strong> is wrong.',time:10,type:'warning',undefined});
+            if (data[0] !== undefined) {
+                userJoin(socket.id, data[0]['id'], data[0]['game_name'], data[0]['role'], data[0]['points'], data[0]['type_of_character'], data[0]['bought_characters']);
+                socket.emit('log_in', {massage: 'You are logged in', time: 10, type: 'success'});
+            } else {
+                socket.emit('log_in', {
+                    massage: '<strong>User game name</strong> or <strong>password</strong> is wrong.',
+                    time: 10,
+                    type: 'warning',
+                    undefined
+                });
             }
 
         }).catch(err => console.log(err));
@@ -122,10 +122,7 @@ io.on('connection', socket => {
     });
 
     socket.on('find_user', ({my_socket_id}) => {
-        // console.log('Im loocking for  ',my_socket_id );
-        // console.log('ALL users ',getAll());
         const get_current_user = getCurrentUser(my_socket_id);
-        // console.log('CURRENT USER ',get_current_user);
         if (get_current_user === undefined){
             socket.emit('is_user' , { allow_data : false   });
         }else{
@@ -145,83 +142,77 @@ io.on('connection', socket => {
 
 
 
-    // GAME
-
+    // GAME MENU: GM
+    // : GAG
     socket.on('get_all_games' , ({my_socket_id}) => {
-        // console.log('Getting all games')
         const get_current_user = getCurrentUser(my_socket_id);
         if (get_current_user === undefined){
-            // console.log('Canot find user');
+            console.log("GM-GAG : Something want wrong with user")
         }else{
             const db = dbService.getDbServiceInstance();
             const result = db.getAllGames(get_current_user.id);
             result.then(data => {
-                // let data_with_images = get_all_files_in_game(data,game.title);
-                socket.emit('get_all_games', {games : data});//data_with_images
+                socket.emit('get_all_games', {games : data});
             }).catch(err => console.log(err));
         }
 
 
     });
+    // ziskanie hrier aj v procese vivoja aplikacie iba userom ktori vytvorili dane hru
+    // : GAGBY
     socket.on('get_all_games_by_you' , ({my_socket_id}) => {
-        // console.log('Getting all games')
         const get_current_user = getCurrentUser(my_socket_id);
         if (get_current_user === undefined){
-            // console.log('Canot find user');
+            console.log("GM-GAGBY : Something want wrong with user")
         }else{
             const db = dbService.getDbServiceInstance();
             const result = db.getAllYourGames(get_current_user.id);
             result.then(data => {
-                // console.log('CHEM get_all_games_by_you ');
-                // let data_with_images = get_all_files_in_game(data,game.title);
-                socket.emit('get_all_games_by_you', {games : data});//data_with_images
+                socket.emit('get_all_games_by_you', {games : data});
             }).catch(err => console.log(err));
         }
-
-
     });
+    // SHOP : S
     socket.on('restart_character',({my_socket_id}) => {
         const player = setCharacter(my_socket_id,'bg-#00000000 def.png');
-        // db
         if (player.id !== undefined){
             const db = dbService.getDbServiceInstance();
-            const result = db.updateUserCharacter(player);
+            db.updateUserCharacter(player).then();
         }
     });
     socket.on('set_character_or_color',({my_socket_id,character_in_game}) => {
         const player = setCharacter(my_socket_id,character_in_game);
-        // db
         if (player.id !== undefined){
             const db = dbService.getDbServiceInstance();
-            const result = db.updateUserCharacter(player);
+            db.updateUserCharacter(player).then();
         }
     });
     socket.on('buy_character_or_color',({my_socket_id,item}) => {
         const player = buyCharacter(my_socket_id,item);
-        // db
         if (player.id !== undefined){
             const db = dbService.getDbServiceInstance();
-            const result = db.updateUserCharacter(player);
+            db.updateUserCharacter(player).then();
         }
     });
 
+
+    //GAME : G
+    // zmena udajou pre bezpecnost profilu hraca
+    function remove_player_identity(game){
+        game.picket_picture_pc = undefined;
+        game.player1.id_socket = undefined;
+        if (game.player2 !== undefined){
+            game.player2.id_socket = undefined;
+        }
+        return game
+    }
+    // IRG
     function is_ready_game(game_id){
-        // console.log('w8 for game')
         let game = is_existing_game(game_id);
         if (game){
-            let game_copy  = JSON.parse(JSON.stringify(game)); // Create Deep copy of object
-            // zmena udajou pre bezpecnost profilu
-            game_copy.picket_picture_pc = undefined;
-            game_copy.player1.id_socket = undefined;
-            if (game_copy.player2 !== undefined){
-                game_copy.player2.id_socket = undefined;
-            }
-
-            console.log('GAME HAS BEEEN OBTAINED')
+            let game_copy  = remove_player_identity(JSON.parse(JSON.stringify(game))); // Create Deep copy of object
+            console.log('IRG : ',game_id)
             socket.emit('obtain_game', {game:game_copy});
-
-
-            console.log('ALL GAMSE IN PROCES  OBTAIN GAME: ',all_games().length,);//all_games()
         }else{
             setTimeout(is_ready_game, 100 , game_id);
         }
@@ -229,24 +220,16 @@ io.on('connection', socket => {
     }
 
 
-
+    // LTGB
     socket.on('luck_to_game_buffer' , ({game_name,game_type,my_socket_id}) => {
         const player = getCurrentUser(my_socket_id);
         if (player === undefined){
-            console.log('LUCK FOR GAME PLAYER UNDEFINED ',my_socket_id);
+            console.log("G-LTGB : Something want wrong with user")
         }else {
-            // console.log('LUCK FOR GAME :',game_name, game_type, player,my_socket_id);
             search_for_free_game(game_name, game_type, player).then(answer => {
-                // console.log('ANSWER FOR GAME SUCCESS:',game_name, game_type, player,my_socket_id);
-                // socket.emit('game_buffer_answer', {answer: answer});
+
                 if (answer !== undefined){
-                    let game_copy  = JSON.parse(JSON.stringify(answer)); // Create Deep copy of object
-                    // zmena udajou pre bezpecnost profilu
-                    game_copy.picket_picture_pc = undefined;
-                    game_copy.player1.id_socket = undefined;
-                    if (game_copy.player2 !== undefined){
-                        game_copy.player2.id_socket = undefined;
-                    }
+                    let game_copy  = remove_player_identity(JSON.parse(JSON.stringify(game))); // Create Deep copy of object
                     socket.emit('game_buffer_answer', {answer: game_copy});
                 }else{
                     console.log('LUCK TO GAME ERRROR :',answer);
@@ -259,109 +242,79 @@ io.on('connection', socket => {
         }
     })
 
-
+    // : CSP
     socket.on('create_single_player' , ({game_name,game_type,game_id,my_socket_id}) => {
-
         const player = getCurrentUser(my_socket_id);
         if (player === undefined){
+            console.log("G-CSP : Something want wrong with user")
         }else {
             let game = is_existing_game(game_id);
             if (game){
-                // console.log(all_games().length);
-                // all_games().forEach(g => console.log(g.id))
-                console.log('ALL GAMSE IN PROCES create singlpayer : ',all_games().length,);//all_games()
                 socket.emit('obtain_game', {game:game});
             }else{
                 create_game(game_name,game_type,game_id,player);
                 is_ready_game(game_id);
-                // console.log('ALL GAMSE IN PROCES  : ',all_games().length),all_games();
             }
         }
     });
-
+    // : ASPG
     socket.on('ask_single_player_game',({game_id,massage}) =>{
         let game = is_existing_game(game_id);
-        // console.log('SINGEL ',game.player1);
-        // console.log('ask_single_player_game',game)
         if (game) {
             let is_you_picture = game.is_your_picture_question(massage);
-            if (massage.certain === true && is_you_picture === true){
-                // console.log('SINGEL PRESIEL ',game.player1.id_socket)
+            if (massage.certain === true && is_you_picture === true){ // spitanie sa na konkretni obrazok
                 addPoints(1000,game.player1.id_socket,game.ask_counter_player1)
                 if (game.player1.id !== undefined){
                     const db = dbService.getDbServiceInstance();
-                    const result = db.updateUserPoints(getCurrentUser(game.player1.id_socket));
-                    // result.then(data =>{
-                    //     socket.emit('answer_to_is_you_picture_pc', {answer: is_you_picture})
-                    // })
+                    db.updateUserPoints(getCurrentUser(game.player1.id_socket)).then();
                 }
 
             }
-            // console.log('ask_single_player_game', is_you_picture);
             socket.emit('answer_to_is_you_picture_pc', {answer: is_you_picture})
         }
     });
+    // : GCH
     socket.on('get_character',({my_socket_id}) => {
-
         const player = getCurrentUser(my_socket_id);
-        // console.log(player)
         if (player === undefined){
+            console.log("G-GCH : Something want wrong with user")
         }else {
-            // console.log('som tuuuu',player.bought_characters,)
-            // let bought_character = player.bought_characters;
             socket.emit('bought_characters',{bought_ch:player.bought_characters});
         }
     })
-    // socket.on('add_points', ({time_of_complete,my_socket_id,guess_count}) => {
-    //
-    //     const get_current_user = getCurrentUser(my_socket_id);
-    //     if (get_current_user !== undefined){
-    //         console.log(time_of_complete,my_socket_id,get_current_user);
-    //         let max_length_of_game = 10000;
-    //         let points = Math.ceil(((100/(time_of_complete / max_length_of_game))/100)/guess_count);
-    //
-    //         get_current_user['points'] += points;
-    //     }else{
-    //         console.log('Neviem pridat body');
-    //     }
-    //
-    // });
 
+    // spracovanie posielania sprav pre celu hru
+    // : BM
+    socket.on('broadcast_massage',({game_id,my_socket_id,massage}) =>{ // posli spravu na hru s id "game_id" od hraca "my_socket_id" a content == "massage"
+        // console.log(game_id,my_socket_id,massage)
+        let broadcast_massage = {}
 
-
-    socket.on('broadcast_massage',({game_id,my_socket_id,massage}) =>{
-        console.log(game_id,my_socket_id,massage)
         if (massage === 'block'){
-            // console.log('ANO POSLAL SOM BLOCK')
-
-            let broadcast_massage = {}
+            // zablokuj druhemu hracovi moznost klikania
             broadcast_massage.game_id = game_id;
             broadcast_massage.player_name = my_socket_id;
             broadcast_massage.massage = 'unlock_btn';
             socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
         }else if (massage === 'connected'){
-            // console.log('broadcast_massage',my_socket_id)
-            let broadcast_massage = {}
+            // pripojenie hraca do hry
             broadcast_massage.game_id = game_id;
             broadcast_massage.player_name = my_socket_id;
             broadcast_massage.massage = massage;
             socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
         }else if (massage === true || massage === false ){
-            // console.log('ODPOVED NA SERVERI ')
-            let broadcast_massage = {}
+            // otazka na ktora prichadza od hraca na server certain image pod tlacidlom guess
             let game = is_existing_game(game_id);
             let answer = game.answer_to_question(my_socket_id,massage);
-            // console.log('answer to certain : ',answer)
-            if (answer){ // 1000 bude asi parameter max game reword vivod do buducna
+            if (answer){ // pokial hrac odpovedat dal na otazku certain image 'button YES' v public/game.html
                 addPoints(1000,game.player1.id_socket,game.ask_counter_player1+(game.player1.id_socket === my_socket_id ? 10:0))
                 addPoints(1000,game.player2.id_socket,game.ask_counter_player2+(game.player1.id_socket === my_socket_id ? 0:10))
                 if (game.player1.id !== undefined){
                     const db = dbService.getDbServiceInstance();
-                    const result = db.updateUserPoints(getCurrentUser(game.player1.id_socket));
+                    db.updateUserPoints(getCurrentUser(game.player1.id_socket)).then();
                 }
                 if (game.player2.id !== undefined){
                     const db = dbService.getDbServiceInstance();
-                    const result = db.updateUserPoints(getCurrentUser(game.player2.id_socket));
+                    db.updateUserPoints(getCurrentUser(game.player2.id_socket)).then();
                 }
             }
             broadcast_massage.game_id = game_id;
@@ -369,51 +322,42 @@ io.on('connection', socket => {
             broadcast_massage.massage = massage;
             socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
         }else{
-            console.log('VYTVORENIE OTAZKY ',my_socket_id)
+            // vytvorenie obicajnej otazky
             let game = is_existing_game(game_id);
             if (game !== undefined){
                 game.add_question(my_socket_id,massage);
-                let broadcast_massage = {}
                 broadcast_massage.game_id = game_id;
                 broadcast_massage.player_name = my_socket_id;
                 broadcast_massage.massage = massage;
                 socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
-            }else{
-                console.log('game NO EXIST ',game_id)
             }
         }
-
     })
-
+    // : GL
     socket.on('leave_game',({game_id,my_socket_id}) => {
-        // console.log('LEFT GAME',game_id);
+        // odpojenie hraca s hry
         let game = is_existing_game(game_id);
-        let answer_if_game_is_multiplayer = leave_game(game_id)
-        // console.log(answer_if_game_is_multiplayer);
-        if (answer_if_game_is_multiplayer === 'inform_second_player' && game.player2 !== undefined){
-            if (game.player1.id_socket === my_socket_id){
-                addPoints(1000,game.player2.id_socket,10);
-            }else if (game.player2.id_socket === my_socket_id){
-                addPoints(1000,game.player1.id_socket,10);
-            }else{
-                console.log('ERROR LEFT GAME');
+        let answer_if_game_is_multiplayer = leave_game(game_id);
+        answer_if_game_is_multiplayer.then(data => {
+            if (data === 'inform_second_player' && game.player2 !== undefined){
+                // prididelenie bodou ak hrac nahle odide
+                if (game.player1.id_socket === my_socket_id){
+                    addPoints(1000,game.player2.id_socket,10);
+                }else if (game.player2.id_socket === my_socket_id){
+                    addPoints(1000,game.player1.id_socket,10);
+                }else{
+                    console.log('G-GL : error');
+                }
+                if (game.player1.id !== undefined){
+                    const db = dbService.getDbServiceInstance();
+                    db.updateUserPoints(getCurrentUser(game.player1.id_socket)).then();
+                }
+                if (game.player2.id !== undefined){
+                    const db = dbService.getDbServiceInstance();
+                    db.updateUserPoints(getCurrentUser(game.player2.id_socket)).then();
+                }
+                socket.broadcast.emit('opponent_left', {who_left:game_id});
             }
-            // add_points(1000,(game.player1.id_socket === my_socket_id ? game.player2.id_socket:game.player1.id_socket),10);
-            if (game.player1.id !== undefined){
-                const db = dbService.getDbServiceInstance();
-                const result = db.updateUserPoints(getCurrentUser(game.player1.id_socket));
-            }
-            if (game.player2.id !== undefined){
-                const db = dbService.getDbServiceInstance();
-                const result = db.updateUserPoints(getCurrentUser(game.player2.id_socket));
-            }
-            socket.broadcast.emit('opponent_left', {who_left:game_id});
-        }
-        // all_games().forEach(g => console.log(g.id))
-        console.log('ALL GAMSE IN PROCES  leave game : ',all_games().length,);//all_games()
-
+        })
     });
-
-
-
 });
