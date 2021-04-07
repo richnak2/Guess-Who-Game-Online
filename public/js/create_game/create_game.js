@@ -273,7 +273,7 @@ function make_form_data(){
 
 async function save_game() {
     let form_data_create_game = make_form_data();
-    console(form_data_create_game);
+    console.log(form_data_create_game);
     // if (form_data_create_game === undefined) {
     //     return create_exception('somthing wand wnog fith formating of request', 10, 'warning')
     // }
