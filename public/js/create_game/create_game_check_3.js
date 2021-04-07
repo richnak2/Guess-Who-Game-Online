@@ -430,7 +430,8 @@ function check_box_3(){
         create_exception('Not allowed operation something want wrong .',20,'warning');
         return ;
     }
-    display('save');
+    // display('save');
+    save_game();
 }
 
 function create_check_able_box(image,inner_text,already_created){

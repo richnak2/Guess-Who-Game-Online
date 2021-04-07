@@ -163,7 +163,8 @@ function display(witch){
         }
     }else if (witch === 'save'){
         if (status_of_game_check_1){
-            save_game();
+            check_box_3()
+
             // document.getElementById(witch).style.display = 'revert';
         }else{
             create_exception('Please check in this section <button class="btn btn-default bg-success "  onclick="display(\'check_3\')">descriptors</button>',10,'warning')
