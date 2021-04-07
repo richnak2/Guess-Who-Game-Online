@@ -2,13 +2,13 @@ const fs = require('fs');
 const dbService = require('./dbService');
 let games = [];
 
-function all_games(){
-    return games;
-}
+// function all_games(){
+//     return games;
+// }
 
 async function search_for_free_game(game_name,game_type,player){ // tuna asi chyba id hry pre zistenie komu patry hra
     for (let index_game = 0; index_game < games.length; index_game++) {
-        if (games[index_game].player1.id_socket === player.id_socket ){ //.id_socket
+        if (games[index_game].player1.id_socket === player.id_socket ){
             console.log('serach for game : Found New Created Game ');
             return games[index_game];
         }
@@ -59,13 +59,13 @@ async function leave_game(game_id){
         }
     }
 }
-function create_game(game,type,id,player1){
-    console.log('CREATING GAME : ',game,type,id)//,player1
-    new Game(game,type,id,player1);
+function create_game(game_name,type,id,player1){
+    console.log('CREATING GAME : ',game_name,type,id)
+    new Game(game_name,type,id,player1);
 }
 class Game {
-    constructor(game,type,id,player1) {
-        this.game_name = game;
+    constructor(game_name,type,id,player1) {
+        this.game_name = game_name;
         this.type = type;
         this.id = id;
         this.list_of_images = undefined;
@@ -209,11 +209,7 @@ class Game {
                 return massage
             }
         }
-        // else{
-        //     return massage
-        // }
     }
-
 }
 
-module.exports = {is_existing_game,create_game,all_games,search_for_free_game,leave_game,Game};
+module.exports = {is_existing_game,create_game,search_for_free_game,leave_game};

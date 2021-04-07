@@ -685,7 +685,6 @@ function play_again(){
     location.reload();
 }
 
-
 function make_id(length) {
     let result           = '';
     let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -695,6 +694,7 @@ function make_id(length) {
     }
     return result;
 }
+
 function hide(elem){
     if ((game_type === 'kid' || game_type === 'student') && document.getElementById('my_img_guessed_by_opponent').src.includes( '/images/question_mark.png')){
         document.getElementById('my_img_guessed_by_opponent').src = elem.childNodes[1].src;

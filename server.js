@@ -31,8 +31,8 @@ const {
 } = require('./utils/users');
 const {format_message} = require('./utils/messages');
 
-const {create_game,is_existing_game,all_games,search_for_free_game,leave_game,game} = require('./utils/game');
-const {look_folders,delete_folder_r,get_all_files_in_game,remove_dirs} = require('./utils/create_game');
+const {create_game,is_existing_game,search_for_free_game,leave_game} = require('./utils/game');
+const {look_folders,delete_folder_r} = require('./utils/create_game');
 //
 // const up = require('express-fileupload')
 //
@@ -217,7 +217,6 @@ io.on('connection', socket => {
         }else{
             setTimeout(is_ready_game, 100 , game_id);
         }
-
     }
 
     // LTGB
@@ -281,26 +280,15 @@ io.on('connection', socket => {
 
     // spracovanie posielania sprav pre celu hru
     // : BM
-    socket.on('broadcast_massage',({game_id,my_socket_id,massage}) =>{
-        // posli spravu na hru s id "game_id" od hraca "my_socket_id" a content == "massage"
+    socket.on('broadcast_massage',({game_id,my_socket_id,massage}) =>{// posli spravu na hru s id "game_id" od hraca "my_socket_id" a content == "massage"
         let broadcast_massage = {}
-
-        if (massage === 'block'){
-            // zablokuj druhemu hracovi moznost klikania
+        if (massage === 'block'){// zablokuj druhemu hracovi moznost klikania
             broadcast_massage = format_message(game_id,my_socket_id,'unlock_btn');
-            // broadcast_massage.game_id = game_id;
-            // broadcast_massage.player_name = my_socket_id;
-            // broadcast_massage.massage = 'unlock_btn';
             socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
-        }else if (massage === 'connected'){
-            // pripojenie hraca do hry
+        }else if (massage === 'connected'){// pripojenie hraca do hry
             broadcast_massage = format_message(game_id,my_socket_id,massage);
-            // broadcast_massage.game_id = game_id;
-            // broadcast_massage.player_name = my_socket_id;
-            // broadcast_massage.massage = massage;
             socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
-        }else if (massage === true || massage === false ){
-            // otazka na ktora prichadza od hraca na server certain image pod tlacidlom guess
+        }else if (massage === true || massage === false ){// otazka na ktora prichadza od hraca na server certain image pod tlacidlom guess
             let game = is_existing_game(game_id);
             let answer = game.answer_to_question(my_socket_id,massage);
             if (answer){ // pokial hrac odpovedat dal na otazku certain image 'button YES' v public/game.html
@@ -316,19 +304,12 @@ io.on('connection', socket => {
                 }
             }
             broadcast_massage = format_message(game_id,my_socket_id,massage);
-            // broadcast_massage.game_id = game_id;
-            // broadcast_massage.player_name = my_socket_id;
-            // broadcast_massage.massage = massage;
             socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
-        }else{
-            // vytvorenie obicajnej otazky
+        }else{// vytvorenie obicajnej otazky
             let game = is_existing_game(game_id);
             if (game !== undefined){
                 game.add_question(my_socket_id,massage);
                 broadcast_massage = format_message(game_id,my_socket_id,massage);
-                // broadcast_massage.game_id = game_id;
-                // broadcast_massage.player_name = my_socket_id;
-                // broadcast_massage.massage = massage;
                 socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
             }
         }

@@ -24,15 +24,12 @@ function check_current_user(id_user){
 
 function make_main_dir(main_img,old_path, new_path, path_is_renamed) {
     if (!fs.existsSync(new_path)){
-        console.log('Vytvaram novu zalozku : ',new_path)
         fs.mkdirSync(new_path);
     }
     if (path_is_renamed){
         if (main_img.mimetype.includes('image')){
-            console.log('NEW MAin img and path is renamed')
             main_img.mv(new_path+ '/default.png');
         }else{
-            console.log('NEW OLD MAin IMG')
             fs.copyFile(old_path+ "/default.png", new_path+ "/default.png",function (err) {
                 if (err){
                     if (err){
@@ -43,17 +40,9 @@ function make_main_dir(main_img,old_path, new_path, path_is_renamed) {
         }
     }else{
         if (main_img.mimetype.includes('image')){
-            console.log('NAhradazam iba hlavni obrazok ')
             main_img.mv(new_path+ '/default.png');
         }else{
-            console.log('Nova hra default obrazok',new_path + '/default.png')
             if (main_img.name === 'create_game.png') {
-                // fs.copyFile('./public/images/create_game.png', new_path + '/create_game.png', (err) => {
-                //     if (err) {
-                //         return {data: `Something is want wrong with main img file ${err}`, time_of_exception: 10, type_of_exception: 'danger'};
-                //     }
-                //     fs.renameSync(new_path + '/create_game.png', new_path + '/default.png');
-                // });
                 fs.copyFile('./public/images/create_game.png', new_path + '/default.png', (err) => {
                     if (err) {
                         return {data: `Something is want wrong with main img file ${err}`, time_of_exception: 10, type_of_exception: 'danger'};
@@ -63,6 +52,7 @@ function make_main_dir(main_img,old_path, new_path, path_is_renamed) {
     }
     return undefined;
 }
+
 function make_game_descriptors(id_of_game,description_img,description_type,description_question,old_path,new_path,path_is_renamed){
     const db = dbService.getDbServiceInstance();
     let result = undefined;
@@ -458,7 +448,7 @@ router.post('/upload_game', function(req, res) {
     }catch (e) {
         console.log('Hra zatial nema ziadne obrazky');
     }
-    console.log('toto su aktualne obrazky co sa pridavaju : ',game_img,game_img_descriptor,game_img_question)
+    console.log('toto su aktualne obrazky co sa pridavaju : ',game_img_descriptor,game_img_question)//,game_img
 
     let new_path_for_images = new_path+'/images';
     let old_path_for_images = old_path+'/images';

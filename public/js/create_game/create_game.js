@@ -270,6 +270,7 @@ function make_form_data(){
     }
     return form_data_create_game
 }
+
 async function save_game() {
     let form_data_create_game = make_form_data();
     if (form_data_create_game === undefined) {
@@ -301,7 +302,6 @@ async function save_game() {
             }).catch(err => console.log(err));
         console.log(response)
     }
-
 }
 
 function check_file_img(which,add_to_this_elem){
