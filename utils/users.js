@@ -38,7 +38,7 @@ class AllUsers {
   static async setCharacter(socket_id, variable_id_socket, character) {
     const index = this.all_clients.findIndex(user => user.id_socket === socket_id && user.variable_id_socket === variable_id_socket);
     if (index !== -1) {
-      return users[index].SetCharacter(character);
+      return this.all_clients[index].SetCharacter(character);
     }
   }
 
