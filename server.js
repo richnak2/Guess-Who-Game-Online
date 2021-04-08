@@ -143,6 +143,7 @@ io.on('connection', socket => {
     // menu.js related server error tag => M-GAG
     socket.on('get_all_games' , ({my_socket_id}) => {
         AllUsers.getAllGames(my_socket_id,my_socket_id).then(data => {
+            console.log('M-GAG : ' + data);
             if (data){
                 socket.emit('get_all_games' , {games : data});
             }else{

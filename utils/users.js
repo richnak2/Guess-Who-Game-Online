@@ -92,10 +92,12 @@ class AllUsers {
     if (current_user) {
       const result = db.getAllGames(current_user.id);
       result.then(data => {
-        console.log(data);
+
         if (data){
+          console.log(data);
           return data
         }else{
+          console.log('undefined '+data);
           return undefined
         }
       }).catch(err => {return new Error(err)});
