@@ -11,6 +11,7 @@ socket.emit('find_user' , {my_socket_id});
 
 
 socket.on('user' , (user_data) => {
+    console.log(user_data,JSON.parse(user_data))
     if (user_data){
         html_name.innerHTML = user_data.name;
         html_coins.innerHTML = user_data.points;

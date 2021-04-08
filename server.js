@@ -128,7 +128,7 @@ io.on('connection', socket => {
     socket.on('find_user', ({my_socket_id}) => {
         try{
             let user_data = AllUsers.getUser(my_socket_id,my_socket_id)
-            socket.emit('user' , user_data);
+            socket.emit('user' , {user_data : user_data});
         }catch (err) {
             console.log(`ALL-FU : ${err}`)
         }
@@ -149,7 +149,7 @@ io.on('connection', socket => {
             if (data){
                 socket.emit('get_all_games' , {games : data});
             }else{
-                console.log("M-GAG : Something want wrong with user")
+                console.log("M-GAG : Something want wrong with AllUsers.getAllGames")
             }
         }catch (err){
             console.log('M-GAG : '+err)
