@@ -69,11 +69,11 @@ class AllUsers {
         const result = db.registerUser(name,password,role);
         result.then(data => {
           return true;
-        }).catch(err => throw new Error(err));
+        }).catch(err => {return new Error(err)});
       }else{
         return false;
       }
-    }).catch(err => throw new Error(err));
+    }).catch(err => {return new Error(err)});
   }
 
   static async LogIn(name, password) {
@@ -86,7 +86,7 @@ class AllUsers {
         return false;
       }
 
-    }).catch(err => throw new Error(err));
+    }).catch(err => {return new Error(err)});
   }
 }
 class Users {
