@@ -90,7 +90,7 @@ io.on('connection', socket => {
     });
 
     socket.on('online', ({name_value , password_value}) => {
-        AllUsers.LogIn(name_value, password_value).then(result => {
+        AllUsers.LogIn(socket.id,name_value, password_value).then(result => {
             if (result){
                 socket.emit('log_answer', {
                     massage: format_error('You are logged in', 10, 'success')

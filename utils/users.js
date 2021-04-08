@@ -54,7 +54,7 @@ class AllUsers {
   }
 
   static async setCharacter(socket_id, variable_id_socket, character) {
-    let current_user = await this.getUser(my_socket_id, variable_id_socket);
+    let current_user = await this.getUser(socket_id, variable_id_socket);
     if (current_user) {
       current_user.setCharacter(character).then( updated_data =>{
         return updated_data;
@@ -64,7 +64,7 @@ class AllUsers {
     }
   }
   static async buyCharacter(socket_id,variable_id_socket, character_or_color) {
-    let current_user = await this.getUser(my_socket_id, variable_id_socket);
+    let current_user = await this.getUser(socket_id, variable_id_socket);
     if (current_user) {
       current_user.buyCharacterOrColor(character_or_color).then( updated_data => {
         return updated_data;
@@ -116,11 +116,11 @@ class AllUsers {
     }).catch(err => {return new Error(err)});
   }
 
-  static async LogIn(name, password) {
+  static async LogIn(socket_id, name, password) {
     const result = db.findUser(name, password);
     result.then(data => {
       if (data[0] !== undefined) {
-        this.push(socket.id, data[0]['id'], data[0]['game_name'], data[0]['role'], data[0]['points'], data[0]['type_of_character'], data[0]['bought_characters']);
+        this.push(socket_id, data[0]['id'], data[0]['game_name'], data[0]['role'], data[0]['points'], data[0]['type_of_character'], data[0]['bought_characters']);
         return true;
       }else {
         return false;
