@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // find all posible games for users
 socket.emit('get_all_games', {my_socket_id});
-socket.on('get_all_games' , (games) => {
+socket.on('get_all_games' , ({games}) => {
     console.log("GAMES   : " ,games, games.length);
     for (let index_game = 0 ;index_game < games.length; index_game++){
         create_html_games(games[index_game]);
