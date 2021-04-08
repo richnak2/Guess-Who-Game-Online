@@ -30,7 +30,7 @@ class AllUsers {
     let str = '';
     for (let index = 0; index < this.all_clients.length; index++) {
       str += `NUMBER : ${index}\n`;
-      str += `${await this.all_clients[index].ToString()}\n`;
+      str += `${await this.all_clients[index].toString()}\n`;
     }
     return str;
   }
@@ -55,23 +55,46 @@ class AllUsers {
 
   static async setCharacter(socket_id, variable_id_socket, character) {
     let current_user = await this.getUser(my_socket_id, variable_id_socket);
-    if (current_user !== -1) {
-      current_user.setCharacter(character).then(data =>{
-        return data;
+    if (current_user) {
+      current_user.setCharacter(character).then( updated_data =>{
+        return updated_data;
       })
     }else{
-      console.log("AllUsers.UserLeave not existing user")
+      console.log("AllUsers.setCharacter not existing user")
+    }
+  }
+  static async buyCharacter(socket_id,variable_id_socket, character_or_color) {
+    let current_user = await this.getUser(my_socket_id, variable_id_socket);
+    if (current_user) {
+      current_user.buyCharacterOrColor(character_or_color).then( updated_data => {
+        return updated_data;
+      }).catch(err => {return new Error(err)});
     }
   }
 
   static async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
     let current_user = await this.getUser(my_socket_id, variable_id_socket);
-    if (current_user !== -1) {
-      current_user.AddPoints(Math.ceil(500 / guess_count)).then(data =>{
-        return data;
+    if (current_user) {
+      current_user.AddPoints(Math.ceil(500 / guess_count)).then( updated_data =>{
+        return updated_data;
       })
     }else{
-      console.log("AllUsers.UserLeave not existing user")
+      console.log("AllUsers.addPoints not existing user")
+    }
+  }
+  static async getAllGames(my_socket_id, variable_id_socket){
+    let current_user = await this.getUser(my_socket_id, variable_id_socket);
+    if (current_user) {
+      const result = db.getAllGames(current_user.id);
+      result.then(data => {
+        if (data){
+          return data
+        }else{
+          return undefined
+        }
+      }).catch(err => {return new Error(err)});
+    }else{
+      console.log("AllUsers.getAllGames not existing user")
     }
   }
 
@@ -102,7 +125,6 @@ class AllUsers {
       }else {
         return false;
       }
-
     }).catch(err => {return new Error(err)});
   }
 }
@@ -119,7 +141,7 @@ class Users {
     this.character= character
     this.bought_characters = bought_characters
   }
-  async ToString(){
+  toString(){
     return `SOCKET ID : ${this.id_socket}\nID : ${this.id}\nGAME : ${this.game_name}\nROLE : ${this.role}\nPOINTS : ${this.points}\n`
   }
   getUserData(){
@@ -140,10 +162,31 @@ class Users {
   }
 
 
-  AddPoints(points) {
+  addPoints(points) {
     this.points += points;
     return this.getUserData()
   }
+  buyCharacterOrColor(character_or_color) {
+    if (character_or_color.charAt(0) === '#'){ // color
+      const index_color = color_pallet.findIndex(color => color[0] === character_or_color);
+      if (index_color !== -1) {
+
+        if (this.points >= color_pallet[index_color][1] ){
+          this.points -= color_pallet[index_color][1];
+        }
+      }else{
+        return new Error('Color was not found');
+      }
+    }else{ // character
+      let price = parseInt(character_or_color.split('.')[0])*100;
+      if (this.points >= price  ){
+        this.points -= price;
+      }
+    }
+    this.bought_characters += ' '+character_or_color;
+    return this.getUserData()
+  }
+
 
 
 }

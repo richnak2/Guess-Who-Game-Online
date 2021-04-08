@@ -99,7 +99,7 @@ io.on('connection', socket => {
             socket.emit('log_answer', {
                 massage: format_error('<strong>User game name</strong> or <strong>password</strong> is wrong.', 10, 'warning')
             });
-        }) ;
+        }).catch(err => console.log(err));
     });
 
 
@@ -112,12 +112,12 @@ io.on('connection', socket => {
             }else{
                 socket.emit('register_new_user', {
                     massage: format_error(`Thanks for registration <strong>${name_value}</strong> now please log in and enjoy the games`, 10, 'success')
-                })
+                });
             }
         }).catch(err => {
             socket.emit('register_new_user', {
                 massage: format_error(`Something want wrong ${err}`, 30, 'danger')
-            })
+            });
         });
     });
 
@@ -130,7 +130,7 @@ io.on('connection', socket => {
                 let user_data = undefined
                 socket.emit('user' , user_data);
             }
-        });
+        }).catch(err => console.log(err));
     });
 
 
@@ -140,24 +140,20 @@ io.on('connection', socket => {
 
 
 
-    // GAME MENU: GM
-    // : GAG
+    // menu.js related server error tag => M-GAG
     socket.on('get_all_games' , ({my_socket_id}) => {
-        const get_current_user = getCurrentUser(my_socket_id);
-        if (get_current_user === undefined){
-            console.log("GM-GAG : Something want wrong with user")
-        }else{
-            const db = dbService.getDbServiceInstance();
-            const result = db.getAllGames(get_current_user.id);
-            result.then(data => {
-                socket.emit('get_all_games', {games : data});
-            }).catch(err => console.log(err));
-        }
+        AllUsers.getAllGames(my_socket_id,my_socket_id).then(data => {
+            if (data){
+                socket.emit('get_all_games' , {games : data});
+            }else{
+                console.log("GM-GAG : Something want wrong with user")
+            }
+        }).catch(err => console.log('M-GAG : '+err));
 
 
     });
     // ziskanie hrier aj v procese vivoja aplikacie iba userom ktori vytvorili dane hru
-    // : GAGBY
+    // GAME MENU server error tag => GM : GAGBY
     socket.on('get_all_games_by_you' , ({my_socket_id}) => {
         const get_current_user = getCurrentUser(my_socket_id);
         if (get_current_user === undefined){
