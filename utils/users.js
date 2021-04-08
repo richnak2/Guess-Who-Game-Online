@@ -144,7 +144,7 @@ class Users {
   constructor(id_socket , id, game_name, role , points , character , bought_characters) {
     this.id_socket = id_socket
     this.variable_id_socket = id_socket
-    this.id = (id===undefined) ? 0 : id
+    this.id = id
     this.game_name = (game_name === undefined ? user_names[Math.floor(Math.random() * user_names.length)] : game_name)
     this.role = role
     this.points = points
