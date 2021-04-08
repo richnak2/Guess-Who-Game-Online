@@ -1,8 +1,5 @@
-const create_elements = document.getElementsByClassName('create');
 const sessionStorage = window.sessionStorage;
-
 const socket = io();
-
 
 document.addEventListener('DOMContentLoaded', function () {
     html_alert = document.getElementById('alert');
@@ -13,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-socket.on('log_in' , ({massage,time,type}) => {
+socket.on('log_answer' , ({massage,time,type}) => {
     if (type === 'success'){
         sessionStorage.setItem("socket_id",socket.id);
         sessionStorage.setItem('game_id','');
@@ -23,39 +20,29 @@ socket.on('log_in' , ({massage,time,type}) => {
     }
 });
 
-socket.on('new_registration' , ({massage,time,type}) => {
-    if (type === 'success'){
-        create_exception(massage,time,type);
+socket.on('register_new_user' , (massage) => {
+    if (massage.type === 'success'){
+        create_exception(massage.massage,massage.time,massage.type);
         show_log_in('none');
     }else{
-        create_exception(massage,time,type);
+        create_exception(massage.massage,massage.time,massage.type);
     }
 });
-function open_game(){
-    socket.emit('user_join_as');
+function open_game_offline_profile(){
+    socket.emit('offline');
     sessionStorage.setItem("socket_id",socket.id);
     sessionStorage.setItem('game_id','');
-    location.assign('menu.html');//socket_id='+socket.id
+    location.assign('menu.html');
 }
-function log_in(){
+function open_game_online_profile(){
     let name = document.getElementById('name');
     let password = document.getElementById('password');
     let name_value = name.value;
     let password_value = password.value;
     if (name_value !== "" && password_value !== "") {
-        socket.emit('login_as_user', {name_value, password_value});
+        socket.emit('online', {name_value, password_value});
     }else{
-        create_exception('Please fill empty fields',10,'warning');
-        if (name_value === "" ){
-            name.style.border = " 2px solid #fff3cd";
-        }else{
-            name.style.border = " 1px solid #ced4da";
-        }
-        if (password_value === ""){
-            password.style.border = " 2px solid #fff3cd";
-        }else{
-            password.style.border = " 1px solid #ced4da";
-        }
+        make_error_massage([name,password])
     }
 }
 function create_user(){
@@ -84,21 +71,16 @@ function create_user(){
         }
 
     }else{
+        make_error_massage([name,password,repeat_password])
+    }
+}
+function make_error_massage(problems){
+    for (let problem_index = 0; problem_index < problems.length; problem_index++) {
         create_exception('Please fill empty fields',10,'warning');
-        if (name_value === "" ){
-            name.style.border = " 2px solid #fff3cd";
+        if (problems[problem_index].value === "" ){
+            problems[problem_index].style.border = " 2px solid #fff3cd";
         }else{
-            name.style.border = " 1px solid #ced4da";
-        }
-        if (password_value === ""){
-            password.style.border = " 2px solid #fff3cd";
-        }else{
-            password.style.border = " 1px solid #ced4da";
-        }
-        if (repeat_password_value === ""){
-            repeat_password.style.border = " 2px solid #fff3cd";
-        }else{
-            repeat_password.style.border = " 1px solid #ced4da";
+            problems[problem_index].style.border = " 1px solid #ced4da";
         }
     }
 }
@@ -112,19 +94,8 @@ function show_log_in(witch){
         document.getElementById('login').style.display = 'revert';
         document.getElementById('main').style.display = 'none';
     }
-
-    // for (let elem = 0 ; elem < create_elements.length; elem ++){
-    //     create_elements[elem].style.display = witch;
-    // }
-    //
-    // document.getElementById('log_in').style.display = 'revert';
-    // if (witch === 'none'){
-    //     document.getElementById('sign').style.display = 'revert';
-    // }else{
-    //     document.getElementById('sign').style.display = 'none';
-    // }
-    // document.getElementById('main').style.display = 'none';
 }
+
 function back_to_main(){
     document.getElementById('login').style.display = 'none';
     document.getElementById('register').style.display = 'none';

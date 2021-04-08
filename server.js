@@ -27,12 +27,16 @@ const {
     buyCharacter,
     getAll,
     userLeave,
-    addPoints
+    addPoints,
+    AllUsers,
+    Users
 } = require('./utils/users');
-const {format_message} = require('./utils/messages');
+const {format_message,format_error} = require('./utils/messages');
 
 const {create_game,is_existing_game,search_for_free_game,leave_game} = require('./utils/game');
 const {look_folders,delete_folder_r} = require('./utils/create_game');
+// const {DbService} = require('./utils/dbService')
+// DbService.getDbServiceInstance()
 //
 // const up = require('express-fileupload')
 //
@@ -67,7 +71,7 @@ io.on('connection', socket => {
 
             // delete game from db
             const db = dbService.getDbServiceInstance();
-            const result = db.delete_game(game_id,get_current_user.id);
+            const result = db.deleteGame(game_id,get_current_user.id);
             result.then(data => { }).catch(err => console.log(err));
         }
 
@@ -81,44 +85,43 @@ io.on('connection', socket => {
 
     //// PLAEYER MANAGMENT
 
-    socket.on('user_join_as', () => {
-        userJoin(socket.id,undefined,undefined,undefined,0,'#00000000 def.png','#00000000 def.png');
-
+    socket.on('offline', () => {
+        AllUsers.push(socket.id, undefined, undefined, undefined, 0, '#00000000 def.png', '#00000000 def.png');
     });
 
-    socket.on('login_as_user', ({name_value , password_value}) => {
-        const db = dbService.getDbServiceInstance();
-        const result = db.find_user(name_value, password_value);
-        result.then(data => {
-            if (data[0] !== undefined) {
-                userJoin(socket.id, data[0]['id'], data[0]['game_name'], data[0]['role'], data[0]['points'], data[0]['type_of_character'], data[0]['bought_characters']);
-                socket.emit('log_in', {massage: 'You are logged in', time: 10, type: 'success'});
-            } else {
-                socket.emit('log_in', {
-                    massage: '<strong>User game name</strong> or <strong>password</strong> is wrong.',
+    socket.on('online', ({name_value , password_value}) => {
+        AllUsers.LogIn(name_value, password_value).then(result => {
+            if (result){
+                socket.emit('log_answer', {
+                    massage: 'You are logged in',
                     time: 10,
-                    type: 'warning',
-                    undefined
+                    type: 'success'
                 });
             }
-
-        }).catch(err => console.log(err));
+            socket.emit('log_answer', {
+                massage: '<strong>User game name</strong> or <strong>password</strong> is wrong.',
+                time: 10,
+                type: 'warning',
+            });
+        }) ;
     });
 
 
     socket.on('register_new_user' , ({name_value, password_value,role_value}) => {
-        const db = dbService.getDbServiceInstance();
-        const exist = db.exist_user(name_value);
-        exist.then(data => {
-            if (data){
-                const result = db.register_user(name_value,password_value,role_value);
-                result.then(data => {
-                        socket.emit('new_registration',{massage:'Thanks for registration <strong>'+name_value+'</strong> now please log in and enjoy the games',time:10,type:'success'} )})
-                    .catch(err => {
-                        socket.emit('new_registration',{massage:err,time:10,type:'warning'} )});
+        AllUsers.RegisterNewUser(name_value, password_value,role_value).then(result => {
+            if (result) {
+                socket.emit('register_new_user', {
+                    massage: format_error('User with this name already exist', 10, 'warning')
+                });
             }else{
-                socket.emit('new_registration',{massage:'User with this name already exist',time:10,type:'warning'} );
+                socket.emit('register_new_user', {
+                    massage: format_error(`Thanks for registration <strong>${name_value}</strong> now please log in and enjoy the games`, 10, 'success')
+                })
             }
+        }).catch(err => {
+            socket.emit('register_new_user', {
+                massage: format_error(`Something want wrong ${err}`, 30, 'danger')
+            })
         });
     });
 

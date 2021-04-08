@@ -9,6 +9,7 @@ const db_config  = {
     database : 'heroku_3f4e76140d45542',
     port     : 3306
 };
+
 let connection;
 function handleDisconnect() {
     connection = mysql.createConnection(db_config); // Recreate the connection, since
@@ -36,12 +37,7 @@ function handleDisconnect() {
 }
 
 handleDisconnect();
-// connection.connect((err) => {
-//     if (err) {
-//         console.log(err.message);
-//     }
-//     console.log('db ' + connection.state + ' id '+connection.threadId);
-// });
+
 
 
 class DbService {
@@ -147,7 +143,7 @@ class DbService {
 
     // remove existing game
 
-    async delete_game(game_id,user_id) {
+    async deleteGame(game_id, user_id) {
         try {
             await new Promise((resolve, reject) => {
                 const query = "DELETE FROM games where id = ? and owner_id = ?;";
@@ -179,50 +175,6 @@ class DbService {
         }
     }
 
-
-
-
-
-    // update existing game
-
-    // async getAllData() {
-    //     try {
-    //         const response = await new Promise((resolve, reject) => {
-    //             const query = "SELECT * FROM users;";
-    //
-    //             connection.query(query, (err, results) => {
-    //                 if (err) reject(new Error(err.message));
-    //                 resolve(results);
-    //             })
-    //         });
-    //         // console.log(response);
-    //         return response;
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
-
-    // async insertNewName(name) {
-    //     try {
-    //         const dateAdded = new Date();
-    //         const insertId = await new Promise((resolve, reject) => {
-    //             const query = "INSERT INTO names (name, date_added) VALUES (?,?);";
-    //
-    //             connection.query(query, [name, dateAdded] , (err, result) => {
-    //                 if (err) reject(new Error(err.message));
-    //                 resolve(result.insertId);
-    //             })
-    //         });
-    //         return {
-    //             id : insertId,
-    //             name : name,
-    //             dateAdded : dateAdded
-    //         };
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
     async getGameId(game_name){
         try {
             // console.log("GAMESSSs : ",response);
@@ -367,45 +319,7 @@ class DbService {
         }
     }
 
-    // async deleteRowById(id) {
-    //     try {
-    //         id = parseInt(id, 10);
-    //         const response = await new Promise((resolve, reject) => {
-    //             const query = "DELETE FROM names WHERE id = ?";
-    //
-    //             connection.query(query, [id] , (err, result) => {
-    //                 if (err) reject(new Error(err.message));
-    //                 resolve(result.affectedRows);
-    //             })
-    //         });
-    //
-    //         return response === 1 ? true : false;
-    //     } catch (error) {
-    //         console.log(error);
-    //         return false;
-    //     }
-    // }
-
-    // async updateNameById(id, name) {
-    //     try {
-    //         id = parseInt(id, 10);
-    //         const response = await new Promise((resolve, reject) => {
-    //             const query = "UPDATE names SET name = ? WHERE id = ?";
-    //
-    //             connection.query(query, [name, id] , (err, result) => {
-    //                 if (err) reject(new Error(err.message));
-    //                 resolve(result.affectedRows);
-    //             })
-    //         });
-    //
-    //         return response === 1 ? true : false;
-    //     } catch (error) {
-    //         console.log(error);
-    //         return false;
-    //     }
-    // }
-
-    async find_user(name,password) {
+    async findUser(name, password) {
         try {
             console.log("DB LOGIN : ",name,password);
             // console.log("FIND USER DB : ",response);
@@ -421,7 +335,7 @@ class DbService {
             return new Error(error);
         }
     }
-    async exist_user(name) {
+    async userExist(name) {
         try {
             const response = await new Promise((resolve, reject) => {
                 const query = "SELECT * FROM users WHERE game_name = ? ;";
@@ -437,7 +351,7 @@ class DbService {
             return new Error(error);
         }
     }
-    async register_user(name,password,role) {
+    async registerUser(name, password, role) {
         console.log(name,password,role);
         try {
             // console.log('RESPONSE OF REGISTER ',response);
