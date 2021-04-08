@@ -29,9 +29,7 @@ class AllUsers {
       str += `NUMBER : ${index}\n`;
       str += `${await this.all_clients[index].ToString()}\n`;
     }
-
-
-    return this.all_clients.length;
+    return str;
   }
 
 }
