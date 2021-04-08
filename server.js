@@ -127,8 +127,8 @@ io.on('connection', socket => {
     // all related server error tag => ALL-FU
     socket.on('find_user', ({my_socket_id}) => {
         try{
-            let data = AllUsers.getUser(my_socket_id,my_socket_id)
-            socket.emit('user' , data);
+            let user_data = AllUsers.getUser(my_socket_id,my_socket_id)
+            socket.emit('user' , user_data);
         }catch (err) {
             console.log(`ALL-FU : ${err}`)
         }
@@ -146,7 +146,6 @@ io.on('connection', socket => {
     socket.on('get_all_games' , ({my_socket_id}) => {
         try{
             let data = AllUsers.getAllGames(my_socket_id,my_socket_id)
-            console.log('M-GAG : ' + data);
             if (data){
                 socket.emit('get_all_games' , {games : data});
             }else{

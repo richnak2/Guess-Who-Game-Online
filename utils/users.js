@@ -166,14 +166,14 @@ class Users {
 
   getUserData(){
     return {
-      id_socket : this.id_socket,
-      id : this.id,
-      variable_id_socket : this.variable_id_socket,
-      game_name : this.game_name,
-      role : this.role,
-      points : this.points,
-      character : this.character,
-      bought_characters : this.bought_characters,
+      'id_socket' : this.id_socket,
+      'id' : this.id,
+      'variable_id_socket' : this.variable_id_socket,
+      'game_name' : this.game_name,
+      'role' : this.role,
+      'points' : this.points,
+      'character' : this.character,
+      'bought_characters' : this.bought_characters
     }
   }
   setCharacter( character) {
