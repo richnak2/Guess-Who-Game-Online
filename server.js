@@ -102,7 +102,7 @@ io.on('connection', socket => {
             });
         }catch(err){
             console.log(`L-O : ${err}`)
-        };
+        }
     });
 
 
