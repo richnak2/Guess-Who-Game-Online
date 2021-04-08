@@ -49,7 +49,7 @@ class AllUsers {
   }
 
   static async getUser(socket_id, variable_id_socket){
-    return this.all_clients[this.all_clients.findIndex(user => (user.id_socket === socket_id && user.variable_id_socket === variable_id_socket))];
+    return this.all_clients[await this.getUserIndex(socket_id, variable_id_socket)].getUserData();
   }
 
 
@@ -87,24 +87,24 @@ class AllUsers {
   }
 
   static async getAllGames(my_socket_id, variable_id_socket){
-    let current_user = await this.getUser(my_socket_id, variable_id_socket).then(user => user.getUserData());
-    // console.log(current_user.getUserData())
-    if (current_user) {
-      const result = db.getAllGames(current_user.id);
-      result.then(data => {
+    this.getUser(my_socket_id, variable_id_socket).then(current_user => {
+      if (current_user) {
+        const result = db.getAllGames(current_user.id);
+        result.then(data => {
 
-        if (data){
-          console.log(data);
-          return data
-        }else{
-          console.log('undefined '+data);
-          return undefined
-        }
-      }).catch(err => {return new Error(err)});
-    }else{
-      console.log("AllUsers.getAllGames not existing user")
-      return undefined
-    }
+          if (data){
+            console.log(data);
+            return data
+          }else{
+            console.log('undefined '+data);
+            return undefined
+          }
+        }).catch(err => {return new Error(err)});
+      }else{
+        console.log("AllUsers.getAllGames not existing user")
+        return undefined
+      }
+    });
   }
 
   static async RegisterNewUser(name,password,role){
