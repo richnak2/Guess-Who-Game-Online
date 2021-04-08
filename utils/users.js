@@ -87,11 +87,12 @@ class AllUsers {
   }
 
   static async getAllGames(my_socket_id, variable_id_socket){
-    let current_user = await this.getUser(my_socket_id, variable_id_socket);
-    console.log(current_user.getUserData())
+    let current_user = await this.getUser(my_socket_id, variable_id_socket).then(user => user.getUserData());
+    // console.log(current_user.getUserData())
     if (current_user) {
       const result = db.getAllGames(current_user.id);
       result.then(data => {
+        console.log(data);
         if (data){
           return data
         }else{
