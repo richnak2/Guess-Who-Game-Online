@@ -10,13 +10,13 @@ socket.emit('find_user' , {my_socket_id});
 
 
 
-socket.on('is_user' , ({ allow_data , name , role , points , character , socket }) => {
-    if (allow_data){
-        html_name.innerHTML = name;
-        html_coins.innerHTML = points;
-        character_in_game = character;
+socket.on('user' , (user_data) => {
+    if (user_data){
+        html_name.innerHTML = user_data.name;
+        html_coins.innerHTML = user_data.points;
+        character_in_game = user_data.character;
         // console.log(character_in_game);
-        if (role === "Teacher"){
+        if (user_data.role === "Teacher"){
             if (document.getElementById('for_teacher')){
                 document.getElementById('for_teacher').style.display = 'revert';
             }

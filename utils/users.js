@@ -35,40 +35,57 @@ class AllUsers {
     return str;
   }
 
-  static async setCharacter(socket_id, variable_id_socket, character) {
-    const index = this.all_clients.findIndex(user => user.id_socket === socket_id && user.variable_id_socket === variable_id_socket);
-    if (index !== -1) {
-      return this.all_clients[index].SetCharacter(character);
-    }
-  }
 
   static async  UserLeave(socket_id, variable_id_socket) {
-    const index = users.findIndex(user => user.id_socket === socket_id && user.variable_id_socket === variable_id_socket);
+    const index = await this.getUserIndex(socket_id, variable_id_socket);
     if (index !== -1) {
       return this.all_clients.splice(index, 1)[0];
+    }else{
+      console.log("AllUsers.UserLeave not existing user")
     }
   }
 
-  static async getCurrentUser(socket_id,variable_id_socket){
+  static async getUserIndex(socket_id, variable_id_socket){
     return this.all_clients.findIndex(user => user.id_socket === socket_id && user.variable_id_socket === variable_id_socket);
   }
 
-  static async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
-    const current_user_index = await this.GetCurrentUser(my_socket_id, variable_id_socket);
-    if (current_user_index !== -1) {
-      await this.all_clients[current_user_index].AddPoints(Math.ceil(500 / guess_count)).then(data =>{
+  static async getUser(socket_id, variable_id_socket){
+    return this.all_clients[this.all_clients.findIndex(user => user.id_socket === socket_id && user.variable_id_socket === variable_id_socket)];
+  }
+
+  static async setCharacter(socket_id, variable_id_socket, character) {
+    let current_user = await this.getUser(my_socket_id, variable_id_socket);
+    if (current_user !== -1) {
+      current_user.setCharacter(character).then(data =>{
         return data;
       })
-
+    }else{
+      console.log("AllUsers.UserLeave not existing user")
     }
   }
+
+  static async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
+    let current_user = await this.getUser(my_socket_id, variable_id_socket);
+    if (current_user !== -1) {
+      current_user.AddPoints(Math.ceil(500 / guess_count)).then(data =>{
+        return data;
+      })
+    }else{
+      console.log("AllUsers.UserLeave not existing user")
+    }
+  }
+
   static async RegisterNewUser(name,password,role){
     const exist = db.userExist(name);
     exist.then(data => {
       if (data){
         const result = db.registerUser(name,password,role);
         result.then(data => {
-          return true;
+          if (data){
+            return true;
+          }else {
+            return false;
+          }
         }).catch(err => {return new Error(err)});
       }else{
         return false;
@@ -82,13 +99,15 @@ class AllUsers {
       if (data[0] !== undefined) {
         this.push(socket.id, data[0]['id'], data[0]['game_name'], data[0]['role'], data[0]['points'], data[0]['type_of_character'], data[0]['bought_characters']);
         return true;
-      } else {
+      }else {
         return false;
       }
 
     }).catch(err => {return new Error(err)});
   }
 }
+
+
 class Users {
   constructor(id_socket , id, game_name, role , points , character , bought_characters) {
     this.id_socket = id_socket
@@ -103,7 +122,7 @@ class Users {
   async ToString(){
     return `SOCKET ID : ${this.id_socket}\nID : ${this.id}\nGAME : ${this.game_name}\nROLE : ${this.role}\nPOINTS : ${this.points}\n`
   }
-  async GetUserData(){
+  getUserData(){
     return {
       id_socket : this.id_socket,
       id : this.id,
@@ -115,15 +134,15 @@ class Users {
       bought_characters : this.bought_characters,
     }
   }
-  SetCharacter( character) {
+  setCharacter( character) {
     this.character = character;
-    return this.GetUserData()
+    return this.getUserData()
   }
 
 
   AddPoints(points) {
     this.points += points;
-    return this.GetUserData()
+    return this.getUserData()
   }
 
 

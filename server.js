@@ -93,15 +93,11 @@ io.on('connection', socket => {
         AllUsers.LogIn(name_value, password_value).then(result => {
             if (result){
                 socket.emit('log_answer', {
-                    massage: 'You are logged in',
-                    time: 10,
-                    type: 'success'
+                    massage: format_error('You are logged in', 10, 'success')
                 });
             }
             socket.emit('log_answer', {
-                massage: '<strong>User game name</strong> or <strong>password</strong> is wrong.',
-                time: 10,
-                type: 'warning',
+                massage: format_error('<strong>User game name</strong> or <strong>password</strong> is wrong.', 10, 'warning')
             });
         }) ;
     });
@@ -126,20 +122,18 @@ io.on('connection', socket => {
     });
 
     socket.on('find_user', ({my_socket_id}) => {
-        const get_current_user = getCurrentUser(my_socket_id);
-        if (get_current_user === undefined){
-            socket.emit('is_user' , { allow_data : false   });
-        }else{
-            socket.emit('is_user' , {
-                allow_data : true,
-                name : get_current_user.game_name,
-                role : get_current_user.role,
-                points : get_current_user.points,
-                character : get_current_user.character,
-                socket : get_current_user.id_socket
-            });
-        }
+        AllUsers.getUser(my_socket_id,my_socket_id).then(data => {
+            if (data){
+                let user_data = data.getUserData();
+                socket.emit('user' , user_data);
+            }else{
+                let user_data = undefined
+                socket.emit('user' , user_data);
+            }
+        });
     });
+
+
     socket.on('remove_player_from_connection',({my_socket_id}) =>{
         userLeave(my_socket_id);
     })
