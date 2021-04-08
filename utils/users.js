@@ -45,15 +45,16 @@ class AllUsers {
   }
 
   static getUserIndex(socket_id, variable_id_socket){
-    return this.all_clients.findIndex(user => user.id_socket === socket_id && user.variable_id_socket === variable_id_socket);
+    return this.all_clients.findIndex(user => user.isCorrectOne(socket_id, variable_id_socket));
   }
 
   static getUser(socket_id, variable_id_socket){
     let user = this.all_clients[ this.getUserIndex(socket_id, variable_id_socket)];
     if (user){
       return user.getUserData()
+    }else{
+      return new Error('AllUsers.getUser');
     }
-    return new Error('AllUsers.getUser');
   }
 
 
@@ -91,24 +92,22 @@ class AllUsers {
   }
 
   static getAllGames(my_socket_id, variable_id_socket){
-    this.getUser(my_socket_id, variable_id_socket).then(current_user => {
-      if (current_user) {
-        const result = db.getAllGames(current_user.id);
-        result.then(data => {
-
-          if (data){
-            console.log(data);
-            return data
-          }else{
-            console.log('undefined '+data);
-            return undefined
-          }
-        }).catch(err => {return new Error(err)});
-      }else{
-        console.log("AllUsers.getAllGames not existing user")
-        return undefined
-      }
-    });
+    let current_user = this.getUser(my_socket_id, variable_id_socket)
+    if (current_user) {
+      const result = db.getAllGames(current_user.id);
+      result.then(data => {
+        if (data){
+          console.log(data);
+          return data
+        }else{
+          console.log('undefined '+data);
+          return undefined
+        }
+      }).catch(err => {return new Error(err)});
+    }else{
+      console.log("AllUsers.getAllGames not existing user")
+      return undefined
+    }
   }
 
   static RegisterNewUser(name,password,role){
@@ -155,6 +154,16 @@ class Users {
   toString(){
     return `SOCKET ID : ${this.id_socket}\nID : ${this.id}\nGAME : ${this.game_name}\nROLE : ${this.role}\nPOINTS : ${this.points}\n`
   }
+
+  isCorrectOne(id_socket,variable_id_socket){
+    if (this.id_socket === id_socket ){
+      this.variable_id_socket = variable_id_socket
+      return true
+    }else{
+      return false
+    }
+  }
+
   getUserData(){
     return {
       id_socket : this.id_socket,
