@@ -124,8 +124,7 @@ io.on('connection', socket => {
     socket.on('find_user', ({my_socket_id}) => {
         AllUsers.getUser(my_socket_id,my_socket_id).then(data => {
             if (data){
-                let user_data = data.getUserData();
-                socket.emit('user' , user_data);
+                socket.emit('user' , data);
             }else{
                 let user_data = undefined
                 socket.emit('user' , user_data);

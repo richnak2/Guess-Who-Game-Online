@@ -22,21 +22,21 @@ class AllUsers {
     return user;
   }
 
-  static async getAllLength(){
+  static getAllLength(){
     return this.all_clients.length;
   }
 
-  static async getAllToString(){
+  static getAllToString(){
     let str = '';
     for (let index = 0; index < this.all_clients.length; index++) {
       str += `NUMBER : ${index}\n`;
-      str += `${await this.all_clients[index].toString()}\n`;
+      str += `${this.all_clients[index].toString()}\n`;
     }
     return str;
   }
 
-  static async  UserLeave(socket_id, variable_id_socket) {
-    const index = await this.getUserIndex(socket_id, variable_id_socket);
+  static UserLeave(socket_id, variable_id_socket) {
+    const index =  this.getUserIndex(socket_id, variable_id_socket);
     if (index !== -1) {
       return this.all_clients.splice(index, 1)[0];
     }else{
@@ -44,17 +44,17 @@ class AllUsers {
     }
   }
 
-  static async getUserIndex(socket_id, variable_id_socket){
+  static getUserIndex(socket_id, variable_id_socket){
     return this.all_clients.findIndex(user => user.id_socket === socket_id && user.variable_id_socket === variable_id_socket);
   }
 
-  static async getUser(socket_id, variable_id_socket){
-    return this.all_clients[await this.getUserIndex(socket_id, variable_id_socket)].getUserData();
+  static getUser(socket_id, variable_id_socket){
+    return this.all_clients[ this.getUserIndex(socket_id, variable_id_socket)].getUserData();
   }
 
 
   static async buyCharacter(socket_id,variable_id_socket, character_or_color) {
-    let current_user = await this.getUser(socket_id, variable_id_socket);
+    let current_user = this.getUser(socket_id, variable_id_socket);
     if (current_user) {
       current_user.buyCharacterOrColor(character_or_color).then( updated_data => {
         return updated_data;
@@ -62,8 +62,8 @@ class AllUsers {
     }
   }
 
-  static async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
-    let current_user = await this.getUser(my_socket_id, variable_id_socket);
+  static addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
+    let current_user = this.getUser(my_socket_id, variable_id_socket);
     if (current_user) {
       current_user.addPoints(Math.ceil(500 / guess_count)).then( updated_data =>{
         return updated_data;
@@ -74,8 +74,8 @@ class AllUsers {
     }
   }
 
-  static async setCharacter(socket_id, variable_id_socket, character) {
-    let current_user = await this.getUser(socket_id, variable_id_socket);
+  static setCharacter(socket_id, variable_id_socket, character) {
+    let current_user = this.getUser(socket_id, variable_id_socket);
     if (current_user) {
       current_user.setCharacter(character).then( updated_data =>{
         return updated_data;
@@ -86,7 +86,7 @@ class AllUsers {
     }
   }
 
-  static async getAllGames(my_socket_id, variable_id_socket){
+  static getAllGames(my_socket_id, variable_id_socket){
     this.getUser(my_socket_id, variable_id_socket).then(current_user => {
       if (current_user) {
         const result = db.getAllGames(current_user.id);
@@ -107,7 +107,7 @@ class AllUsers {
     });
   }
 
-  static async RegisterNewUser(name,password,role){
+  static RegisterNewUser(name,password,role){
     const exist = db.userExist(name);
     exist.then(data => {
       if (data){
@@ -125,7 +125,7 @@ class AllUsers {
     }).catch(err => {return new Error(err)});
   }
 
-  static async LogIn(socket_id, name, password) {
+  static LogIn(socket_id, name, password) {
     const result = db.findUser(name, password);
     result.then(data => {
       if (data[0] !== undefined) {
