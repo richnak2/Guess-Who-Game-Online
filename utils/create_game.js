@@ -22,26 +22,26 @@ async function delete_folder_r(path) {
 
 }
 
-// function remove_dirs_not_origin(origin_path, path){
-//     if( fs.existsSync(path) ) {
-//         fs.readdirSync(path).forEach(function(file) {
-//             let current_path = path + "/" + file;
-//             if(fs.lstatSync(current_path).isDirectory() ) { // recurse
-//                 if (current_path.includes('images') === false){
-//                     remove_dirs_not_origin(origin_path,current_path);
-//                 }
-//             } else { // delete file
-//                 if (current_path.includes('default.png') === false){
-//                     fs.unlinkSync(current_path);
-//                 }
-//             }
-//         });
-//         if (origin_path !== path){
-//             fs.rmdirSync(path);
-//         }
-//
-//     }
-// }
+function remove_dirs_not_origin(origin_path, path){
+    if( fs.existsSync(path) ) {
+        fs.readdirSync(path).forEach(function(file) {
+            let current_path = path + "/" + file;
+            if(fs.lstatSync(current_path).isDirectory() ) { // recurse
+                if (current_path.includes('images') === false){
+                    remove_dirs_not_origin(origin_path,current_path);
+                }
+            } else { // delete file
+                if (current_path.includes('default.png') === false){
+                    fs.unlinkSync(current_path);
+                }
+            }
+        });
+        if (origin_path !== path){
+            fs.rmdirSync(path);
+        }
+
+    }
+}
 // function remove_dirs_not_origin(path){
 //
 // }
@@ -84,4 +84,4 @@ async function delete_folder_r(path) {
 //     return game;
 // }
 
-module.exports = {look_folders,delete_folder_r};
+module.exports = {look_folders,delete_folder_r,remove_dirs_not_origin};

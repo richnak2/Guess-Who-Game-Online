@@ -370,7 +370,7 @@ router.post('/upload_new_game', function(req, res) {
             return res.send(err);
         });
     }).catch(err => {
-        return res.send({data:`Something is want wrong with <strong>createGameMain</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'})
+        return res.send({data:`Something is want wrong with <strong>createNewGameImages</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'})
     });
 });
 
@@ -463,7 +463,7 @@ router.post('/upload_game', function(req, res) {
         });
 
     }).catch(err => {
-        return res.send({data:`Something is want wrong with <strong>createGameMain</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'})
+        return res.send({data:`Something is want wrong with <strong>createUpdateGameImages</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'})
     });
 });
 

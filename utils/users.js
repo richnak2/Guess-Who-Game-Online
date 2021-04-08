@@ -1,4 +1,5 @@
 let users = [];
+// const AU = new AllUsers();
 const color_pallet = [['#00000000',0],// base color default
   ['#ffffff80',100],['#0013ff80',150],['#e0497080',200],['#30ff0280',250],
   ['#02ffec80',350],['#fcb04580',400],['#fffe1e80',450],['#833ab480',500],
@@ -14,6 +15,41 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
 function getAll(){
   return users;
 }
+class AllUsers {
+  static all_clients = [];
+  static async push(user){
+    return this.all_clients.push(user);
+  }
+  static async getAllLength(){
+    return this.all_clients.length;
+  }
+  static async getAllToString(){
+    let str = '';
+    for (let index = 0; index < this.all_clients.length; index++) {
+      str += `NUMBER : ${index}\n`;
+      str += `${await this.all_clients[index].ToString()}\n`;
+    }
+
+
+    return this.all_clients.length;
+  }
+
+}
+class Users {
+  constructor(id_socket , id, game_name, role , points , character , bought_characters) {
+    this.id_socket = id_socket
+    this.id = id
+    this.game_name = (game_name === undefined?user_names[Math.floor(Math.random() * user_names.length)]:game_name)
+    this.role = role
+    this.points = points
+    this.character= character
+    this.bought_characters = bought_characters
+  }
+  async ToString(){
+    return `SOCKET ID : ${this.id_socket}\nID : ${this.id}\nGAME : ${this.game_name}\nROLE : ${this.role}\nPOINTS : ${this.points}\n`
+  }
+}
+
 // Join user
 function userJoin(id_socket , id, game_name, role , points , character , bought_characters) {
   // let user = { id_socket: (id_socket) ? id_socket : undefined ,
@@ -23,7 +59,23 @@ function userJoin(id_socket , id, game_name, role , points , character , bought_
   //   points : (points !== undefined) ? points : undefined ,
   //   character: (character) ? character : undefined
   // };
-  let user = { id_socket: id_socket,
+  let u = new Users(id_socket , id, game_name, role , points , character , bought_characters);
+  AllUsers.push(u).then(data => {
+    console.log(data)
+  });
+  AllUsers.push(u).then(data => {
+    console.log(data)
+  });
+  AllUsers.getAllLength().then(data => {
+    console.log(`The length is ${data}`);
+  })
+
+  AllUsers.getAllToString().then(data => {
+    console.log(`prihlaseni su : \n ${data}`);
+  })
+
+  let user = {
+    id_socket: id_socket,
     id : id ,
     game_name : (game_name === undefined?user_names[Math.floor(Math.random() * user_names.length)]:game_name) ,
     role : role ,
@@ -31,6 +83,7 @@ function userJoin(id_socket , id, game_name, role , points , character , bought_
     character: character ,
     bought_characters : bought_characters
   };
+
   console.log('ALL USERRS LENGTH : '+users.length)
   if (users.length > 200 ){ // tvrdi restart vsetkych hracov bez oboznamenia prekroceni limmit server connection
     console.log(users)
@@ -108,5 +161,7 @@ module.exports = {
   buyCharacter,
   getAll,
   userLeave,
-  addPoints
+  addPoints,
+  AllUsers,
+
 };
