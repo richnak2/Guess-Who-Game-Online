@@ -49,7 +49,11 @@ class AllUsers {
   }
 
   static getUser(socket_id, variable_id_socket){
-    return this.all_clients[ this.getUserIndex(socket_id, variable_id_socket)].getUserData();
+    let user = this.all_clients[ this.getUserIndex(socket_id, variable_id_socket)];
+    if (user){
+      return user.getUserData()
+    }
+    return new Error('AllUsers.getUser');
   }
 
 
@@ -129,8 +133,7 @@ class AllUsers {
     const result = db.findUser(name, password);
     result.then(data => {
       if (data[0] !== undefined) {
-        this.push(socket_id, data[0]['id'], data[0]['game_name'], data[0]['role'], data[0]['points'], data[0]['type_of_character'], data[0]['bought_characters']);
-        return true;
+        return this.push(socket_id, data[0]['id'], data[0]['game_name'], data[0]['role'], data[0]['points'], data[0]['type_of_character'], data[0]['bought_characters']);
       }else {
         return false;
       }

@@ -124,14 +124,13 @@ io.on('connection', socket => {
             });
         }
     });
-
+    // all related server error tag => ALL-FU
     socket.on('find_user', ({my_socket_id}) => {
-        let data = AllUsers.getUser(my_socket_id,my_socket_id)
-        if (data){
+        try{
+            let data = AllUsers.getUser(my_socket_id,my_socket_id)
             socket.emit('user' , data);
-        }else{
-            let user_data = undefined
-            socket.emit('user' , user_data);
+        }catch (err) {
+            console.log(`ALL-FU : ${err}`)
         }
 
     });
