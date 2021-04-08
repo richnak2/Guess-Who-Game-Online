@@ -24,14 +24,16 @@ class AllUsers {
     return this.all_clients.length;
   }
   static async getAllToString(){
-    return await new Promise((resolve, reject) => {
-      let str = '';
-      for (let index = 0; index < this.all_clients.length; index++) {
-        str += `NUMBER : ${index}\n`;
-        str += `${this.all_clients[index].ToString()}\n`;
-      }
-        resolve(str);
-    })
+    // Promise.all(this.all_clients.toString()).then(result =>{
+    //   for (let index = 0; index < result.length; index++) {
+    //
+    // })
+    let str = '';
+    for (let index = 0; index < this.all_clients.length; index++) {
+      str += `NUMBER : ${index}\n`;
+      str += `${await this.all_clients[index].ToString()}\n`;
+    }
+    return str;
   }
 
 }
