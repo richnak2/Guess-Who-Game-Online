@@ -48,12 +48,18 @@ class AllUsers {
     return this.all_clients.findIndex(user => user.isCorrectOne(socket_id, variable_id_socket));
   }
 
-  static getUser(socket_id, variable_id_socket){
-    let user = this.all_clients[ this.getUserIndex(socket_id, variable_id_socket)];
-    if (user){
-      return user.getUserData()
-    }else{
-      return new Error('AllUsers.getUser');
+  static async getUser(socket_id, variable_id_socket){
+    try {
+      return await new Promise((resolve, reject) => {
+        let user = this.all_clients[ this.getUserIndex(socket_id, variable_id_socket)];
+        if (user){
+          resolve(user.getUserData())
+        }else{
+          reject(new Error('AllUsers.getUser : Cannot find user'));
+        }
+      }).catch(err => {return new Error("ALLUsers.getAllGames : "+err)})
+    }catch (err) {
+      return new Error("ALLUsers.getAllGames : "+err)
     }
   }
 
@@ -101,7 +107,7 @@ class AllUsers {
             if (data){
               resolve(data)
             }else{
-              resolve(undefined)
+              reject(new Error("ALLUsers.getAllGames : Empty games"))
             }
           }).catch(err => reject(new Error("ALLUsers.getAllGames : "+err)) );
 
@@ -110,54 +116,51 @@ class AllUsers {
     }catch (err) {
       return new Error("ALLUsers.getAllGames : "+err)
     }
-
-
-
-    // let current_user = this.getUser(my_socket_id, variable_id_socket)
-    // if (current_user) {
-    //   const result = db.getAllGames(current_user.id);
-    //   result.then(data => {
-    //     if (data){
-    //       console.log(data);
-    //       return data
-    //     }else{
-    //       console.log('undefined '+data);
-    //       return undefined
-    //     }
-    //   }).catch(err => {return new Error(err)});
-    // }else{
-    //   console.log("AllUsers.getAllGames not existing user")
-    //   return undefined
-    // }
   }
 
-  static RegisterNewUser(name,password,role){
-    const exist = db.userExist(name);
-    exist.then(data => {
-      if (data){
-        const result = db.registerUser(name,password,role);
-        result.then(data => {
-          if (data){
-            return true;
-          }else {
-            return false;
+  static async RegisterNewUser(name,password,role){
+    try {
+      return await new Promise((resolve, reject) => {
+        const exist = db.userExist(name);
+        exist.then(data => {
+          if (data) {
+            const result = db.registerUser(name, password, role);
+            result.then(data => {
+              if (data) {
+                resolve(true)
+              } else {
+                resolve(false)
+              }
+            }).catch(err => {return new Error(err)});
+          } else {
+            resolve(false)
           }
         }).catch(err => {return new Error(err)});
-      }else{
-        return false;
-      }
-    }).catch(err => {return new Error(err)});
+      }).catch(err => {return new Error(err)});
+    }catch (err) {
+      return new Error("ALLUsers.getAllGames : "+err)
+    }
   }
 
-  static LogIn(socket_id, name, password) {
-    const result = db.findUser(name, password);
-    result.then(data => {
-      if (data[0] !== undefined) {
-        return this.push(socket_id, data[0]['id'], data[0]['game_name'], data[0]['role'], data[0]['points'], data[0]['type_of_character'], data[0]['bought_characters']);
-      }else {
-        return false;
-      }
-    }).catch(err => {return new Error(err)});
+
+  static async LogIn(socket_id, name, password) {
+    try {
+      return await new Promise((resolve, reject) => {
+        const result = db.findUser(name, password);
+        result.then(data => {
+          if (data[0] !== undefined) {
+            this.push(socket_id, data[0]['id'], data[0]['game_name'], data[0]['role'], data[0]['points'], data[0]['type_of_character'], data[0]['bought_characters']);
+            resolve(true)
+          }else {
+            resolve(false) ;
+          }
+        }).catch(err => {return new Error(err)});
+      }).catch(err => {return new Error("ALLUsers.getAllGames : "+err)})
+    }catch (err) {
+      return new Error("ALLUsers.getAllGames : "+err)
+    }
+
+
   }
 }
 

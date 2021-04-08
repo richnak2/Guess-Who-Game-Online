@@ -10,13 +10,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-socket.on('log_answer' , ({massage,time,type}) => {
-    if (type === 'success'){
+socket.on('log_answer' , ({massage}) => {
+    if (massage.type === 'success'){
         sessionStorage.setItem("socket_id",socket.id);
         sessionStorage.setItem('game_id','');
         location.assign('menu.html');
     }else{
-        create_exception(massage,time,type);
+        create_exception(massage.massage,massage.time,massage.type);
     }
 });
 

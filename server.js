@@ -90,48 +90,39 @@ io.on('connection', socket => {
     });
     // login_page.js related server error tag => L-O
     socket.on('online', ({name_value , password_value}) => {
-        try{
-            let result = AllUsers.LogIn(socket.id,name_value, password_value)
-            if (result){
+        AllUsers.LogIn(socket.id,name_value, password_value).then(data =>{
+            if (data){
                 socket.emit('log_answer', {
                     massage: format_error('You are logged in', 10, 'success')
                 });
+            }else{
+                socket.emit('log_answer', {
+                    massage: format_error('<strong>User game name</strong> or <strong>password</strong> is wrong.', 10, 'warning')
+                });
             }
-            socket.emit('log_answer', {
-                massage: format_error('<strong>User game name</strong> or <strong>password</strong> is wrong.', 10, 'warning')
-            });
-        }catch(err){
-            console.log(`L-O : ${err}`)
-        }
+        }).catch(err =>{ console.log(`L-O : ${err}`)})
     });
 
 
     socket.on('register_new_user' , ({name_value, password_value,role_value}) => {
-        try{
-            let result = AllUsers.RegisterNewUser(name_value, password_value,role_value)
-            if (result) {
+        AllUsers.RegisterNewUser(name_value, password_value,role_value).then(data => {
+            if (data) {
                 socket.emit('register_new_user', {
                     massage: format_error('User with this name already exist', 10, 'warning')
                 });
-            }else{
+            } else {
                 socket.emit('register_new_user', {
                     massage: format_error(`Thanks for registration <strong>${name_value}</strong> now please log in and enjoy the games`, 10, 'success')
                 });
             }
-        }catch(err) {
-            socket.emit('register_new_user', {
-                massage: format_error(`Something want wrong ${err}`, 30, 'danger')
-            });
-        }
+        }).catch(err =>{ console.log(`L-RNU : ${err}`)})
+
     });
     // all related server error tag => ALL-FU
     socket.on('find_user', ({my_socket_id}) => {
-        try{
-            let user_data = AllUsers.getUser(my_socket_id,socket.id)
-            socket.emit('user' , {user_data : user_data});
-        }catch (err) {
-            console.log(`ALL-FU : ${err}`)
-        }
+        AllUsers.getUser(my_socket_id,socket.id).then(data => {
+            socket.emit('user', {user_data: data})
+        }).catch(err =>{ console.log(`ALL-FU : ${err}`)})
 
     });
 
@@ -144,19 +135,9 @@ io.on('connection', socket => {
 
     // menu.js related server error tag => M-GAG
     socket.on('get_all_games' , ({my_socket_id}) => {
-        try{
-            AllUsers.getAllGames(my_socket_id,socket.id).then(data => {
-                if (data){
-                    socket.emit('get_all_games' , {games : data});
-                }else{
-                    console.log("M-GAG : Something want wrong with AllUsers.getAllGames")
-                }
-            })
-        }catch (err){
-            console.log('M-GAG : '+err)
-        }
-
-
+        AllUsers.getAllGames(my_socket_id,socket.id).then(data => {
+            socket.emit('get_all_games' , {games : data});
+        }).catch(err =>{ console.log(`M-GAG : ${err}`)})
     });
     // // ziskanie hrier aj v procese vivoja aplikacie iba userom ktori vytvorili dane hru
     // // GAME MENU server error tag => GM : GAGBY
