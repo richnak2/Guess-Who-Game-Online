@@ -145,12 +145,13 @@ io.on('connection', socket => {
     // menu.js related server error tag => M-GAG
     socket.on('get_all_games' , ({my_socket_id}) => {
         try{
-            let data = AllUsers.getAllGames(my_socket_id,socket.id)
-            if (data){
-                socket.emit('get_all_games' , {games : data});
-            }else{
-                console.log("M-GAG : Something want wrong with AllUsers.getAllGames")
-            }
+            AllUsers.getAllGames(my_socket_id,socket.id).then(data => {
+                if (data){
+                    socket.emit('get_all_games' , {games : data});
+                }else{
+                    console.log("M-GAG : Something want wrong with AllUsers.getAllGames")
+                }
+            })
         }catch (err){
             console.log('M-GAG : '+err)
         }

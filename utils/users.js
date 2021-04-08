@@ -91,23 +91,44 @@ class AllUsers {
     }
   }
 
-  static getAllGames(my_socket_id, variable_id_socket){
-    let current_user = this.getUser(my_socket_id, variable_id_socket)
-    if (current_user) {
-      const result = db.getAllGames(current_user.id);
-      result.then(data => {
-        if (data){
-          console.log(data);
-          return data
-        }else{
-          console.log('undefined '+data);
-          return undefined
+  static async getAllGames(my_socket_id, variable_id_socket){
+    try {
+      return await new Promise((resolve, reject) => {
+        let current_user = this.getUser(my_socket_id, variable_id_socket)
+        if (current_user) {
+          const result = db.getAllGames(current_user.id);
+          result.then(data => {
+            if (data){
+              resolve(data)
+            }else{
+              resolve(undefined)
+            }
+          }).catch(err => reject(new Error("ALLUsers.getAllGames : "+err)) );
+
         }
-      }).catch(err => {return new Error(err)});
-    }else{
-      console.log("AllUsers.getAllGames not existing user")
-      return undefined
+      }).catch(err => {return new Error("ALLUsers.getAllGames : "+err)})
+    }catch (err) {
+      return new Error("ALLUsers.getAllGames : "+err)
     }
+
+
+
+    // let current_user = this.getUser(my_socket_id, variable_id_socket)
+    // if (current_user) {
+    //   const result = db.getAllGames(current_user.id);
+    //   result.then(data => {
+    //     if (data){
+    //       console.log(data);
+    //       return data
+    //     }else{
+    //       console.log('undefined '+data);
+    //       return undefined
+    //     }
+    //   }).catch(err => {return new Error(err)});
+    // }else{
+    //   console.log("AllUsers.getAllGames not existing user")
+    //   return undefined
+    // }
   }
 
   static RegisterNewUser(name,password,role){
