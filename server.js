@@ -88,9 +88,10 @@ io.on('connection', socket => {
     socket.on('offline', () => {
         AllUsers.push(socket.id, undefined, undefined, undefined, 0, '#00000000 def.png', '#00000000 def.png');
     });
-
+    // login_page.js related server error tag => L-O
     socket.on('online', ({name_value , password_value}) => {
-        AllUsers.LogIn(socket.id,name_value, password_value).then(result => {
+        try{
+            let result = AllUsers.LogIn(socket.id,name_value, password_value)
             if (result){
                 socket.emit('log_answer', {
                     massage: format_error('You are logged in', 10, 'success')
@@ -99,12 +100,15 @@ io.on('connection', socket => {
             socket.emit('log_answer', {
                 massage: format_error('<strong>User game name</strong> or <strong>password</strong> is wrong.', 10, 'warning')
             });
-        }).catch(err => console.log(err));
+        }catch(err){
+            console.log(`L-O : ${err}`)
+        };
     });
 
 
     socket.on('register_new_user' , ({name_value, password_value,role_value}) => {
-        AllUsers.RegisterNewUser(name_value, password_value,role_value).then(result => {
+        try{
+            let result = AllUsers.RegisterNewUser(name_value, password_value,role_value)
             if (result) {
                 socket.emit('register_new_user', {
                     massage: format_error('User with this name already exist', 10, 'warning')
@@ -114,22 +118,22 @@ io.on('connection', socket => {
                     massage: format_error(`Thanks for registration <strong>${name_value}</strong> now please log in and enjoy the games`, 10, 'success')
                 });
             }
-        }).catch(err => {
+        }catch(err) {
             socket.emit('register_new_user', {
                 massage: format_error(`Something want wrong ${err}`, 30, 'danger')
             });
-        });
+        }
     });
 
     socket.on('find_user', ({my_socket_id}) => {
-        AllUsers.getUser(my_socket_id,my_socket_id).then(data => {
-            if (data){
-                socket.emit('user' , data);
-            }else{
-                let user_data = undefined
-                socket.emit('user' , user_data);
-            }
-        }).catch(err => console.log(err));
+        let data = AllUsers.getUser(my_socket_id,my_socket_id)
+        if (data){
+            socket.emit('user' , data);
+        }else{
+            let user_data = undefined
+            socket.emit('user' , user_data);
+        }
+
     });
 
     //
@@ -141,14 +145,17 @@ io.on('connection', socket => {
 
     // menu.js related server error tag => M-GAG
     socket.on('get_all_games' , ({my_socket_id}) => {
-        AllUsers.getAllGames(my_socket_id,my_socket_id).then(data => {
+        try{
+            let data = AllUsers.getAllGames(my_socket_id,my_socket_id)
             console.log('M-GAG : ' + data);
             if (data){
                 socket.emit('get_all_games' , {games : data});
             }else{
                 console.log("M-GAG : Something want wrong with user")
             }
-        }).catch(err => console.log('M-GAG : '+err));
+        }catch (err){
+            console.log('M-GAG : '+err)
+        }
 
 
     });
