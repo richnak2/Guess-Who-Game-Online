@@ -35,7 +35,6 @@ class AllUsers {
     return str;
   }
 
-
   static async  UserLeave(socket_id, variable_id_socket) {
     const index = await this.getUserIndex(socket_id, variable_id_socket);
     if (index !== -1) {
@@ -53,16 +52,7 @@ class AllUsers {
     return this.all_clients[this.all_clients.findIndex(user => user.id_socket === socket_id && user.variable_id_socket === variable_id_socket)];
   }
 
-  static async setCharacter(socket_id, variable_id_socket, character) {
-    let current_user = await this.getUser(socket_id, variable_id_socket);
-    if (current_user) {
-      current_user.setCharacter(character).then( updated_data =>{
-        return updated_data;
-      })
-    }else{
-      console.log("AllUsers.setCharacter not existing user")
-    }
-  }
+
   static async buyCharacter(socket_id,variable_id_socket, character_or_color) {
     let current_user = await this.getUser(socket_id, variable_id_socket);
     if (current_user) {
@@ -75,15 +65,30 @@ class AllUsers {
   static async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
     let current_user = await this.getUser(my_socket_id, variable_id_socket);
     if (current_user) {
-      current_user.AddPoints(Math.ceil(500 / guess_count)).then( updated_data =>{
+      current_user.addPoints(Math.ceil(500 / guess_count)).then( updated_data =>{
         return updated_data;
       })
     }else{
       console.log("AllUsers.addPoints not existing user")
+      return undefined
     }
   }
+
+  static async setCharacter(socket_id, variable_id_socket, character) {
+    let current_user = await this.getUser(socket_id, variable_id_socket);
+    if (current_user) {
+      current_user.setCharacter(character).then( updated_data =>{
+        return updated_data;
+      })
+    }else{
+      console.log("AllUsers.setCharacter not existing user")
+      return undefined
+    }
+  }
+
   static async getAllGames(my_socket_id, variable_id_socket){
-    let current_user = await this.getUser(my_socket_id, variable_id_socket);
+    let current_user = await this.getUser(my_socket_id, variable_id_socket).getUserData();
+    console.log(current_user)
     if (current_user) {
       const result = db.getAllGames(current_user.id);
       result.then(data => {
@@ -95,6 +100,7 @@ class AllUsers {
       }).catch(err => {return new Error(err)});
     }else{
       console.log("AllUsers.getAllGames not existing user")
+      return undefined
     }
   }
 
@@ -128,7 +134,6 @@ class AllUsers {
     }).catch(err => {return new Error(err)});
   }
 }
-
 
 class Users {
   constructor(id_socket , id, game_name, role , points , character , bought_characters) {
