@@ -221,6 +221,7 @@ class Users {
     if( time_in_seconds > 60 * 5){
       AllUsers.userLeave(this.id_socket,this.variable_id_socket)
     }
+    setTimeout(this.removeUser,1000)
   }
 
   getUserData(){
