@@ -21,15 +21,15 @@ const io = socket_io(server);
 
 // Pripojenie konkretneho usera do aplikacie
 const {
-    userJoin,
-    getCurrentUser,
-    setCharacter,
-    buyCharacter,
-    getAll,
-    userLeave,
-    addPoints,
+    // userJoin,
+    // getCurrentUser,
+    // setCharacter,
+    // buyCharacter,
+    // getAll,
+    // userLeave,
+    // addPoints,
     AllUsers,
-    Users
+    // Users
 } = require('./utils/users');
 const {format_message,format_error} = require('./utils/messages');
 
@@ -60,23 +60,26 @@ io.on('connection', socket => {
 
 
     ///// CREATE GAME MANAGMET : CGM
-    // socket.on('exist_dir',({dir_name})=>{
-    //     socket.emit('exist_dir',{exist:look_folders(dir_name)});
-    // })
-    // socket.on('delete_game' , ({game_id,title,my_socket_id}) =>{
-    //     const get_current_user = getCurrentUser(my_socket_id);
-    //     if (get_current_user === undefined){
-    //         console.log("CGM : Something want wrong with user")
-    //     }else{
-    //         delete_folder_r('public/images/' + title).then(r  => console.log('CGM : Deleting folders'));
-    //
-    //         // delete game from db
-    //         const db = dbService.getDbServiceInstance();
-    //         const result = db.deleteGame(game_id,get_current_user.id);
-    //         result.then(data => { }).catch(err => console.log(err));
-    //     }
-    //
-    // })
+    socket.on('exist_dir',({dir_name})=>{
+        socket.emit('exist_dir',{exist:look_folders(dir_name)});
+    })
+
+    // create_game.js related server error tag => CGM-DG
+    socket.on('delete_game' , ({game_id,title,my_socket_id}) =>{
+        AllUsers.getUser(my_socket_id,socket.id).then(user => {
+            if (user === undefined) {
+                console.log("CGM : Something want wrong with user")
+            } else {
+                delete_folder_r('public/images/' + title).then(removed_massage_server => console.log('CGM : Deleting folders'));
+
+                // delete game from db
+                const db = dbService.getDbServiceInstance();
+                const result = db.deleteGame(game_id, user.id);
+                result.then(data => {
+                }).catch(err => console.log(err));
+            }
+        }).catch(err =>{ console.log(`ALL-FU : ${err}`)})
+    })
 
 
 
@@ -90,8 +93,8 @@ io.on('connection', socket => {
     });
     // login_page.js related server error tag => L-O
     socket.on('online', ({name_value , password_value}) => {
-        AllUsers.LogIn(socket.id,name_value, password_value).then(data =>{
-            if (data){
+        AllUsers.LogIn(socket.id,name_value, password_value).then(user =>{
+            if (user){
                 socket.emit('log_answer', {
                     massage: format_error('You are logged in', 10, 'success')
                 });
@@ -103,7 +106,7 @@ io.on('connection', socket => {
         }).catch(err =>{ console.log(`L-O : ${err}`)})
     });
 
-
+    // all related server error tag => ALL-FU
     socket.on('register_new_user' , ({name_value, password_value,role_value}) => {
         AllUsers.RegisterNewUser(name_value, password_value,role_value).then(data => {
             if (data) {
@@ -121,8 +124,8 @@ io.on('connection', socket => {
 
     // all related server error tag => ALL-FU
     socket.on('find_user', ({my_socket_id}) => {
-        AllUsers.getUser(my_socket_id,socket.id).then(data => {
-            socket.emit('user', {user_data: data})
+        AllUsers.getUser(my_socket_id,socket.id).then(user => {
+            socket.emit('user', {user_data: user})
         }).catch(err =>{ console.log(`ALL-FU : ${err}`)})
 
     });

@@ -16,9 +16,10 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
                     'Harry Potter', 'Eric Clapton', 'Nicolas Cage','Will Smith', 'Heisenberg'];
 
 class AllUsers {
-  static all_clients = [];
+  all_clients = [];
+  static removeLoggedOut;
 
-  static removeLoggedOut(){
+  removeLoggedOut(){
     console.log(this.getAllToString());
     for (let index = 0; index < this.getAllLength(); index++) {
       if (this.all_clients[index].removeUser() > 6){
@@ -29,18 +30,18 @@ class AllUsers {
   }
 
 
-  static push(id_socket , id, game_name, role , points , character , bought_characters){
+  push(id_socket , id, game_name, role , points , character , bought_characters){
     let user = new Users(id_socket , id, game_name, role , points , character , bought_characters);
     this.all_clients.push(user);
     console.log(`Count of players : ${this.getAllLength()}`)
     return user;
   }
 
-  static getAllLength(){
+  getAllLength(){
     return this.all_clients.length;
   }
 
-  static getAllToString(){
+  getAllToString(){
     let str = '';
     for (let index = 0; index < this.all_clients.length; index++) {
       str += `NUMBER : ${index}\n`;
@@ -49,7 +50,7 @@ class AllUsers {
     return str;
   }
 
-  static userLeave(socket_id, variable_id_socket) {
+  userLeave(socket_id, variable_id_socket) {
     const index =  this.getUserIndex(socket_id, variable_id_socket);
     if (index !== -1) {
       this.all_clients.splice(index, 1);
@@ -58,11 +59,11 @@ class AllUsers {
     }
   }
 
-  static getUserIndex(socket_id, variable_id_socket){
+  getUserIndex(socket_id, variable_id_socket){
     return this.all_clients.findIndex(user => user.isCorrectOne(socket_id, variable_id_socket));
   }
 
-  static async getUser(socket_id, variable_id_socket){
+  async getUser(socket_id, variable_id_socket){
     try {
       return await new Promise((resolve, reject) => {
         let user = this.all_clients[ this.getUserIndex(socket_id, variable_id_socket)];
@@ -78,7 +79,7 @@ class AllUsers {
   }
 
 
-  static async buyCharacter(socket_id,variable_id_socket, character_or_color) {
+  async buyCharacter(socket_id,variable_id_socket, character_or_color) {
     let current_user = this.getUser(socket_id, variable_id_socket);
     if (current_user) {
       current_user.buyCharacterOrColor(character_or_color).then( updated_data => {
@@ -87,31 +88,25 @@ class AllUsers {
     }
   }
 
-  static addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
+  async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
     let current_user = this.getUser(my_socket_id, variable_id_socket);
     if (current_user) {
-      current_user.addPoints(Math.ceil(500 / guess_count)).then( updated_data =>{
+      current_user.addPoints(Math.ceil(500 / guess_count)).then(updated_data => {
         return updated_data;
-      })
-    }else{
-      console.log("AllUsers.addPoints not existing user")
-      return undefined
+      }).catch(err => {return new Error(err)});
     }
   }
 
-  static setCharacter(socket_id, variable_id_socket, character) {
+  async setCharacter(socket_id, variable_id_socket, character) {
     let current_user = this.getUser(socket_id, variable_id_socket);
     if (current_user) {
-      current_user.setCharacter(character).then( updated_data =>{
+      current_user.setCharacter(character).then(updated_data =>{
         return updated_data;
-      })
-    }else{
-      console.log("AllUsers.setCharacter not existing user")
-      return undefined
+      }).catch(err => {return new Error(err)});
     }
   }
 
-  static async getAllGames(my_socket_id, variable_id_socket){
+  async getAllGames(my_socket_id, variable_id_socket){
     try {
       return await new Promise((resolve, reject) => {
         let current_user = this.getUser(my_socket_id, variable_id_socket)
@@ -132,7 +127,7 @@ class AllUsers {
     }
   }
 
-  static async RegisterNewUser(name,password,role){
+  async RegisterNewUser(name,password,role){
     try {
       return await new Promise((resolve, reject) => {
         const exist = db.userExist(name);
@@ -157,7 +152,7 @@ class AllUsers {
   }
 
 
-  static async LogIn(socket_id, name, password) {
+  async LogIn(socket_id, name, password) {
     try {
       return await new Promise((resolve, reject) => {
         const result = db.findUser(name, password);
@@ -365,8 +360,8 @@ module.exports = {
   // getAll,
   // userLeave,
   // addPoints,
-  AllUsers,
-  Users
+  // AllUsers,
+  AllUsers
 
 
 };
