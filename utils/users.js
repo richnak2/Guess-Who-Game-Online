@@ -37,12 +37,12 @@ class AllUsers {
   static push(id_socket , id, game_name, role , points , character , bought_characters){
     let user = new Users(id_socket , id, game_name, role , points , character , bought_characters);
     this.all_clients[id_socket] = user;
-    console.log(`Count of players : ${this.getAllLength()}`)
+    console.log(this.strGetAllLength())
     return user;
   }
 
-  static getAllLength(){
-    return this.all_clients.length;
+  static strGetAllLength(){
+    return `Count of players : ${this.all_clients.length}`;
   }
 
   static getAllToString(){
@@ -59,7 +59,7 @@ class AllUsers {
 
   static userLeave(socket_id) {
     delete this.all_clients[socket_id]
-
+    console.log(this.strGetAllLength())
   }
 
 
