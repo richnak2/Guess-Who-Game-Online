@@ -18,17 +18,17 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
 class AllUsers {
   static all_clients = [];
 
-  static removeLoggedOut(){
-    console.log(this.getAllToString());
-    console.log(`Count of players : ${this.getAllLength()}`)
-    for (let index = 0; index < this.getAllLength(); index++) {
-      if (this.all_clients[index].removeUser() > 6){
-        this.all_clients.splice(index, 1);
-
-      }
-    }
-
-  }
+  // static removeLoggedOut(){
+  //   console.log(this.getAllToString());
+  //   console.log(`Count of players : ${this.getAllLength()}`)
+  //   for (let index = 0; index < this.getAllLength(); index++) {
+  //     if (this.all_clients[index].removeUser() > 6){
+  //       this.all_clients.splice(index, 1);
+  //
+  //     }
+  //   }
+  //
+  // }
 
 
   static push(id_socket , id, game_name, role , points , character , bought_characters){
@@ -184,8 +184,10 @@ class Users {
     this.points = points
     this.character= character
     this.bought_characters = bought_characters
-    this.sesion_time = 0
+    this.sesion_time = Date.now()
+    this.interval = setInterval(this.removeUser,60 * 1000)
   }
+
   toString(){
     return `SOCKET ID : ${this.id_socket}\nID : ${this.id}\nGAME : ${this.game_name}\nROLE : ${this.role}\nPOINTS : ${this.points}\n`
   }
@@ -198,11 +200,15 @@ class Users {
       return false
     }
   }
+
   removeUser(){
-    this.sesion_time += 1
+    if( (Date.now() - this.sesion_time ) > 60 * 5){
+      AllUsers.userLeave(this.id_socket,this.variable_id_socket)
+    }
   }
+
   getUserData(){
-    this.sesion_time = 0
+    this.sesion_time = Date.now()
     return {
       'id_socket' : this.id_socket,
       'id' : this.id,
