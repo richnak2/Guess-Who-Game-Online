@@ -26,6 +26,7 @@ class AllUsers {
         console.log(`Count of players : ${this.getAllLength()}`)
       }
     }
+    setTimeout(this.removeLoggedOut,10000)
   }
 
 
