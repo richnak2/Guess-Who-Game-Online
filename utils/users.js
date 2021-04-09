@@ -55,8 +55,9 @@ class AllUsers {
     const index =  this.getUserIndex(socket_id, variable_id_socket);
     if (index !== -1) {
       this.all_clients.splice(index, 1);
+      console.log(`Count of players : ${this.getAllLength()}`)
     }else{
-      console.log(`AllUsers.UserLeave not existing user  ${this.getAllLength()}`)
+      console.log(`AllUsers.UserLeave not existing user  ${this.getAllToString()}`)
     }
   }
 
