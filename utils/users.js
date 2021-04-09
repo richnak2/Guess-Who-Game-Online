@@ -58,7 +58,7 @@ class AllUsers {
     }
   }
 
-  getUserIndex(socket_id, variable_id_socket){
+  static getUserIndex(socket_id, variable_id_socket){
     return this.all_clients.findIndex(user => user.isCorrectOne(socket_id, variable_id_socket));
   }
 
