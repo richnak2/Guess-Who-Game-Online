@@ -20,13 +20,14 @@ class AllUsers {
 
   static removeLoggedOut(){
     console.log(this.getAllToString());
+    console.log(`Count of players : ${this.getAllLength()}`)
     for (let index = 0; index < this.getAllLength(); index++) {
       if (this.all_clients[index].removeUser() > 6){
         this.all_clients.splice(index, 1);
-        console.log(`Count of players : ${this.getAllLength()}`)
+
       }
     }
-    setTimeout(this.removeLoggedOut,10000)
+
   }
 
 
@@ -248,7 +249,7 @@ class Users {
 
 }
 // const interval = setInterval(AllUsers.removeLoggedOut,5 * 60 * 1000)
-AllUsers.removeLoggedOut()
+// AllUsers.removeLoggedOut()
 //
 // // Join user
 // function userJoin(id_socket , id, game_name, role , points , character , bought_characters) {
