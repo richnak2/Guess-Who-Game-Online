@@ -19,7 +19,8 @@ class AllUsers {
   static all_clients = [];
 
   static removeLoggedOut(){
-    for (let index = 0; index < this.all_clients.length; index++) {
+    console.log(this.getAllToString());
+    for (let index = 0; index < this.getAllLength(); index++) {
       if (this.all_clients[index].removeUser() > 6){
         this.all_clients.splice(index, 1);
         console.log(`Count of players : ${this.getAllLength()}`)
