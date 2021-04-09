@@ -20,7 +20,7 @@ socket.on('log_answer' , ({massage}) => {
     }
 });
 
-socket.on('register_new_user' , (massage) => {
+socket.on('register_new_user' , ({massage}) => {
     if (massage.type === 'success'){
         create_exception(massage.massage,massage.time,massage.type);
         show_log_in('none');

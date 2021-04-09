@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-
-
 // find all posible games for users
 socket.emit('get_all_games', {my_socket_id});
 socket.on('get_all_games' , ({games}) => {
@@ -17,7 +15,6 @@ socket.on('get_all_games' , ({games}) => {
     pre_make_colors_them();
 });
 
-// TOTO SPRAVIT COPIU AKO MAM V BC UVODNA STRANKA
 function create_html_games(game){
     let div_card = document.createElement('div');
     let div_for_image = document.createElement('div');
@@ -97,18 +94,3 @@ function create_html_games(game){
     div_card.append(div_for_image,div_body_card,div_card_buttons);
     html_all_games.append(div_card);
 }
-function make_id(length) {
-    let result           = '';
-    let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let charactersLength = characters.length;
-    for ( let i = 0; i < length; i++ ) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-}
-// function shop(){
-//     location.assign('shop.html');
-// }
-// function log_out(){
-//     location.assign('index.html');
-// }

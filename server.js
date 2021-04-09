@@ -58,6 +58,7 @@ io.on('connection', socket => {
 
 
 
+
     ///// CREATE GAME MANAGMET : CGM
     // socket.on('exist_dir',({dir_name})=>{
     //     socket.emit('exist_dir',{exist:look_folders(dir_name)});
@@ -118,6 +119,7 @@ io.on('connection', socket => {
         }).catch(err =>{ console.log(`L-RNU : ${err}`)})
 
     });
+
     // all related server error tag => ALL-FU
     socket.on('find_user', ({my_socket_id}) => {
         AllUsers.getUser(my_socket_id,socket.id).then(data => {
@@ -126,10 +128,10 @@ io.on('connection', socket => {
 
     });
 
-    //
-    // socket.on('remove_player_from_connection',({my_socket_id}) =>{
-    //     userLeave(my_socket_id);
-    // })
+
+    socket.on('remove_player_from_connection',({my_socket_id}) =>{
+        AllUsers.userLeave(my_socket_id,socket.id);
+    })
 
 
 

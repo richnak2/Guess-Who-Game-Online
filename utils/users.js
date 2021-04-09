@@ -1,6 +1,7 @@
 // Include file s DB
 const DB = require('./dbService');
 const db = DB.getDbServiceInstance();
+const clear_users = setInterval(AllUsers.removeLoggedOut,5 * 60 * 1000)
 
 const color_pallet = [['#00000000',0],// base color default
   ['#ffffff80',100],['#0013ff80',150],['#e0497080',200],['#30ff0280',250],
@@ -16,9 +17,21 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
 
 class AllUsers {
   static all_clients = [];
+
+  static removeLoggedOut(){
+    for (let index = 0; index < this.all_clients.length; index++) {
+      if (this.all_clients[index].removeUser() > 6){
+        this.all_clients.splice(index, 1);
+        console.log(`Count of players : ${this.getAllLength()}`)
+      }
+    }
+  }
+
+
   static push(id_socket , id, game_name, role , points , character , bought_characters){
     let user = new Users(id_socket , id, game_name, role , points , character , bought_characters);
     this.all_clients.push(user);
+    console.log(`Count of players : ${this.getAllLength()}`)
     return user;
   }
 
@@ -35,12 +48,12 @@ class AllUsers {
     return str;
   }
 
-  static UserLeave(socket_id, variable_id_socket) {
+  static userLeave(socket_id, variable_id_socket) {
     const index =  this.getUserIndex(socket_id, variable_id_socket);
     if (index !== -1) {
-      return this.all_clients.splice(index, 1)[0];
+      this.all_clients.splice(index, 1);
     }else{
-      console.log("AllUsers.UserLeave not existing user")
+      console.log(`AllUsers.UserLeave not existing user  ${this.getAllLength()}`)
     }
   }
 
@@ -55,7 +68,7 @@ class AllUsers {
         if (user){
           resolve(user.getUserData())
         }else{
-          reject(new Error('AllUsers.getUser : Cannot find user'));
+          resolve(undefined);
         }
       }).catch(err => {return new Error("ALLUsers.getAllGames : "+err)})
     }catch (err) {
@@ -174,6 +187,7 @@ class Users {
     this.points = points
     this.character= character
     this.bought_characters = bought_characters
+    this.sesion_time = 0
   }
   toString(){
     return `SOCKET ID : ${this.id_socket}\nID : ${this.id}\nGAME : ${this.game_name}\nROLE : ${this.role}\nPOINTS : ${this.points}\n`
@@ -187,8 +201,11 @@ class Users {
       return false
     }
   }
-
+  removeUser(){
+    this.sesion_time += 1
+  }
   getUserData(){
+    this.sesion_time = 0
     return {
       'id_socket' : this.id_socket,
       'id' : this.id,
