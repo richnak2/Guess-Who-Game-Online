@@ -176,6 +176,17 @@ class AllUsers {
 }
 
 class Users {
+  id_socket = undefined
+  variable_id_socket = undefined
+  id = undefined
+  game_name =undefined
+  role = undefined
+  points = undefined
+  character=undefined
+  bought_characters = undefined
+  session_time = undefined
+  interval = undefined
+
   constructor(id_socket , id, game_name, role , points , character , bought_characters) {
     this.id_socket = id_socket
     this.variable_id_socket = id_socket
@@ -185,7 +196,7 @@ class Users {
     this.points = points
     this.character= character
     this.bought_characters = bought_characters
-    this.sesion_time = Date.now()
+    this.session_time = Date.now()
     this.interval = setInterval(this.removeUser,60 * 1000)
   }
 
@@ -204,15 +215,15 @@ class Users {
 
   removeUser(){
     console.log(Date.now())
-    let time_in_seconds = Math.floor(Date.now() - this.sesion_time / 1000)
-    console.log(`Remaining time of session  player : ${this.game_name}  = ${time_in_seconds}`)
+    let time_in_seconds = Math.floor((Date.now() - this.session_time )/ 1000)
+    console.log(`Remaining time of session  player : ${this.game_name}  =  ${time_in_seconds}`)
     if( time_in_seconds > 60 * 5){
       AllUsers.userLeave(this.id_socket,this.variable_id_socket)
     }
   }
 
   getUserData(){
-    this.sesion_time = Date.now()
+    this.session_time = Date.now()
     return {
       'id_socket' : this.id_socket,
       'id' : this.id,
