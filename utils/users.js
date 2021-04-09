@@ -1,7 +1,7 @@
 // Include file s DB
 const DB = require('./dbService');
 const db = DB.getDbServiceInstance();
-const clear_users = setInterval(AllUsers.removeLoggedOut,5 * 60 * 1000)
+
 
 const color_pallet = [['#00000000',0],// base color default
   ['#ffffff80',100],['#0013ff80',150],['#e0497080',200],['#30ff0280',250],
@@ -251,6 +251,7 @@ class Users {
 
 
 }
+setInterval(AllUsers.removeLoggedOut,5 * 60 * 1000)
 //
 // // Join user
 // function userJoin(id_socket , id, game_name, role , points , character , bought_characters) {
