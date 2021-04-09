@@ -203,7 +203,9 @@ class Users {
   }
 
   removeUser(){
-    if( (Date.now() - this.sesion_time ) > 60 * 5){
+    let time_in_seconds = Math.floor(Date.now() - this.sesion_time / 1000)
+    console.log(`Remaining time of session  player : ${this.game_name}  = ${time_in_seconds}`)
+    if( time_in_seconds > 60 * 5){
       AllUsers.userLeave(this.id_socket,this.variable_id_socket)
     }
   }
