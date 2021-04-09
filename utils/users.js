@@ -42,7 +42,7 @@ class AllUsers {
   }
 
   static strGetAllLength(){
-    return `Count of players : ${this.all_clients.length}`;
+    return `Count of players : ${Object.keys(this.all_clients).length}`;
   }
 
   static getAllToString(){
