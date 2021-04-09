@@ -84,8 +84,7 @@ io.on('connection', socket => {
 
 
 
-    //// PLAEYER MANAGMENT
-
+    //// PLAEYER MANAGMENT 
     socket.on('offline', () => {
         AllUsers.push(socket.id, undefined, undefined, undefined, 0, '#00000000 def.png', '#00000000 def.png');
     });
