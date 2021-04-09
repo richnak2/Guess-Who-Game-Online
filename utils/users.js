@@ -246,7 +246,8 @@ class Users {
 
 
 }
-const interval = setInterval(AllUsers.removeLoggedOut,5 * 60 * 1000)
+// const interval = setInterval(AllUsers.removeLoggedOut,5 * 60 * 1000)
+AllUsers.removeLoggedOut()
 //
 // // Join user
 // function userJoin(id_socket , id, game_name, role , points , character , bought_characters) {
