@@ -203,6 +203,7 @@ class Users {
   }
 
   removeUser(){
+    console.log(Date.now())
     let time_in_seconds = Math.floor(Date.now() - this.sesion_time / 1000)
     console.log(`Remaining time of session  player : ${this.game_name}  = ${time_in_seconds}`)
     if( time_in_seconds > 60 * 5){
