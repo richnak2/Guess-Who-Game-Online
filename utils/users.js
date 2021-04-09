@@ -17,6 +17,7 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
 
 class AllUsers {
   static all_clients = {};
+  static x = setInterval(() => {console.log(`Interval :  ${this.strGetAllLength()}`)},1000)
 
   // static removeLoggedOut(){
   //   console.log(this.getAllToString());
@@ -37,7 +38,7 @@ class AllUsers {
   static push(id_socket , id, game_name, role , points , character , bought_characters){
     let user = new Users(id_socket , id, game_name, role , points , character , bought_characters);
     this.all_clients[id_socket] = user;
-    console.log(this.strGetAllLength())
+    console.log(`Join : ${this.strGetAllLength()}`)
     return user;
   }
 
@@ -59,7 +60,7 @@ class AllUsers {
 
   static userLeave(socket_id) {
     delete this.all_clients[socket_id]
-    console.log(this.strGetAllLength())
+    console.log(`Leave : ${this.strGetAllLength()}`)
   }
 
 
