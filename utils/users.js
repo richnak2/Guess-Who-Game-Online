@@ -16,7 +16,7 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
                     'Harry Potter', 'Eric Clapton', 'Nicolas Cage','Will Smith', 'Heisenberg'];
 
 class AllUsers {
-  static all_clients = [];
+  static all_clients = {};
 
   // static removeLoggedOut(){
   //   console.log(this.getAllToString());
@@ -30,10 +30,13 @@ class AllUsers {
   //
   // }
 
+  static ping(id_socket){
+    this.all_clients[id_socket].setSession();
+  }
 
   static push(id_socket , id, game_name, role , points , character , bought_characters){
     let user = new Users(id_socket , id, game_name, role , points , character , bought_characters);
-    this.all_clients.push(user);
+    this.all_clients[id_socket] = user;
     console.log(`Count of players : ${this.getAllLength()}`)
     return user;
   }
@@ -43,34 +46,30 @@ class AllUsers {
   }
 
   static getAllToString(){
-    let str = '';
-    for (let index = 0; index < this.all_clients.length; index++) {
-      str += `NUMBER : ${index}\n`;
-      str += `${this.all_clients[index].toString()}\n`;
+    let str = ''
+    let index = 0
+    for (let key in this.all_clients) {
+      if (this.all_clients.hasOwnProperty(key)) {
+        str += `NUMBER : ${index}\n`;
+        str += `${this.all_clients[key].toString()}\n`
+      }
     }
     return str;
   }
 
-  static userLeave(socket_id, variable_id_socket) {
-    const index =  this.getUserIndex(socket_id, variable_id_socket);
-    if (index !== -1) {
-      this.all_clients.splice(index, 1);
-      console.log(`Count of players : ${this.getAllLength()}`)
-    }else{
-      console.log(`AllUsers.UserLeave not existing user  ${this.getAllToString()}`)
-    }
+  static userLeave(socket_id) {
+    delete this.all_clients[socket_id]
+
   }
 
-  static getUserIndex(socket_id, variable_id_socket){
-    return this.all_clients.findIndex(user => user.isCorrectOne(socket_id, variable_id_socket));
-  }
+
 
   static async getUser(socket_id, variable_id_socket){
     try {
       return await new Promise((resolve, reject) => {
-        let user = this.all_clients[ this.getUserIndex(socket_id, variable_id_socket)];
+        let user = this.all_clients[socket_id];
         if (user){
-          resolve(user.getUserData())
+          resolve(user.getUserData(variable_id_socket))
         }else{
           resolve(undefined);
         }
@@ -121,7 +120,6 @@ class AllUsers {
               reject(new Error("ALLUsers.getAllGames : Empty games"))
             }
           }).catch(err => reject(new Error("ALLUsers.getAllGames : "+err)) );
-
         }
       }).catch(err => {return new Error("ALLUsers.getAllGames : "+err)})
     }catch (err) {
@@ -176,16 +174,6 @@ class AllUsers {
 }
 
 class Users {
-  id_socket = undefined
-  variable_id_socket = undefined
-  id = undefined
-  game_name =undefined
-  role = undefined
-  points = undefined
-  character=undefined
-  bought_characters = undefined
-  session_time = undefined
-  interval = undefined
 
   constructor(id_socket , id, game_name, role , points , character , bought_characters) {
     this.id_socket = id_socket
@@ -197,35 +185,19 @@ class Users {
     this.character= character
     this.bought_characters = bought_characters
     this.session_time = Date.now()
-    this.removeUser()
-    // this.interval = setInterval(,60 * 1000)
   }
 
   toString(){
     return `SOCKET ID : ${this.id_socket}\nID : ${this.id}\nGAME : ${this.game_name}\nROLE : ${this.role}\nPOINTS : ${this.points}\n`
   }
-
-  isCorrectOne(id_socket,variable_id_socket){
-    if (this.id_socket === id_socket ){
-      this.variable_id_socket = variable_id_socket
-      return true
-    }else{
-      return false
-    }
+  // ping from active user
+  setSession(){
+      this.session_time = Date.now()
   }
 
-  removeUser(){
-    console.log(Date.now())
-    let time_in_seconds = Math.floor((Date.now() - this.session_time )/ 1000)
-    console.log(`Remaining time of session  player : ${this.game_name}  =  ${time_in_seconds}`)
-    if( time_in_seconds > 60 * 5){
-      AllUsers.userLeave(this.id_socket,this.variable_id_socket)
-    }
-    setTimeout(this.removeUser,1000)
-  }
 
-  getUserData(){
-    this.session_time = Date.now()
+  getUserData(variable_id_socket){
+    this.variable_id_socket = variable_id_socket
     return {
       'id_socket' : this.id_socket,
       'id' : this.id,

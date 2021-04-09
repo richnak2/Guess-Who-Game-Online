@@ -29,6 +29,11 @@ socket.on('user' , ({user_data}) => {
 
 });
 
+setInterval(hold_session,60*1000)
+function hold_session(){
+    socket.emit('ping_server' , {my_socket_id});
+}
+
 function reload(){
     location.assign('index.html');
 }

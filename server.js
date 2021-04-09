@@ -54,8 +54,7 @@ const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-// console.log('chybaaaaaaaaaaaaaaa\n\n\n\n\n\n')
-// setTimeout(this.removeLoggedOut,10000)
+
 io.on('connection', socket => {
 
 
@@ -90,6 +89,9 @@ io.on('connection', socket => {
 
 
     //// PLAEYER MANAGMENT
+
+
+
     socket.on('offline', () => {
         AllUsers.push(socket.id, undefined, undefined, undefined, 0, '#00000000 def.png', '#00000000 def.png');
     });
@@ -131,10 +133,13 @@ io.on('connection', socket => {
         }).catch(err =>{ console.log(`ALL-FU : ${err}`)})
 
     });
+    socket.on('ping_server', ({my_socket_id}) => {
+        AllUsers.ping(my_socket_id);
+    });
 
 
     socket.on('remove_player_from_connection',({my_socket_id}) =>{
-        AllUsers.userLeave(my_socket_id,socket.id);
+        AllUsers.userLeave(my_socket_id);
     })
 
 
