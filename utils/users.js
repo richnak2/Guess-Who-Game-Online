@@ -16,10 +16,9 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
                     'Harry Potter', 'Eric Clapton', 'Nicolas Cage','Will Smith', 'Heisenberg'];
 
 class AllUsers {
-  all_clients = [];
-  static removeLoggedOut;
+  static all_clients = [];
 
-  removeLoggedOut(){
+  static removeLoggedOut(){
     console.log(this.getAllToString());
     for (let index = 0; index < this.getAllLength(); index++) {
       if (this.all_clients[index].removeUser() > 6){
@@ -30,18 +29,18 @@ class AllUsers {
   }
 
 
-  push(id_socket , id, game_name, role , points , character , bought_characters){
+  static push(id_socket , id, game_name, role , points , character , bought_characters){
     let user = new Users(id_socket , id, game_name, role , points , character , bought_characters);
     this.all_clients.push(user);
     console.log(`Count of players : ${this.getAllLength()}`)
     return user;
   }
 
-  getAllLength(){
+  static getAllLength(){
     return this.all_clients.length;
   }
 
-  getAllToString(){
+  static getAllToString(){
     let str = '';
     for (let index = 0; index < this.all_clients.length; index++) {
       str += `NUMBER : ${index}\n`;
@@ -50,7 +49,7 @@ class AllUsers {
     return str;
   }
 
-  userLeave(socket_id, variable_id_socket) {
+  static userLeave(socket_id, variable_id_socket) {
     const index =  this.getUserIndex(socket_id, variable_id_socket);
     if (index !== -1) {
       this.all_clients.splice(index, 1);
@@ -63,7 +62,7 @@ class AllUsers {
     return this.all_clients.findIndex(user => user.isCorrectOne(socket_id, variable_id_socket));
   }
 
-  async getUser(socket_id, variable_id_socket){
+  static async getUser(socket_id, variable_id_socket){
     try {
       return await new Promise((resolve, reject) => {
         let user = this.all_clients[ this.getUserIndex(socket_id, variable_id_socket)];
@@ -79,7 +78,7 @@ class AllUsers {
   }
 
 
-  async buyCharacter(socket_id,variable_id_socket, character_or_color) {
+  static async buyCharacter(socket_id,variable_id_socket, character_or_color) {
     let current_user = this.getUser(socket_id, variable_id_socket);
     if (current_user) {
       current_user.buyCharacterOrColor(character_or_color).then( updated_data => {
@@ -88,7 +87,7 @@ class AllUsers {
     }
   }
 
-  async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
+  static async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
     let current_user = this.getUser(my_socket_id, variable_id_socket);
     if (current_user) {
       current_user.addPoints(Math.ceil(500 / guess_count)).then(updated_data => {
@@ -97,7 +96,7 @@ class AllUsers {
     }
   }
 
-  async setCharacter(socket_id, variable_id_socket, character) {
+  static async setCharacter(socket_id, variable_id_socket, character) {
     let current_user = this.getUser(socket_id, variable_id_socket);
     if (current_user) {
       current_user.setCharacter(character).then(updated_data =>{
@@ -106,7 +105,7 @@ class AllUsers {
     }
   }
 
-  async getAllGames(my_socket_id, variable_id_socket){
+  static async getAllGames(my_socket_id, variable_id_socket){
     try {
       return await new Promise((resolve, reject) => {
         let current_user = this.getUser(my_socket_id, variable_id_socket)
@@ -127,7 +126,7 @@ class AllUsers {
     }
   }
 
-  async RegisterNewUser(name,password,role){
+  static async RegisterNewUser(name,password,role){
     try {
       return await new Promise((resolve, reject) => {
         const exist = db.userExist(name);
@@ -152,7 +151,7 @@ class AllUsers {
   }
 
 
-  async LogIn(socket_id, name, password) {
+  static async LogIn(socket_id, name, password) {
     try {
       return await new Promise((resolve, reject) => {
         const result = db.findUser(name, password);
@@ -247,7 +246,7 @@ class Users {
 
 
 }
-setInterval(AllUsers.removeLoggedOut,5 * 60 * 1000)
+const interval = setInterval(AllUsers.removeLoggedOut,5 * 60 * 1000)
 //
 // // Join user
 // function userJoin(id_socket , id, game_name, role , points , character , bought_characters) {
