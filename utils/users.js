@@ -197,7 +197,8 @@ class Users {
     this.character= character
     this.bought_characters = bought_characters
     this.session_time = Date.now()
-    this.interval = setInterval(this.removeUser,60 * 1000)
+    this.removeUser()
+    // this.interval = setInterval(,60 * 1000)
   }
 
   toString(){
