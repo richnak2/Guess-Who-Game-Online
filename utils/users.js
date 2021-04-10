@@ -116,15 +116,14 @@ class AllUsers {
       return await new Promise((resolve, reject) => {
         let user = this.getUser(socket_id);
         user.then(user_located => {
-          user_located.setCharacter(character)//.then(() => {
-            if (user_located.getId()){
-              db.updateUserCharacter(user_located.getUserData()).then(() => {
-                resolve();
-              }).catch(err => { reject(new Error(`ALLUsers.setCharacter => db.updateUserCharacter ${err}`)) })
-            }else{
-              resolve()
-            }
-          //}).catch(err => { reject( new Error(`Users.setCharacter => ${err}`) ) })
+          user_located.setCharacter(character)
+          if (user_located.getId()){
+            db.updateUserCharacter(user_located.getUserData()).then(() => {
+              resolve();
+            }).catch(err => { reject(new Error(`ALLUsers.setCharacter => db.updateUserCharacter ${err}`)) })
+          }else{
+            resolve()
+          }
         }).catch(err => { reject(  new Error(`ALLUsers.getUser => ${err}`))})
       }).catch(err => {return new Error(`ALLUsers.getUserData => ${err}`)})
     }catch (err) {
@@ -137,15 +136,14 @@ class AllUsers {
       return await new Promise((resolve, reject) => {
         let user = this.getUser(socket_id);
         user.then(user_located => {
-          user_located.buyCharacterOrColor(item).then(() => {
-            if (user_located.getId()){
-              db.updateUserCharacter(user_located.getUserData()).then(() => {
-                resolve();
-              }).catch(err => { reject(new Error(`ALLUsers.buyCharacterOrColor => db.updateUserCharacter ${err}`)) })
-            }else{
-              resolve()
-            }
-          }).catch(err => { reject( new Error(`Users.buyCharacterOrColor => ${err}`) ) })
+          user_located.buyCharacterOrColor(item)
+          if (user_located.getId()){
+            db.updateUserCharacter(user_located.getUserData()).then(() => {
+              resolve();
+            }).catch(err => { reject(new Error(`ALLUsers.buyCharacterOrColor => db.updateUserCharacter ${err}`)) })
+          }else{
+            resolve()
+          }
         }).catch(err => { reject(  new Error(`ALLUsers.getUser => ${err}`))})
       }).catch(err => {return new Error(`ALLUsers.buyCharacterOrColor => ${err}`)})
     }catch (err) {
@@ -285,19 +283,28 @@ class Users {
   buyCharacterOrColor(character_or_color) {
     if (character_or_color.charAt(0) === '#'){ // color
       const index_color = color_pallet.findIndex(color => color[0] === character_or_color);
-      if (index_color !== -1) {
+      if (index_color > -1) {
 
         if (this.points >= color_pallet[index_color][1] ){
           this.points -= color_pallet[index_color][1];
+        }else{
+          return new Error('Not enough money to perches color');
         }
       }else{
         return new Error('Color was not found');
       }
     }else{ // character
-      let price = parseInt(character_or_color.split('.')[0])*100;
-      if (this.points >= price  ){
-        this.points -= price;
+      try{
+        let price = parseInt(character_or_color.split('.')[0])*100;
+        if (this.points >= price  ){
+          this.points -= price;
+        }else{
+          return new Error('Not enough money to perches character');
+        }
+      }catch (err) {
+        return new Error('Character was not found');
       }
+
     }
     this.bought_characters += ' '+character_or_color;
   }
