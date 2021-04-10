@@ -98,29 +98,29 @@ io.on('connection', socket => {
     // login_page.js related server error tag => L-O
     socket.on('online', ({name_value , password_value}) => {
         AllUsers.logIn(socket.id,name_value, password_value).then(log_in =>{
-            console.log(log_in)
-            if (log_in.includes('Error')){
-                socket.emit('log_answer', {massage: format_error(log_in.split('=>').pop(), 20, 'warning')});
-            }else{
-                socket.emit('log_answer', {massage: format_error(`L-O => ${log_in}`, 10, 'success')});
-            }
-        }).catch(err => {
-            console.log(`errorr : ${err}`)
+            socket.emit('log_answer', {massage: log_in})
+        }).catch(err =>{
+            printError(`L-O => ${err}`)
         })
     });
 
     // login.js related server error tag => L-RNU
     socket.on('register_new_user' , ({name_value, password_value,role_value}) => {
         AllUsers.registerNewUser(name_value, password_value,role_value).then(registered => {
-            console.log(registered)
-            if (registered.includes('Error')){
-                printError(`L-RNU : ${registered}`)
-            }else{
-                socket.emit('register_new_user', { massage : registered });
-            }
-        }).catch(err => {
-            console.log(`errorr : ${err}`)
+            socket.emit('register_new_user', {massage: registered})
+        }).catch(err =>{
+            printError(`L-RNU => ${err}`)
         })
+        // AllUsers.registerNewUser(name_value, password_value,role_value).then(registered => {
+        //     console.log(registered)
+        //     if (registered.includes('Error')){
+        //         printError(`L-RNU : ${registered}`)
+        //     }else{
+        //         socket.emit('register_new_user', { massage : registered });
+        //     }
+        // }).catch(err => {
+        //     console.log(`errorr : ${err}`)
+        // })
     });
 
     // main_socket_connection.js related server error tag => MSC-FU
@@ -131,8 +131,6 @@ io.on('connection', socket => {
         }).catch(err =>{
             socket.emit('error', {error_massage : format_error(`MSC-FU => ${err}` , 10, 'warning')})
             printError(`MSC-FU => ${err}`)
-        }).catch(err => {
-            console.log(`errorr : ${err}`)
         })
 
     });

@@ -18,7 +18,7 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
 
 class AllUsers {
   static all_clients = {};
-  static x = setInterval(() => {console.log(`Interval :  ${this.strGetAllLength()}`)},10 * 1000)
+  static x = setInterval(() => {console.log(`Interval :  ${this.strGetAllLength()}`)},30 * 1000)
 
   // static removeLoggedOut(){
   //   console.log(this.getAllToString());
@@ -213,16 +213,16 @@ class AllUsers {
               if (data) {
                 resolve(format_error(`Thanks for registration <strong>${name}</strong> now please log in and enjoy the games`, 10, 'success'))
               } else {
-                resolve(format_error('Something want wrong with registration please try again later', 20, 'danger'))
+                reject(new Error('Something want wrong with registration please try again later'))
               }
-            }).catch(err => {throw new Error(`db.registerUser =>  ${err}`)});
+            }).catch(err => {reject(new Error(`db.registerUser =>  ${err}`))});
           } else {
             resolve(format_error('User with this name already exist', 10, 'warning'))
           }
-        }).catch(err => {throw new Error(`ALLUsers.registerNewUser =>  ${err}`)});
-      }).catch(err => {return new Error(err)});
+        }).catch(err => {reject(new Error(`ALLUsers.registerNewUser => db.userExist =>  ${err}`))});
+      }).catch(err => {return new Error(`AllUsers.registerNewUser.promise =>  ${err}`)});
     }catch (err) {
-      return new Error("ALLUsers.registerNewUser => "+err)
+      return new Error(`AllUsers.registerNewUser =>  ${err}`)
     }
   }
 
@@ -234,12 +234,12 @@ class AllUsers {
         result.then(user => {
           if (user[0] !== undefined) {
             this.push(socket_id, user[0]['id'], user[0]['game_name'], user[0]['role'], user[0]['points'], user[0]['type_of_character'], user[0]['bought_characters']);
-            resolve('You are logged in')
+            resolve(format_error( 'You are logged in', 10, 'success'))
           }else {
-            reject(`Cannot find user ${name} ${password}`) ;
+            resolve(format_error( `Cannot find user ${name} ${password}`, 10, 'warning')) ;
           }
-        }).catch(err => { throw new Error(`db.findUser =>  ${err}`)} )
-      }).catch(err => { return new Error(`AllUsers.logIn =>  ${err}`)})
+        }).catch(err => { reject(new Error(`db.findUser =>  ${err}`))} )
+      }).catch(err => { return  new Error(`AllUsers.logIn.promise =>  ${err}`)})
     }catch (err) {
       return  new Error(`AllUsers.logIn =>  ${err}`)
     }
