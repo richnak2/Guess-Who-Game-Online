@@ -98,7 +98,6 @@ io.on('connection', socket => {
     // login_page.js related server error tag => L-O
     socket.on('online', ({name_value , password_value}) => {
         AllUsers.LogIn(socket.id,name_value, password_value).then(log_in =>{
-            console.log(log_in)
             socket.emit('log_answer', {
                 massage: format_error(log_in, 10, 'success')
             });
