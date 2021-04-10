@@ -71,13 +71,13 @@ io.on('connection', socket => {
             if (user === undefined) {
                 console.log("CGM : Something want wrong with user")
             } else {
-                delete_folder_r('public/images/' + title).then(removed_massage_server => console.log('CGM : Deleting folders'));
+                delete_folder_r('public/images/' + title).then(removed_massage_server => console.log('CGM-DG : Deleting folders'));
 
                 // delete game from db
                 const db = dbService.getDbServiceInstance();
                 const result = db.deleteGame(game_id, user.id);
                 result.then(data => {
-                }).catch(err => console.log(err));
+                }).catch(err => console.log(`CGM-DG : ${err}`));
             }
         }).catch(err =>{ console.log(`ALL-FU : ${err}`)})
     })
@@ -89,11 +89,8 @@ io.on('connection', socket => {
 
 
     //// PLAEYER MANAGMENT
-
-
-
     socket.on('offline', () => {
-        AllUsers.push(socket.id, undefined, undefined, undefined, 0, '#00000000 def.png', '#00000000 def.png');
+        AllUsers.push(socket.id, undefined, undefined, undefined, 10000, '#00000000 def.png', '#00000000 def.png');
     });
     // login_page.js related server error tag => L-O
     socket.on('online', ({name_value , password_value}) => {
@@ -110,7 +107,7 @@ io.on('connection', socket => {
         }).catch(err =>{ console.log(`L-O : ${err}`)})
     });
 
-    // all related server error tag => ALL-FU
+    // login.js related server error tag => L-RNU
     socket.on('register_new_user' , ({name_value, password_value,role_value}) => {
         AllUsers.RegisterNewUser(name_value, password_value,role_value).then(data => {
             if (data) {
@@ -123,24 +120,26 @@ io.on('connection', socket => {
                 });
             }
         }).catch(err =>{ console.log(`L-RNU : ${err}`)})
-
     });
 
-    // all related server error tag => ALL-FU
+    // main_socket_connection.js related server error tag => MSC-FU
     socket.on('find_user', ({my_socket_id}) => {
         AllUsers.getUser(my_socket_id,socket.id).then(user => {
-            socket.emit('user', {user_data: user})
-        }).catch(err =>{ console.log(`ALL-FU : ${err}`)})
+            socket.emit('user', {user_data : user})
+        }).catch(err =>{ console.log(`MSC-FU : ${err}`)})
 
     });
     socket.on('ping_server', ({my_socket_id}) => {
-        AllUsers.ping(my_socket_id);
+        let ping_res = AllUsers.ping(my_socket_id)
+        if (ping_res){
+            socket.emit('ping_server');
+        }
     });
-
 
     socket.on('remove_player_from_connection',({my_socket_id}) =>{
         AllUsers.userLeave(my_socket_id);
     })
+
 
 
 
@@ -150,44 +149,32 @@ io.on('connection', socket => {
             socket.emit('get_all_games' , {games : data});
         }).catch(err =>{ console.log(`M-GAG : ${err}`)})
     });
-    // // ziskanie hrier aj v procese vivoja aplikacie iba userom ktori vytvorili dane hru
-    // // GAME MENU server error tag => GM : GAGBY
-    // socket.on('get_all_games_by_you' , ({my_socket_id}) => {
-    //     const get_current_user = getCurrentUser(my_socket_id);
-    //     if (get_current_user === undefined){
-    //         console.log("GM-GAGBY : Something want wrong with user")
-    //     }else{
-    //         const db = dbService.getDbServiceInstance();
-    //         const result = db.getAllYourGames(get_current_user.id);
-    //         result.then(data => {
-    //             socket.emit('get_all_games_by_you', {games : data});
-    //         }).catch(err => console.log(err));
-    //     }
-    // });
-    // // SHOP : S
-    // socket.on('restart_character',({my_socket_id}) => {
-    //     const player = setCharacter(my_socket_id,'bg-#00000000 def.png');
-    //     if (player.id !== undefined){
-    //         const db = dbService.getDbServiceInstance();
-    //         db.updateUserCharacter(player).then();
-    //     }
-    // });
-    // socket.on('set_character_or_color',({my_socket_id,character_in_game}) => {
-    //     const player = setCharacter(my_socket_id,character_in_game);
-    //     if (player.id !== undefined){
-    //         const db = dbService.getDbServiceInstance();
-    //         db.updateUserCharacter(player).then();
-    //     }
-    // });
-    // socket.on('buy_character_or_color',({my_socket_id,item}) => {
-    //     const player = buyCharacter(my_socket_id,item);
-    //     if (player.id !== undefined){
-    //         const db = dbService.getDbServiceInstance();
-    //         db.updateUserCharacter(player).then();
-    //     }
-    // });
-    //
-    //
+
+    // create_game.js related server error tag => CG-GAGBY
+    socket.on('get_all_games_by_you' , ({my_socket_id}) => {
+        AllUsers.getAllYourGames(my_socket_id,socket.id).then(data => {
+            socket.emit('get_all_games_by_you', {games : data});
+        }).catch(err =>{ console.log(`CG-GAGBY : ${err}`)})
+    });
+
+
+
+    // shop.js related server error tag => S-RCH / S-SCHOR / S-BCHOR
+    socket.on('restart_character',({my_socket_id}) => {
+        AllUsers.setCharacter(my_socket_id,socket.id,'#00000000 def.png').then(data => {
+        }).catch(err =>{ console.log(`S-RCH : ${err}`)})
+    });
+    socket.on('set_character_or_color',({my_socket_id,character_in_game}) => {
+        AllUsers.setCharacter(my_socket_id,socket.id,character_in_game).then(data => {
+        }).catch(err =>{ console.log(`S-SCHOR : ${err}`)})
+    });
+    socket.on('buy_character_or_color',({my_socket_id,item}) => {
+        AllUsers.buyCharacterOrColor(my_socket_id,socket.id,item).then(data => {
+        }).catch(err =>{ console.log(`S-BCHOR : ${err}`)})
+    });
+
+
+
     // //GAME : G
     // // zmena udajou pre bezpecnost profilu hraca
     // function remove_player_identity(game){
@@ -259,15 +246,7 @@ io.on('connection', socket => {
     //         socket.emit('answer_to_is_you_picture_pc', {answer: is_you_picture})
     //     }
     // });
-    // // : GCH
-    // socket.on('get_character',({my_socket_id}) => {
-    //     const player = getCurrentUser(my_socket_id);
-    //     if (player === undefined){
-    //         console.log("G-GCH : Something want wrong with user")
-    //     }else {
-    //         socket.emit('bought_characters',{bought_ch:player.bought_characters});
-    //     }
-    // })
+
     //
     // // spracovanie posielania sprav pre celu hru
     // // : BM

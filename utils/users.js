@@ -32,7 +32,12 @@ class AllUsers {
   // }
 
   static ping(id_socket){
-    this.all_clients[id_socket].setSession();
+    try{
+      this.all_clients[id_socket].setSession();
+    }catch (e) {
+      console.log( `ping lost player ${id_socket}` )
+    }
+
   }
 
   static push(id_socket , id, game_name, role , points , character , bought_characters){
@@ -84,8 +89,8 @@ class AllUsers {
   static async buyCharacter(socket_id,variable_id_socket, character_or_color) {
     let current_user = this.getUser(socket_id, variable_id_socket);
     if (current_user) {
-      current_user.buyCharacterOrColor(character_or_color).then( updated_data => {
-        return updated_data;
+      current_user.buyCharacterOrColor(character_or_color).then( updated_user => {
+        return updated_user;
       }).catch(err => {return new Error(err)});
     }
   }
@@ -93,20 +98,69 @@ class AllUsers {
   static async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
     let current_user = this.getUser(my_socket_id, variable_id_socket);
     if (current_user) {
-      current_user.addPoints(Math.ceil(500 / guess_count)).then(updated_data => {
-        return updated_data;
+      current_user.addPoints(Math.ceil(500 / guess_count)).then(updated_user => {
+        return updated_user;
       }).catch(err => {return new Error(err)});
     }
   }
 
   static async setCharacter(socket_id, variable_id_socket, character) {
-    let current_user = this.getUser(socket_id, variable_id_socket);
-    if (current_user) {
-      current_user.setCharacter(character).then(updated_data =>{
-        return updated_data;
-      }).catch(err => {return new Error(err)});
+    try {
+      return await new Promise((resolve, reject) => {
+        let current_user = this.getUser(socket_id, variable_id_socket);
+        console.log(`Updated user ${current_user}`)
+        if (current_user) {
+          current_user.setCharacter(character).then(updated_user => {
+            console.log(`Updated user ${updated_user}`)
+            if (updated_user.id !== undefined) {
+              db.updateUserCharacter(updated_user).then(is_updated => {
+                resolve(updated_user);
+              }).catch(err => {
+                return new Error("ALLUsers.setCharacter DB: " + err)
+              })
+            } else {
+              resolve(updated_user);
+            }
+          }).catch(err => {
+            return new Error("ALLUsers.setCharacter : " + err)
+          })
+        }else{
+          return new Error("ALLUsers.setCharacter : Cannot find user")
+        }
+      })
+    }catch (err) {
+      return new Error("ALLUsers.setCharacter : "+err)
     }
   }
+  static async buyCharacterOrColor(socket_id, variable_id_socket, item) {
+    try {
+      return await new Promise((resolve, reject) => {
+        let current_user = this.getUser(socket_id, variable_id_socket);
+        console.log(`Updated user ${current_user}`)
+        if (current_user) {
+          current_user.buyCharacterOrColor(item).then(updated_user => {
+            console.log(`Updated user ${updated_user}`)
+            if (updated_user.id !== undefined) {
+              db.updateUserCharacter(updated_user).then(is_updated => {
+                resolve(updated_user);
+              }).catch(err => {
+                return new Error("ALLUsers.buyCharacterOrColor DB: " + err)
+              })
+            } else {
+              resolve(updated_user);
+            }
+          }).catch(err => {
+            return new Error("ALLUsers.buyCharacterOrColor : " + err)
+          })
+        }else{
+          return new Error("ALLUsers.buyCharacterOrColor : Cannot find user")
+        }
+      })
+    }catch (err) {
+      return new Error("ALLUsers.buyCharacterOrColor : "+err)
+    }
+  }
+
 
   static async getAllGames(my_socket_id, variable_id_socket){
     try {
@@ -114,6 +168,26 @@ class AllUsers {
         let current_user = this.getUser(my_socket_id, variable_id_socket)
         if (current_user) {
           const result = db.getAllGames(current_user.id);
+          result.then(data => {
+            if (data){
+              resolve(data)
+            }else{
+              reject(new Error("ALLUsers.getAllGames : Empty games"))
+            }
+          }).catch(err => reject(new Error("ALLUsers.getAllGames : "+err)) );
+        }
+      }).catch(err => {return new Error("ALLUsers.getAllGames : "+err)})
+    }catch (err) {
+      return new Error("ALLUsers.getAllGames : "+err)
+    }
+  }
+
+  static async getAllYourGames(my_socket_id, variable_id_socket){
+    try {
+      return await new Promise((resolve, reject) => {
+        let current_user = this.getUser(my_socket_id, variable_id_socket)
+        if (current_user) {
+          const result = db.getAllYourGames(current_user.id);
           result.then(data => {
             if (data){
               resolve(data)
@@ -157,9 +231,9 @@ class AllUsers {
     try {
       return await new Promise((resolve, reject) => {
         const result = db.findUser(name, password);
-        result.then(data => {
-          if (data[0] !== undefined) {
-            this.push(socket_id, data[0]['id'], data[0]['game_name'], data[0]['role'], data[0]['points'], data[0]['type_of_character'], data[0]['bought_characters']);
+        result.then(user => {
+          if (user[0] !== undefined) {
+            this.push(socket_id, user[0]['id'], user[0]['game_name'], user[0]['role'], user[0]['points'], user[0]['type_of_character'], user[0]['bought_characters']);
             resolve(true)
           }else {
             resolve(false) ;
@@ -178,12 +252,11 @@ class Users {
 
   constructor(id_socket , id, game_name, role , points , character , bought_characters) {
     this.id_socket = id_socket
-    this.variable_id_socket = id_socket
     this.id = id
     this.game_name = (game_name === undefined ? user_names[Math.floor(Math.random() * user_names.length)] : game_name)
     this.role = role
     this.points = points
-    this.character= character
+    this.setCharacter(character,id_socket)
     this.bought_characters = bought_characters
     this.session_time = Date.now()
   }
@@ -210,16 +283,17 @@ class Users {
       'bought_characters' : this.bought_characters
     }
   }
-  setCharacter( character) {
-    this.character = character;
-    return this.getUserData()
+  setCharacter(character) {
+    let splinted_character = character.split(' ');
+    this.color = splinted_character[0];
+    this.character =  splinted_character[1];
   }
 
 
   addPoints(points) {
     this.points += points;
-    return this.getUserData()
   }
+
   buyCharacterOrColor(character_or_color) {
     if (character_or_color.charAt(0) === '#'){ // color
       const index_color = color_pallet.findIndex(color => color[0] === character_or_color);
@@ -238,7 +312,6 @@ class Users {
       }
     }
     this.bought_characters += ' '+character_or_color;
-    return this.getUserData()
   }
 
 

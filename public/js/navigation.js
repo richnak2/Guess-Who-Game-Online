@@ -1,22 +1,11 @@
-let html_img = undefined;
-let html_img_bg = undefined;
-let html_coins = undefined;
-let html_name = undefined;
-let character_in_game = undefined;
-
-document.addEventListener('DOMContentLoaded', function () {
-    html_img = document.getElementById('image');
-    html_img_bg = document.getElementById('background_your_img');
-    html_coins = document.getElementById('coins');
-    html_name = document.getElementById('name');
-
+function setNavigation() {
     leave_if_game();
     pre_make_colors_them();
-    set_main_img();
-});
+    setImageAndBackground(html_img,html_img_bg);
+}
 
 
-
+//!!!!
 function leave_if_game(){
     if (sessionStorage.getItem('game_id') !== ''){
         let game_id = sessionStorage.getItem('game_id');
@@ -25,21 +14,15 @@ function leave_if_game(){
     }
 }
 
-function set_main_img(){
-    if (character_in_game){
-        // console.log('set_main_img',character_in_game.split(' '));
-        let splinted_character = character_in_game.split(' ');
-        // console.log('set_main_img',splinted_character);
-        html_img.src = './images/Users/'+splinted_character[1];
-        html_img_bg.style.backgroundColor = splinted_character[0];
-    }else{
-        setTimeout(set_main_img , 100);
-    }
+function setImageAndBackground(html_img,html_img_bg){
+    html_img.src = `./images/Users/${user_account.character}`;
+    html_img_bg.style.backgroundColor = user_account.color;
 }
 
 
 
 function shop(){
+    //!!!!
     if (typeof game_id !== 'undefined'){
         socket.emit('leave_game',{game_id,my_socket_id});
     }
@@ -51,6 +34,7 @@ function menu(){
 
 }
 function log_out(){
+    //!!!!
     if (typeof game_id !== 'undefined'){
         socket.emit('leave_game',{game_id,my_socket_id});
     }
