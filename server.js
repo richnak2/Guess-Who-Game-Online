@@ -173,8 +173,6 @@ io.on('connection', socket => {
             printError(`S-RCH => ${err}`)
             socket.emit('error', {error_massage: format_error(`S-SCHOR => ${err}`, 30, 'danger')})
         })
-        // AllUsers.setCharacter(my_socket_id,character_in_game).then(data => {
-        // }).catch(err =>{ console.log(`S-SCHOR : ${err}`)})
     });
     socket.on('buy_character_or_color',({my_socket_id,item}) => {
         AllUsers.buyCharacterOrColor(my_socket_id,item).then(() => {

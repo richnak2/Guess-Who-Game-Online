@@ -116,7 +116,7 @@ class AllUsers {
       return await new Promise((resolve, reject) => {
         let user = this.getUser(socket_id);
         user.then(user_located => {
-          user_located.setCharacter(character).then(() => {
+          user_located.setCharacter(character)//.then(() => {
             if (user_located.getId()){
               db.updateUserCharacter(user_located.getUserData()).then(() => {
                 resolve();
@@ -124,7 +124,7 @@ class AllUsers {
             }else{
               resolve()
             }
-          }).catch(err => { reject( new Error(`Users.setCharacter => ${err}`) ) })
+          //}).catch(err => { reject( new Error(`Users.setCharacter => ${err}`) ) })
         }).catch(err => { reject(  new Error(`ALLUsers.getUser => ${err}`))})
       }).catch(err => {return new Error(`ALLUsers.getUserData => ${err}`)})
     }catch (err) {
