@@ -69,34 +69,37 @@ class AllUsers {
   }
 
 
-
-  static async getUser(socket_id, variable_id_socket){
+  static async getUser(socket_id){
     try {
       return await new Promise((resolve, reject) => {
         let user = this.all_clients[socket_id];
-        if (user){
-          resolve(user.getUserData(variable_id_socket))
+        if (user !== undefined){
+          resolve(user)
         }else{
-          resolve(undefined);
+          reject(`user with socket : ${socket_id} does not exist`);
         }
-      }).catch(err => {return new Error("ALLUsers.getAllGames : "+err)})
+      }).catch(err => {return new Error("ALLUsers.getUser => "+err)})
     }catch (err) {
-      return new Error("ALLUsers.getAllGames : "+err)
+      return new Error("ALLUsers.getUser => "+err)
+    }
+  }
+  static async getUserData(socket_id, variable_id_socket){
+    try {
+      return await new Promise((resolve, reject) => {
+        let user = this.getUser(socket_id);
+        user.then(user_located => {
+          resolve(user_located.getUserData(variable_id_socket))
+        }).catch(err => { reject( new Error("Users.getUserData => "+err) )})
+      }).catch(err => {return new Error("ALLUsers.getUserData => "+err)})
+    }catch (err) {
+      return new Error("ALLUsers.getUserData => "+err)
     }
   }
 
-  //
-  // static async buyCharacter(socket_id,variable_id_socket, character_or_color) {
-  //   let current_user = this.getUser(socket_id, variable_id_socket);
-  //   if (current_user) {
-  //     current_user.buyCharacterOrColor(character_or_color).then( updated_user => {
-  //       return updated_user;
-  //     }).catch(err => {return new Error(err)});
-  //   }
-  // }
+
 
   static async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
-    let current_user = this.getUser(my_socket_id, variable_id_socket);
+    let current_user = this.getUserData(my_socket_id, variable_id_socket);
     if (current_user) {
       current_user.addPoints(Math.ceil(500 / guess_count)).then(updated_user => {
         return updated_user;
@@ -108,10 +111,10 @@ class AllUsers {
     try {
       return await new Promise((resolve, reject) => {
         let current_user = this.all_clients[socket_id];
-        console.log(`Updated user ${JSON.stringify(current_user.getUserData())}`)
+        // console.log(`Updated user ${JSON.stringify(current_user.getUserData())}`)
         if (current_user) {
           current_user.setCharacter(character).then(() => {
-            console.log(`Updated user ${JSON.stringify(current_user.getUserData())}`)
+            // console.log(`Updated user ${JSON.stringify(current_user.getUserData())}`)
             if (current_user.getId()) {
               db.updateUserCharacter(current_user.getUserData()).then(() => {
                 resolve(current_user);
@@ -162,32 +165,28 @@ class AllUsers {
   }
 
 
-  static async getAllGames(my_socket_id, variable_id_socket){
+  static async getAllGames(socket_id){
     try {
       return await new Promise((resolve, reject) => {
-        let current_user = this.getUser(my_socket_id, variable_id_socket)
-        if (current_user) {
-          const result = db.getAllGames(current_user.id);
+        const current_user = this.getUser(socket_id);
+        current_user.then(user_located => {
+          const result = db.getAllGames(user_located.getId());
           result.then(data => {
-            if (data){
-              resolve(data)
-            }else{
-              reject(new Error("ALLUsers.getAllGames : Empty games"))
-            }
-          }).catch(err => reject(new Error("ALLUsers.getAllGames : "+err)) );
-        }
-      }).catch(err => {return new Error("ALLUsers.getAllGames : "+err)})
+            resolve(data)
+          }).catch(err => reject(new Error(`db.getAllGames =>  ${err}`) ) );
+        }).catch(err => reject(new Error(`AllUsers.getAllGames =>  ${err}`) ) );
+      }).catch(err => {new Error(`AllUsers.getAllGames =>  ${err}`)})
     }catch (err) {
-      return new Error("ALLUsers.getAllGames : "+err)
+      return new Error("ALLUsers.getAllGames => "+err)
     }
   }
 
-  static async getAllYourGames(my_socket_id, variable_id_socket){
+  static async getAllYourGames(socket_id){
     try {
       return await new Promise((resolve, reject) => {
-        let current_user = this.getUser(my_socket_id, variable_id_socket)
-        if (current_user) {
-          const result = db.getAllYourGames(current_user.id);
+        let current_user = this.all_clients[socket_id];
+        if (current_user.getId()) {
+          const result = db.getAllYourGames(current_user.getId());
           result.then(data => {
             if (data){
               resolve(data)
@@ -195,7 +194,7 @@ class AllUsers {
               reject(new Error("ALLUsers.getAllGames : Empty games"))
             }
           }).catch(err => reject(new Error("ALLUsers.getAllGames : "+err)) );
-        }
+        }//!!!
       }).catch(err => {return new Error("ALLUsers.getAllGames : "+err)})
     }catch (err) {
       return new Error("ALLUsers.getAllGames : "+err)
@@ -211,18 +210,18 @@ class AllUsers {
             const result = db.registerUser(name, password, role);
             result.then(data => {
               if (data) {
-                resolve(true)
+                resolve()
               } else {
-                resolve(false)
+                reject(`something want wrong with registration`)
               }
             }).catch(err => {return new Error(err)});
           } else {
-            resolve(false)
+            resolve(`user with this name already exist`)
           }
         }).catch(err => {return new Error(err)});
       }).catch(err => {return new Error(err)});
     }catch (err) {
-      return new Error("ALLUsers.getAllGames : "+err)
+      return new Error("ALLUsers.getAllGames => "+err)
     }
   }
 
@@ -234,14 +233,14 @@ class AllUsers {
         result.then(user => {
           if (user[0] !== undefined) {
             this.push(socket_id, user[0]['id'], user[0]['game_name'], user[0]['role'], user[0]['points'], user[0]['type_of_character'], user[0]['bought_characters']);
-            resolve(true)
+            resolve('You are logged in')
           }else {
-            resolve(false) ;
+            reject(`Cannot find user ${name} ${password}`) ;
           }
         }).catch(err => {return new Error(err)});
-      }).catch(err => {return new Error("ALLUsers.getAllGames : "+err)})
+      }).catch(err => {return new Error(err)})
     }catch (err) {
-      return new Error("ALLUsers.getAllGames : "+err)
+      return new Error("ALLUsers.getAllGames => "+err)
     }
 
 
@@ -269,7 +268,7 @@ class Users {
       this.session_time = Date.now()
   }
   getId(){
-    return this.id;
+    return this.id === undefined ? 0 : this.id;
   }
 
 

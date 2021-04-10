@@ -338,7 +338,7 @@ class DbService {
                     resolve(results);
                 })
             });
-            //console.log(response[0]);
+            // inverzna odpoved ze nexistuje existuje
             return response[0] === undefined ? 1 : 0;
         } catch (error) {
             return new Error(error);

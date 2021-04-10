@@ -54,6 +54,9 @@ const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+function printError(err){
+    console.log(err)
+}
 
 io.on('connection', socket => {
 
@@ -67,7 +70,7 @@ io.on('connection', socket => {
 
     // create_game.js related server error tag => CGM-DG
     socket.on('delete_game' , ({game_id,title,my_socket_id}) =>{
-        AllUsers.getUser(my_socket_id,socket.id).then(user => {
+        AllUsers.getUserData(my_socket_id,socket.id).then(user => {
             if (user === undefined) {
                 console.log("CGM : Something want wrong with user")
             } else {
@@ -94,17 +97,16 @@ io.on('connection', socket => {
     });
     // login_page.js related server error tag => L-O
     socket.on('online', ({name_value , password_value}) => {
-        AllUsers.LogIn(socket.id,name_value, password_value).then(user =>{
-            if (user){
-                socket.emit('log_answer', {
-                    massage: format_error('You are logged in', 10, 'success')
-                });
-            }else{
-                socket.emit('log_answer', {
-                    massage: format_error('<strong>User game name</strong> or <strong>password</strong> is wrong.', 10, 'warning')
-                });
-            }
-        }).catch(err =>{ console.log(`L-O : ${err}`)})
+        AllUsers.LogIn(socket.id,name_value, password_value).then(log_in =>{
+            socket.emit('log_answer', {
+                massage: format_error(log_in, 10, 'success')
+            });
+        }).catch(err =>{
+            socket.emit('log_answer', {
+                massage: format_error(err, 10, 'warning')
+            });
+            printError(`L-O => ${err}`)
+        })
     });
 
     // login.js related server error tag => L-RNU
@@ -124,9 +126,12 @@ io.on('connection', socket => {
 
     // main_socket_connection.js related server error tag => MSC-FU
     socket.on('find_user', ({my_socket_id}) => {
-        AllUsers.getUser(my_socket_id,socket.id).then(user => {
+        AllUsers.getUserData(my_socket_id,socket.id).then(user => {
             socket.emit('user', {user_data : user})
-        }).catch(err =>{ console.log(`MSC-FU : ${err}`)})
+        }).catch(err =>{
+            socket.emit('error', {error_massage : format_error(`MSC-FU => ${err}` , 10, 'warning')})
+            printError(`MSC-FU => ${err}`)
+        })
 
     });
     socket.on('ping_server', ({my_socket_id}) => {
@@ -145,14 +150,14 @@ io.on('connection', socket => {
 
     // menu.js related server error tag => M-GAG
     socket.on('get_all_games' , ({my_socket_id}) => {
-        AllUsers.getAllGames(my_socket_id,socket.id).then(data => {
+        AllUsers.getAllGames(my_socket_id).then(data => {
             socket.emit('get_all_games' , {games : data});
         }).catch(err =>{ console.log(`M-GAG : ${err}`)})
     });
 
     // create_game.js related server error tag => CG-GAGBY
     socket.on('get_all_games_by_you' , ({my_socket_id}) => {
-        AllUsers.getAllYourGames(my_socket_id,socket.id).then(data => {
+        AllUsers.getAllYourGames(my_socket_id).then(data => {
             socket.emit('get_all_games_by_you', {games : data});
         }).catch(err =>{ console.log(`CG-GAGBY : ${err}`)})
     });
