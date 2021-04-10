@@ -90,7 +90,7 @@ class AllUsers {
         let user = this.getUser(socket_id);
         user.then(user_located => {
           resolve(user_located.getUserData(variable_id_socket))
-        }).catch(err => { reject( new Error("Users.getUserData => "+err) )})
+        }).catch(err => { throw new Error(`Users.getUserData => ${err}`) })
       }).catch(err => {return new Error("ALLUsers.getUserData => "+err)})
     }catch (err) {
       return new Error("ALLUsers.getUserData => "+err)
