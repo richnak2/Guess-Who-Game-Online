@@ -103,7 +103,7 @@ io.on('connection', socket => {
             });
         }).catch(err =>{
             socket.emit('log_answer', {
-                massage: format_error(err, 10, 'warning')
+                massage: format_error(err.split('=>').pop(), 20, 'warning')
             });
             printError(`L-O => ${err}`)
         })
