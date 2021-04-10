@@ -104,7 +104,7 @@ class AllUsers {
     }
   }
 
-  static async setCharacter(socket_id, variable_id_socket, character) {
+  static async setCharacter(socket_id, character) {
     try {
       return await new Promise((resolve, reject) => {
         let current_user = this.all_clients[socket_id];
@@ -137,7 +137,7 @@ class AllUsers {
       return await new Promise((resolve, reject) => {
         let current_user = this.all_clients[socket_id];
         console.log(`Updated user ${current_user.getUserData()}`)
-        if (current_user) {
+        if (current_user !== undefined) {
           current_user.buyCharacterOrColor(item).then(() => {
             console.log(`Updated user ${current_user.getUserData()}`)
             if (current_user.id !== undefined) {
@@ -271,7 +271,7 @@ class Users {
 
 
   getUserData(variable_id_socket){
-    this.variable_id_socket = variable_id_socket
+    this.variable_id_socket = variable_id_socket ? this.variable_id_socket : variable_id_socket
     return {
       'id_socket' : this.id_socket,
       'id' : this.id,
@@ -279,6 +279,7 @@ class Users {
       'game_name' : this.game_name,
       'role' : this.role,
       'points' : this.points,
+      'color' : this.color,
       'character' : this.character,
       'bought_characters' : this.bought_characters
     }

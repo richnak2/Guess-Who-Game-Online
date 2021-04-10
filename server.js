@@ -165,11 +165,11 @@ io.on('connection', socket => {
         }).catch(err =>{ console.log(`S-RCH : ${err}`)})
     });
     socket.on('set_character_or_color',({my_socket_id,character_in_game}) => {
-        AllUsers.setCharacter(my_socket_id,socket.id,character_in_game).then(data => {
+        AllUsers.setCharacter(my_socket_id,character_in_game).then(data => {
         }).catch(err =>{ console.log(`S-SCHOR : ${err}`)})
     });
     socket.on('buy_character_or_color',({my_socket_id,item}) => {
-        AllUsers.buyCharacterOrColor(my_socket_id,socket.id,item).then(data => {
+        AllUsers.buyCharacterOrColor(my_socket_iditem).then(data => {
         }).catch(err =>{ console.log(`S-BCHOR : ${err}`)})
     });
 
