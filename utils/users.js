@@ -1,6 +1,7 @@
 // Include file s DB
 const DB = require('./dbService');
 const db = DB.getDbServiceInstance();
+const {format_message,format_error} = require('./messages');
 
 
 const color_pallet = [['#00000000',0],// base color default
@@ -201,7 +202,7 @@ class AllUsers {
     }
   }
 
-  static async RegisterNewUser(name,password,role){
+  static async registerNewUser(name, password, role){
     try {
       return await new Promise((resolve, reject) => {
         const exist = db.userExist(name);
@@ -210,23 +211,23 @@ class AllUsers {
             const result = db.registerUser(name, password, role);
             result.then(data => {
               if (data) {
-                resolve()
+                resolve(format_error(`Thanks for registration <strong>${name}</strong> now please log in and enjoy the games`, 10, 'success'))
               } else {
-                reject(`something want wrong with registration`)
+                resolve(format_error('Something want wrong with registration please try again later', 20, 'danger'))
               }
-            }).catch(err => {return new Error(err)});
+            }).catch(err => {throw new Error(`db.registerUser =>  ${err}`)});
           } else {
-            resolve(`user with this name already exist`)
+            resolve(format_error('User with this name already exist', 10, 'warning'))
           }
-        }).catch(err => {return new Error(err)});
+        }).catch(err => {throw new Error(`ALLUsers.registerNewUser =>  ${err}`)});
       }).catch(err => {return new Error(err)});
     }catch (err) {
-      return new Error("ALLUsers.getAllGames => "+err)
+      return new Error("ALLUsers.registerNewUser => "+err)
     }
   }
 
 
-  static async LogIn(socket_id, name, password) {
+  static async logIn(socket_id, name, password) {
     try {
       return await new Promise((resolve, reject) => {
         const result = db.findUser(name, password);
@@ -238,9 +239,9 @@ class AllUsers {
             reject(`Cannot find user ${name} ${password}`) ;
           }
         }).catch(err => { throw new Error(`db.findUser =>  ${err}`)} )
-      }).catch(err => { return new Error(`AllUsers.LogIn =>  ${err}`)})
+      }).catch(err => { return new Error(`AllUsers.logIn =>  ${err}`)})
     }catch (err) {
-      return  new Error(`AllUsers.LogIn =>  ${err}`)
+      return  new Error(`AllUsers.logIn =>  ${err}`)
     }
 
 

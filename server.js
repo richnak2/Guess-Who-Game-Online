@@ -97,34 +97,24 @@ io.on('connection', socket => {
     });
     // login_page.js related server error tag => L-O
     socket.on('online', ({name_value , password_value}) => {
-
-        AllUsers.LogIn(socket.id,name_value, password_value).then(log_in =>{
-            console.log('1  => '+log_in)
-            socket.emit('log_answer', {
-                massage: format_error(log_in, 10, 'success')
-            });
-        }).catch(err =>{
-            console.log('2  => '+err)
-            socket.emit('log_answer', {
-                massage: format_error(err.split('=>').pop(), 20, 'warning')
-            });
-            printError(`L-O => ${err}`)
+        AllUsers.logIn(socket.id,name_value, password_value).then(log_in =>{
+            if (log_in.includes('Error')){
+                socket.emit('log_answer', {massage: format_error(log_in.split('=>').pop(), 20, 'warning')});
+            }else{
+                socket.emit('log_answer', {massage: format_error(`L-O => ${log_in}`, 10, 'success')});
+            }
         })
     });
 
     // login.js related server error tag => L-RNU
     socket.on('register_new_user' , ({name_value, password_value,role_value}) => {
-        AllUsers.RegisterNewUser(name_value, password_value,role_value).then(data => {
-            if (data) {
-                socket.emit('register_new_user', {
-                    massage: format_error('User with this name already exist', 10, 'warning')
-                });
-            } else {
-                socket.emit('register_new_user', {
-                    massage: format_error(`Thanks for registration <strong>${name_value}</strong> now please log in and enjoy the games`, 10, 'success')
-                });
+        AllUsers.registerNewUser(name_value, password_value,role_value).then(registered => {
+            if (registered.includes('Error')){
+                printError(`L-RNU : ${registered}`)
+            }else{
+                socket.emit('register_new_user', { massage : registered });
             }
-        }).catch(err =>{ console.log(`L-RNU : ${err}`)})
+        })
     });
 
     // main_socket_connection.js related server error tag => MSC-FU
