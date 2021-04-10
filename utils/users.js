@@ -238,9 +238,9 @@ class AllUsers {
             reject(`Cannot find user ${name} ${password}`) ;
           }
         }).catch(err => { throw new Error(`db.findUser =>  ${err}`)} )
-      }).catch(err => { throw new Error(`AllUsers.LogIn =>  ${err}`)})
+      }).catch(err => { return new Error(`AllUsers.LogIn =>  ${err}`)})
     }catch (err) {
-      throw new Error(`AllUsers.LogIn =>  ${err}`)
+      return  new Error(`AllUsers.LogIn =>  ${err}`)
     }
 
 

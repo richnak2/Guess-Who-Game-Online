@@ -99,12 +99,12 @@ io.on('connection', socket => {
     socket.on('online', ({name_value , password_value}) => {
 
         AllUsers.LogIn(socket.id,name_value, password_value).then(log_in =>{
-            console.log(log_in)
+            console.log('1  => '+log_in)
             socket.emit('log_answer', {
                 massage: format_error(log_in, 10, 'success')
             });
         }).catch(err =>{
-            console.log(err)
+            console.log('2  => '+err)
             socket.emit('log_answer', {
                 massage: format_error(err.split('=>').pop(), 20, 'warning')
             });
