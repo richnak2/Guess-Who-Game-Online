@@ -108,10 +108,10 @@ class AllUsers {
     try {
       return await new Promise((resolve, reject) => {
         let current_user = this.all_clients[socket_id];
-        console.log(`Updated user ${current_user.getUserData()}`)
+        console.log(`Updated user ${JSON.stringify(current_user.getUserData())}`)
         if (current_user) {
           current_user.setCharacter(character).then(() => {
-            console.log(`Updated user ${current_user.getUserData()}`)
+            console.log(`Updated user ${JSON.stringify(current_user.getUserData())}`)
             if (current_user.id !== undefined) {
               db.updateUserCharacter(current_user).then(() => {
                 resolve(current_user);
