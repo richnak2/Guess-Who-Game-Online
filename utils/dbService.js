@@ -64,23 +64,18 @@ class DbService {
         }
     }
     async updateUserCharacter(player){
-        // console.log(id_of_game,main_game_name,game_category_of_players,main_game_description,created)
-        if (player === undefined){
-            return undefined;
-        }else{
-            try {
-                return await new Promise((resolve, reject) => {
-                    const query = "UPDATE users SET type_of_character = ? , bought_characters = ?  , points = ?  where id = ? ";
+        try {
+            return await new Promise((resolve, reject) => {
+                const query = "UPDATE users SET type_of_character = ? , bought_characters = ?  , points = ?  where id = ? ";
 
-                    connection.query(query, [player.character ,player.bought_characters , player.points ,player.id], (err, results) => {
-                        if (err) reject(new Error(err.message));
-                        resolve(results);
-                    })
+                connection.query(query, [`${player.color} ${player.character}` ,player.bought_characters , player.points ,player.id], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
                 })
+            })
 
-            } catch (error) {
-                return new Error(error);
-            }
+        } catch (error) {
+            return new Error(error);
         }
     }
 

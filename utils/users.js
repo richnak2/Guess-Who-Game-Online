@@ -112,8 +112,8 @@ class AllUsers {
         if (current_user) {
           current_user.setCharacter(character).then(() => {
             console.log(`Updated user ${JSON.stringify(current_user.getUserData())}`)
-            if (current_user.id !== undefined) {
-              db.updateUserCharacter(current_user).then(() => {
+            if (current_user.getId()) {
+              db.updateUserCharacter(current_user.getUserData()).then(() => {
                 resolve(current_user);
               }).catch(err => {
                 return new Error("ALLUsers.setCharacter DB: " + err)
@@ -137,11 +137,11 @@ class AllUsers {
       return await new Promise((resolve, reject) => {
         let current_user = this.all_clients[socket_id];
         console.log(`Updated user ${current_user.getUserData()}`)
-        if (current_user !== undefined) {
+        if (current_user) {
           current_user.buyCharacterOrColor(item).then(() => {
             console.log(`Updated user ${current_user.getUserData()}`)
-            if (current_user.id !== undefined) {
-              db.updateUserCharacter(current_user).then(() => {
+            if (current_user.getId()) {
+              db.updateUserCharacter(current_user.getUserData()).then(() => {
                 resolve(current_user);
               }).catch(err => {
                 return new Error("ALLUsers.setCharacter DB: " + err)
@@ -267,6 +267,9 @@ class Users {
   // ping from active user
   setSession(){
       this.session_time = Date.now()
+  }
+  getId(){
+    return this.id;
   }
 
 

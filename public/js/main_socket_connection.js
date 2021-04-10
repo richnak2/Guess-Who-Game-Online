@@ -37,6 +37,7 @@ function holdSession(){
 }
 socket.on('ping_server' , () => {
     clearInterval(session_interval);
+    reload();
 })
 
 let user_account = undefined
