@@ -111,35 +111,24 @@ io.on('connection', socket => {
         }).catch(err =>{
             printError(`L-RNU => ${err}`)
         })
-        // AllUsers.registerNewUser(name_value, password_value,role_value).then(registered => {
-        //     console.log(registered)
-        //     if (registered.includes('Error')){
-        //         printError(`L-RNU : ${registered}`)
-        //     }else{
-        //         socket.emit('register_new_user', { massage : registered });
-        //     }
-        // }).catch(err => {
-        //     console.log(`errorr : ${err}`)
-        // })
     });
 
     // main_socket_connection.js related server error tag => MSC-FU
     socket.on('find_user', ({my_socket_id}) => {
         AllUsers.getUserData(my_socket_id,socket.id).then(user => {
-            console.log(user)
             socket.emit('user', {user_data : user})
         }).catch(err =>{
-            socket.emit('error', {error_massage : format_error(`MSC-FU => ${err}` , 10, 'warning')})
+            socket.emit('error', {error_massage : format_error(`MSC-FU => ${err}` , 30, 'danger')})
             printError(`MSC-FU => ${err}`)
         })
+    })
 
-    });
     socket.on('ping_server', ({my_socket_id}) => {
-        let ping_res = AllUsers.ping(my_socket_id)
-        if (ping_res){
-            socket.emit('ping_server');
-        }
-    });
+        AllUsers.ping(my_socket_id).then().catch( err => {
+            printError(`MSC-PS => ${err}`)
+            socket.emit('ping_server')
+        })
+    })
 
     socket.on('remove_player_from_connection',({my_socket_id}) =>{
         AllUsers.userLeave(my_socket_id);
@@ -151,31 +140,48 @@ io.on('connection', socket => {
     // menu.js related server error tag => M-GAG
     socket.on('get_all_games' , ({my_socket_id}) => {
         AllUsers.getAllGames(my_socket_id).then(data => {
-            socket.emit('get_all_games' , {games : data});
-        }).catch(err =>{ console.log(`M-GAG : ${err}`)})
-    });
+            socket.emit('get_all_games' , {games : data})
+        }).catch(err =>{
+            printError(`M-GAG => ${err}`)
+            socket.emit('error', {error_massage : format_error(`M-GAG => ${err}` , 30, 'danger')})
+        })
+    })
 
     // create_game.js related server error tag => CG-GAGBY
     socket.on('get_all_games_by_you' , ({my_socket_id}) => {
         AllUsers.getAllYourGames(my_socket_id).then(data => {
-            socket.emit('get_all_games_by_you', {games : data});
-        }).catch(err =>{ console.log(`CG-GAGBY : ${err}`)})
-    });
+            socket.emit('get_all_games_by_you', {games : data})
+        }).catch(err =>{
+            printError(`CG-GAGBY => ${err}`)
+            socket.emit('error', {error_massage : format_error(`CG-GAGBY => ${err}` , 30, 'danger')})
+        })
+    })
 
 
 
     // shop.js related server error tag => S-RCH / S-SCHOR / S-BCHOR
     socket.on('restart_character',({my_socket_id}) => {
-        AllUsers.setCharacter(my_socket_id,'#00000000 def.png').then(data => {
-        }).catch(err =>{ console.log(`S-RCH : ${err}`)})
+        AllUsers.setCharacter(my_socket_id,'#00000000 def.png').then(() => {
+        }).catch(err => {
+            printError(`S-RCH => ${err}`)
+            socket.emit('error', {error_massage: format_error(`S-RCH => ${err}`, 30, 'danger')})
+        })
     });
     socket.on('set_character_or_color',({my_socket_id,character_in_game}) => {
-        AllUsers.setCharacter(my_socket_id,character_in_game).then(data => {
-        }).catch(err =>{ console.log(`S-SCHOR : ${err}`)})
+        AllUsers.setCharacter(my_socket_id,character_in_game).then(() => {
+        }).catch(err => {
+            printError(`S-RCH => ${err}`)
+            socket.emit('error', {error_massage: format_error(`S-SCHOR => ${err}`, 30, 'danger')})
+        })
+        // AllUsers.setCharacter(my_socket_id,character_in_game).then(data => {
+        // }).catch(err =>{ console.log(`S-SCHOR : ${err}`)})
     });
     socket.on('buy_character_or_color',({my_socket_id,item}) => {
-        AllUsers.buyCharacterOrColor(my_socket_id,item).then(data => {
-        }).catch(err =>{ console.log(`S-BCHOR : ${err}`)})
+        AllUsers.buyCharacterOrColor(my_socket_id,item).then(() => {
+        }).catch(err => {
+            printError(`S-BCHOR => ${err}`)
+            socket.emit('error', {error_massage: format_error(`S-BCHOR => ${err}`, 30, 'danger')})
+        })
     });
 
 

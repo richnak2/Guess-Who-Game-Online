@@ -32,11 +32,14 @@ class AllUsers {
   //
   // }
 
-  static ping(id_socket){
+  static async ping(id_socket){
     try{
-      this.all_clients[id_socket].setSession();
-    }catch (e) {
-      console.log( `ping lost player ${id_socket}` )
+      return await new Promise((resolve, reject) => {
+        this.all_clients[id_socket].setSession();
+        resolve()
+      })
+    }catch (err) {
+      return new Error(`user with socket : ${id_socket} does not exist`)
     }
 
   }
@@ -79,7 +82,7 @@ class AllUsers {
         }else{
           reject(`user with socket : ${socket_id} does not exist`);
         }
-      }).catch(err => {return new Error("ALLUsers.getUser => "+err)})
+      }).catch(err => {return new Error(`ALLUsers.getUser.promise => ${err}`) })
     }catch (err) {
       return new Error("ALLUsers.getUser => "+err)
     }
@@ -90,8 +93,8 @@ class AllUsers {
         let user = this.getUser(socket_id);
         user.then(user_located => {
           resolve(user_located.getUserData(variable_id_socket))
-        }).catch(err => { throw new Error(`Users.getUserData => ${err}`) })
-      }).catch(err => {return new Error("ALLUsers.getUserData => "+err)})
+        }).catch(err => { reject( new Error(`Users.getUserData => ${err}`) ) })
+      }).catch(err => {return new Error("ALLUsers.getUserData.promise => "+err)})
     }catch (err) {
       return new Error("ALLUsers.getUserData => "+err)
     }
@@ -99,71 +102,57 @@ class AllUsers {
 
 
 
-  static async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
-    let current_user = this.getUserData(my_socket_id, variable_id_socket);
-    if (current_user) {
-      current_user.addPoints(Math.ceil(500 / guess_count)).then(updated_user => {
-        return updated_user;
-      }).catch(err => {return new Error(err)});
-    }
-  }
+  // static async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
+  //   let current_user = this.getUserData(my_socket_id, variable_id_socket);
+  //   if (current_user) {
+  //     current_user.addPoints(Math.ceil(500 / guess_count)).then(updated_user => {
+  //       return updated_user;
+  //     }).catch(err => {return new Error(err)});
+  //   }
+  // }
 
   static async setCharacter(socket_id, character) {
     try {
       return await new Promise((resolve, reject) => {
-        let current_user = this.all_clients[socket_id];
-        // console.log(`Updated user ${JSON.stringify(current_user.getUserData())}`)
-        if (current_user) {
-          current_user.setCharacter(character).then(() => {
-            // console.log(`Updated user ${JSON.stringify(current_user.getUserData())}`)
-            if (current_user.getId()) {
-              db.updateUserCharacter(current_user.getUserData()).then(() => {
-                resolve(current_user);
-              }).catch(err => {
-                return new Error("ALLUsers.setCharacter DB: " + err)
-              })
-            } else {
-              resolve(current_user);
+        let user = this.getUser(socket_id);
+        user.then(user_located => {
+          user_located.setCharacter(character).then(() => {
+            if (user_located.getId()){
+              db.updateUserCharacter(user_located.getUserData()).then(() => {
+                resolve();
+              }).catch(err => { reject(new Error(`ALLUsers.setCharacter => db.updateUserCharacter ${err}`)) })
+            }else{
+              resolve()
             }
-          }).catch(err => {
-            return new Error("ALLUsers.setCharacter : " + err)
-          })
-        }else{
-          return new Error("ALLUsers.setCharacter : Cannot find user")
-        }
-      })
+          }).catch(err => { reject( new Error(`Users.setCharacter => ${err}`) ) })
+        }).catch(err => { reject(  new Error(`ALLUsers.getUser => ${err}`))})
+      }).catch(err => {return new Error(`ALLUsers.getUserData => ${err}`)})
     }catch (err) {
-      return new Error("ALLUsers.setCharacter : "+err)
+      return new Error(`ALLUsers.getUserData => ${err}`)
     }
   }
+
   static async buyCharacterOrColor(socket_id, item) {
     try {
       return await new Promise((resolve, reject) => {
-        let current_user = this.all_clients[socket_id];
-        console.log(`Updated user ${current_user.getUserData()}`)
-        if (current_user) {
-          current_user.buyCharacterOrColor(item).then(() => {
-            console.log(`Updated user ${current_user.getUserData()}`)
-            if (current_user.getId()) {
-              db.updateUserCharacter(current_user.getUserData()).then(() => {
-                resolve(current_user);
-              }).catch(err => {
-                return new Error("ALLUsers.setCharacter DB: " + err)
-              })
-            } else {
-              resolve(current_user);
+        let user = this.getUser(socket_id);
+        user.then(user_located => {
+          user_located.buyCharacterOrColor(item).then(() => {
+            if (user_located.getId()){
+              db.updateUserCharacter(user_located.getUserData()).then(() => {
+                resolve();
+              }).catch(err => { reject(new Error(`ALLUsers.buyCharacterOrColor => db.updateUserCharacter ${err}`)) })
+            }else{
+              resolve()
             }
-          }).catch(err => {
-            return new Error("ALLUsers.setCharacter : " + err)
-          })
-        }else{
-          return new Error("ALLUsers.setCharacter : Cannot find user")
-        }
-      })
+          }).catch(err => { reject( new Error(`Users.buyCharacterOrColor => ${err}`) ) })
+        }).catch(err => { reject(  new Error(`ALLUsers.getUser => ${err}`))})
+      }).catch(err => {return new Error(`ALLUsers.buyCharacterOrColor => ${err}`)})
     }catch (err) {
-      return new Error("ALLUsers.setCharacter : "+err)
+      return new Error(`ALLUsers.getUserData => ${err}`)
     }
   }
+
 
 
   static async getAllGames(socket_id){
@@ -176,7 +165,7 @@ class AllUsers {
             resolve(data)
           }).catch(err => reject(new Error(`db.getAllGames =>  ${err}`) ) );
         }).catch(err => reject(new Error(`AllUsers.getAllGames =>  ${err}`) ) );
-      }).catch(err => {new Error(`AllUsers.getAllGames =>  ${err}`)})
+      }).catch(err => {return new Error(`AllUsers.getAllGames.promise =>  ${err}`)})
     }catch (err) {
       return new Error("ALLUsers.getAllGames => "+err)
     }
@@ -185,20 +174,16 @@ class AllUsers {
   static async getAllYourGames(socket_id){
     try {
       return await new Promise((resolve, reject) => {
-        let current_user = this.all_clients[socket_id];
-        if (current_user.getId()) {
-          const result = db.getAllYourGames(current_user.getId());
+        const current_user = this.getUser(socket_id);
+        current_user.then(user_located => {
+          const result = db.getAllYourGames(user_located.getId());
           result.then(data => {
-            if (data){
-              resolve(data)
-            }else{
-              reject(new Error("ALLUsers.getAllGames : Empty games"))
-            }
-          }).catch(err => reject(new Error("ALLUsers.getAllGames : "+err)) );
-        }//!!!
-      }).catch(err => {return new Error("ALLUsers.getAllGames : "+err)})
+            resolve(data)
+          }).catch(err => reject(new Error(`db.getAllYourGames => ${err}`)) );
+        }).catch(err => reject(new Error(`ALLUsers.getUser => ${err}`)) );
+      }).catch(err => {return new Error(`ALLUsers.getAllYourGames => ${err}`)})
     }catch (err) {
-      return new Error("ALLUsers.getAllGames : "+err)
+      return new Error(`ALLUsers.getAllYourGames => ${err}`)
     }
   }
 
@@ -236,16 +221,15 @@ class AllUsers {
             this.push(socket_id, user[0]['id'], user[0]['game_name'], user[0]['role'], user[0]['points'], user[0]['type_of_character'], user[0]['bought_characters']);
             resolve(format_error( 'You are logged in', 10, 'success'))
           }else {
-            resolve(format_error( `Cannot find user ${name} ${password}`, 10, 'warning')) ;
+            resolve(format_error( `Cannot find user ${name} and ${password}`, 10, 'warning')) ;
           }
         }).catch(err => { reject(new Error(`db.findUser =>  ${err}`))} )
       }).catch(err => { return  new Error(`AllUsers.logIn.promise =>  ${err}`)})
     }catch (err) {
       return  new Error(`AllUsers.logIn =>  ${err}`)
     }
-
-
   }
+
 }
 
 class Users {
