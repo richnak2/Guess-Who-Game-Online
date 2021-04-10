@@ -104,6 +104,7 @@ io.on('connection', socket => {
                 massage: format_error(log_in, 10, 'success')
             });
         }).catch(err =>{
+            console.log(err)
             socket.emit('log_answer', {
                 massage: format_error(err.split('=>').pop(), 20, 'warning')
             });
