@@ -204,8 +204,8 @@ function do_you_wont_to_delete_game(game_id, title){
 }
 function delete_game(game_id, title){
     socket.emit('delete_game' , {game_id,title,my_socket_id})
-    delete_all_html_games();
-    create_exception('game has been deleted',5,'success');
+    // delete_all_html_games();
+    // create_exception('game has been deleted',5,'success');
 }
 function make_form_data(){
     let form_data_create_game = new FormData();

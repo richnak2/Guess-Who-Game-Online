@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const fs = require('fs');
+// const fs = require('fs');
 let instance = null;
 
 const db_config  = {
@@ -162,7 +162,7 @@ class DbService {
                     resolve(result);
                 })
             });
-            return { is_ok : true};
+            return 'db.deleteGame : Success'
         } catch (error) {
             return new Error(error)
         }

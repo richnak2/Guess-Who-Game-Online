@@ -1,10 +1,12 @@
 const fs = require('fs');
-const dbService = require('./dbService');
+const dbService = require('./DbService');
 let games = [];
 
 // function all_games(){
 //     return games;
 // }
+
+
 
 async function search_for_free_game(game_name,game_type,player){ // tuna asi chyba id hry pre zistenie komu patry hra
     for (let index_game = 0; index_game < games.length; index_game++) {

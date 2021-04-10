@@ -46,8 +46,9 @@ socket.on('error' ,({error_massage}) => {
 
 let user_account = undefined
 socket.on('user' , ({user_data}) => {
-
-    if (user_data !== undefined){
+    console.log(user_data)
+    console.log(user_data.game_name)
+    if (user_data !== undefined){//.game_name
         html_name.innerHTML = user_data.game_name;
         html_coins.innerHTML = user_data.points;
 

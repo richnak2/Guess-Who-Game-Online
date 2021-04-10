@@ -1,5 +1,5 @@
 // Include file s DB
-const DB = require('./dbService');
+const DB = require('./DbService');
 const db = DB.getDbServiceInstance();
 const {format_message,format_error} = require('./messages');
 
@@ -418,16 +418,4 @@ class Users {
 //   }
 // }
 
-module.exports = {
-  // userJoin,
-  // getCurrentUser,
-  // setCharacter,
-  // buyCharacter,
-  // getAll,
-  // userLeave,
-  // addPoints,
-  // AllUsers,
-  AllUsers
-
-
-};
+module.exports =  AllUsers

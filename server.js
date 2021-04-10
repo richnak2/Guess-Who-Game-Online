@@ -9,9 +9,11 @@ const path = require('path');
 // Kniznica na spracovanie requestov
 const bodyParser = require("body-parser");
 
-// Include file s DB
-const dbService = require('./utils/dbService');
-
+// Include file s DB - database / GB - game builder
+const DB = require('./utils/DbService');
+const db = DB.getDbServiceInstance();
+const FM = require('./utils/FileManager');
+const FileManager = FM.getFileManagerInstance()
 
 // Vytvorenie a spracovanie socketovej stranky
 const socket_io = require('socket.io');
@@ -20,17 +22,7 @@ const io = socket_io(server);
 
 
 // Pripojenie konkretneho usera do aplikacie
-const {
-    // userJoin,
-    // getCurrentUser,
-    // setCharacter,
-    // buyCharacter,
-    // getAll,
-    // userLeave,
-    // addPoints,
-    AllUsers,
-    // Users
-} = require('./utils/users');
+const AllUsers = require('./utils/users');
 const {format_message,format_error} = require('./utils/messages');
 
 const {create_game,is_existing_game,search_for_free_game,leave_game} = require('./utils/game');
@@ -65,24 +57,30 @@ io.on('connection', socket => {
 
     ///// CREATE GAME MANAGMET : CGM
     socket.on('exist_dir',({dir_name})=>{
-        socket.emit('exist_dir',{exist:look_folders(dir_name)});
+        socket.emit('exist_dir',{exist : FileManager.lookFolders(dir_name)});
     })
 
-    // create_game.js related server error tag => CGM-DG
+    // FileManager.js related server error tag => FM-DG
     socket.on('delete_game' , ({game_id,title,my_socket_id}) =>{
-        AllUsers.getUserData(my_socket_id,socket.id).then(user => {
-            if (user === undefined) {
-                console.log("CGM : Something want wrong with user")
-            } else {
-                delete_folder_r('public/images/' + title).then(removed_massage_server => console.log('CGM-DG : Deleting folders'));
-
-                // delete game from db
-                const db = dbService.getDbServiceInstance();
-                const result = db.deleteGame(game_id, user.id);
-                result.then(data => {
-                }).catch(err => console.log(`CGM-DG : ${err}`));
+        AllUsers.getUser(my_socket_id).then(user => {
+            if (user.getId()){
+                FileManager.deleteFolderServer(title).then(removed_massage_server => printError(`FM-DG => ${removed_massage_server}`))
+                const result = db.deleteGame(game_id, user.getId());
+                result.then(removed_massage_db => {
+                    printError(`FM-DG => ${removed_massage_db}`)
+                    socket.emit('error',{error_massage:format_error('Game has been deleted successfully',10,'success')})
+                }).catch(err => {
+                    socket.emit('error',{error_massage:format_error('Something want wrong with database, cannot delete this game',20,'danger')})
+                    printError(`FM-DG => ${err}`)
+                });
+            }else{
+                socket.emit('error',{error_massage:format_error('You should not be here',100,'danger')})
+                printError("FM-DG => This user should not be able to delete games")
             }
-        }).catch(err =>{ console.log(`ALL-FU : ${err}`)})
+        }).catch(err =>{
+            socket.emit('error',{error_massage:format_error('You are not allowed to delete games',100,'danger')})
+            printError(`FM-DG => ${err}`)
+        })
     })
 
 
