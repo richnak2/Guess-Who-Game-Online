@@ -17,7 +17,7 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
 
 class AllUsers {
   static all_clients = {};
-  static x = setInterval(() => {console.log(`Interval :  ${this.strGetAllLength()}`)},1000)
+  static x = setInterval(() => {console.log(`Interval :  ${this.strGetAllLength()}`)},10 * 1000)
 
   // static removeLoggedOut(){
   //   console.log(this.getAllToString());
@@ -85,15 +85,15 @@ class AllUsers {
     }
   }
 
-
-  static async buyCharacter(socket_id,variable_id_socket, character_or_color) {
-    let current_user = this.getUser(socket_id, variable_id_socket);
-    if (current_user) {
-      current_user.buyCharacterOrColor(character_or_color).then( updated_user => {
-        return updated_user;
-      }).catch(err => {return new Error(err)});
-    }
-  }
+  //
+  // static async buyCharacter(socket_id,variable_id_socket, character_or_color) {
+  //   let current_user = this.getUser(socket_id, variable_id_socket);
+  //   if (current_user) {
+  //     current_user.buyCharacterOrColor(character_or_color).then( updated_user => {
+  //       return updated_user;
+  //     }).catch(err => {return new Error(err)});
+  //   }
+  // }
 
   static async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
     let current_user = this.getUser(my_socket_id, variable_id_socket);
@@ -107,19 +107,19 @@ class AllUsers {
   static async setCharacter(socket_id, variable_id_socket, character) {
     try {
       return await new Promise((resolve, reject) => {
-        let current_user = this.getUser(socket_id, variable_id_socket);
-        console.log(`Updated user ${current_user}`)
+        let current_user = this.all_clients[socket_id];
+        console.log(`Updated user ${current_user.getUserData()}`)
         if (current_user) {
-          current_user.setCharacter(character).then(updated_user => {
-            console.log(`Updated user ${updated_user}`)
-            if (updated_user.id !== undefined) {
-              db.updateUserCharacter(updated_user).then(is_updated => {
-                resolve(updated_user);
+          current_user.setCharacter(character).then(() => {
+            console.log(`Updated user ${current_user.getUserData()}`)
+            if (current_user.id !== undefined) {
+              db.updateUserCharacter(current_user).then(() => {
+                resolve(current_user);
               }).catch(err => {
                 return new Error("ALLUsers.setCharacter DB: " + err)
               })
             } else {
-              resolve(updated_user);
+              resolve(current_user);
             }
           }).catch(err => {
             return new Error("ALLUsers.setCharacter : " + err)
@@ -132,32 +132,32 @@ class AllUsers {
       return new Error("ALLUsers.setCharacter : "+err)
     }
   }
-  static async buyCharacterOrColor(socket_id, variable_id_socket, item) {
+  static async buyCharacterOrColor(socket_id, item) {
     try {
       return await new Promise((resolve, reject) => {
-        let current_user = this.getUser(socket_id, variable_id_socket);
-        console.log(`Updated user ${current_user}`)
+        let current_user = this.all_clients[socket_id];
+        console.log(`Updated user ${current_user.getUserData()}`)
         if (current_user) {
-          current_user.buyCharacterOrColor(item).then(updated_user => {
-            console.log(`Updated user ${updated_user}`)
-            if (updated_user.id !== undefined) {
-              db.updateUserCharacter(updated_user).then(is_updated => {
-                resolve(updated_user);
+          current_user.buyCharacterOrColor(item).then(() => {
+            console.log(`Updated user ${current_user.getUserData()}`)
+            if (current_user.id !== undefined) {
+              db.updateUserCharacter(current_user).then(() => {
+                resolve(current_user);
               }).catch(err => {
-                return new Error("ALLUsers.buyCharacterOrColor DB: " + err)
+                return new Error("ALLUsers.setCharacter DB: " + err)
               })
             } else {
-              resolve(updated_user);
+              resolve(current_user);
             }
           }).catch(err => {
-            return new Error("ALLUsers.buyCharacterOrColor : " + err)
+            return new Error("ALLUsers.setCharacter : " + err)
           })
         }else{
-          return new Error("ALLUsers.buyCharacterOrColor : Cannot find user")
+          return new Error("ALLUsers.setCharacter : Cannot find user")
         }
       })
     }catch (err) {
-      return new Error("ALLUsers.buyCharacterOrColor : "+err)
+      return new Error("ALLUsers.setCharacter : "+err)
     }
   }
 
