@@ -296,12 +296,11 @@ router.post('/upload_new_game', function(req, res) {
     let user_id = AllUsers.checkUserValid(req.body.my_socket_id)
     if (user_id) {
         console.log(`server seys  id after than ${user_id}`)
-        let id_of_new_game = undefined;
         let id_of_game = undefined;
         try{
-            id_of_game = req.body.game_id;
+            id_of_game = req.body.game_id === undefined ? false : req.body.game_id ;
         }catch (err) {
-            id_of_game = false
+
             console.log(`This game does not exist`)
         }
 
@@ -322,11 +321,11 @@ router.post('/upload_new_game', function(req, res) {
         let check_1 = makeMainDir(main_game_img, './public/images/', new_path, path_is_renamed);
         if (typeof check_1 === 'boolean') {
             if (id_of_game){
-                console.log('creating new game ')
-                id_of_new_game = db.createGameMain(main_game_name[0], game_category_of_players, 'default.png', main_game_description, user_id, created);
+                console.log(`creating new game ${id_of_game}`)
+                id_of_game = db.createGameMain(main_game_name[0], game_category_of_players, 'default.png', main_game_description, user_id, created);
             }else {
-                console.log('updating game ')
-                let result = db.updateYourGameMain(id_of_new_game,main_game_name,game_category_of_players,main_game_description,created);
+                console.log(`updating game ${id_of_game}`)
+                let result = db.updateYourGameMain(id_of_game,main_game_name,game_category_of_players,main_game_description,created);
                 result.then().catch(err => {
                     return res.send({data:`Something is want wrong with <strong>updateYourGameMain</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'})
                 });
@@ -346,7 +345,7 @@ router.post('/upload_new_game', function(req, res) {
                 printError(`Check2 => createGameMain => Non existing object game_description_img`)
             }
 
-            let check_2 = makeGameDescriptors(id_of_new_game, game_description_img, game_description_type, game_description_question, old_path, new_path, path_is_renamed);
+            let check_2 = makeGameDescriptors(id_of_game, game_description_img, game_description_type, game_description_question, old_path, new_path, path_is_renamed);
             if (typeof check_2 === 'boolean') {
                 // CHECK 3
                 let game_img = undefined;
@@ -365,7 +364,7 @@ router.post('/upload_new_game', function(req, res) {
                 let new_path_for_images = new_path + '/images';
                 let old_path_for_images = old_path + '/images';
 
-                let check_3 = make_game_images(id_of_new_game, old_path_for_images, new_path_for_images, game_img, game_img_descriptor, game_img_question, path_is_renamed)
+                let check_3 = make_game_images(id_of_game, old_path_for_images, new_path_for_images, game_img, game_img_descriptor, game_img_question, path_is_renamed)
                 return res.send(check_3);
             }
             return res.send(check_2)
