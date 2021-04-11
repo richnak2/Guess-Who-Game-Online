@@ -74,7 +74,6 @@ function make_main_dir(main_img,old_path, new_path, path_is_renamed) {
 }
 
 function make_game_descriptors(id_of_game,description_img,description_type,description_question,old_path,new_path,path_is_renamed){
-    const db = dbService.getDbServiceInstance();
     let result = undefined;
 
     if (description_img ===  undefined){

@@ -167,10 +167,16 @@ class DbService {
     }
     async deleteGame(game_id, user_id) {
         try {
-            await this.removeGame(game_id,user_id)
-            await this.removeAllGameDirectories(game_id)
-            await this.removeAllGameDirectories(game_id)
-            return 'db.deleteGame : Success'
+            await this.removeGame(game_id,user_id).then(
+                await this.removeAllGameDirectories(game_id).then(
+                    await this.removeAllGameDirectories(game_id).then( res => {
+                        return 'db.deleteGame : Success';}
+                    ).catch(err => { console.log(`deleteGame => removeAllGameDirectories => ${err}`)})
+                ).catch(err => { console.log(`deleteGame => removeAllGameDirectories => ${err}`)}).then()
+            ).catch(err => { console.log(`deleteGame => removeGame => ${err}`)})
+
+
+
         } catch (error) {
             return new Error(error)
         }
