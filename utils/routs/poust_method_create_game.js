@@ -17,6 +17,9 @@ const FM = require('../FileManager');
 const FileManager = FM.getFileManagerInstance()
 const AllUsers = require('../users');
 
+function printError(err){
+    console.log(err)
+}
 
 
 async function check_current_user(id_user){
@@ -26,6 +29,8 @@ async function check_current_user(id_user){
         if (user.getId()) {
             console.log(`server check_current_user seys ${user.getId()}`)
             return user.getId()
+        }else{
+            new Error(`invalid user ${JSON.stringify(user.getUserData())}`)
         }
     }).catch(err => {
         return new Error(`check_current_user => ${err}`)
@@ -309,88 +314,97 @@ router.post('/upload_new_game', function(req, res) {
     let user_id = check_current_user(req.body.my_socket_id)
     user_id.then(id => {
         console.log(`server seys  id after than ${id}`)
-    })
-    // res.send(user);
-    console.log(`server seis ${user_id}`)
-    if (user_id === undefined){
-        return res.send(new Error('Not valid player'));
-    }
-    let id_of_new_game = undefined;
-    /// CHECK 1
-    let main_game_img = req.files.main_img_file
-    let main_game_description = req.body.game_description;
-    let main_game_name = req.body.game_name;
-    let game_category_of_players = set_game_category(req.body.category_of_players);
-    let created = req.body.created;
+        let id_of_new_game = undefined;
+        /// CHECK 1
+        let main_game_img = req.files.main_img_file
+        let main_game_description = req.body.game_description;
+        let main_game_name = req.body.game_name;
+        let game_category_of_players = set_game_category(req.body.category_of_players);
+        let created = req.body.created;
 
 
-    // vytvorenie hlavneho herneho priecinka
-    // console.log('request  body game neme',main_game_name)
-    let old_path = './public/images/'+main_game_name[0];//decodeURI(main_game_name[0]);
-    let new_path = './public/images/'+main_game_name[1];//decodeURI(main_game_name[1]);
-    console.log(old_path,new_path)
-    let path_is_renamed = old_path!==new_path;
+        // vytvorenie hlavneho herneho priecinka
+        // console.log('request  body game neme',main_game_name)
+        let old_path = './public/images/'+main_game_name[0];//decodeURI(main_game_name[0]);
+        let new_path = './public/images/'+main_game_name[1];//decodeURI(main_game_name[1]);
+        console.log(old_path,new_path)
+        let path_is_renamed = old_path!==new_path;
 
-    // CHECK 1
-    let check_1 = make_main_dir(main_game_img,'./public/images/',new_path,path_is_renamed);
-    if (check_1 !== undefined){
-        return res.send(check_1);
-    }
+        // CHECK 1
+        let check_1 = make_main_dir(main_game_img,'./public/images/',new_path,path_is_renamed);
+        if (check_1 !== undefined){
+            return res.send(check_1);
+        }
 
-    const db = dbService.getDbServiceInstance();
-    console.log('CO UKLADAM DO DB : ',decodeURI(main_game_name[0]),game_category_of_players,'default.png',main_game_description,user_id,created)
-    let result = db.createGameMain(main_game_name[0],game_category_of_players,'default.png',main_game_description,user_id,created);//get_current_user.id,
-    result.then(data => {
-        // console.log('ID OF GAME : ',data.inserted_id)
-        id_of_new_game = data.inserted_id;
+        // const db = dbService.getDbServiceInstance();
+        console.log('CO UKLADAM DO DB : ',decodeURI(main_game_name[0]),game_category_of_players,'default.png',main_game_description,id,created)
+        let result = db.createGameMain(main_game_name[0],game_category_of_players,'default.png',main_game_description,id,created);//get_current_user.id,
+        result.then(data => {
+            // console.log('ID OF GAME : ',data.inserted_id)
+            id_of_new_game = data.inserted_id;
 
 
 
-        /// CHECK 2
-        let game_description_img = undefined;
-        let game_description_type = req.body.d_type ;
-        let game_description_question = req.body.d_descriptor_question;
-        try{
-            game_description_img = req.files.d_img;
-            if (game_description_img.length === undefined){
-                game_description_img = [game_description_img];
-                game_description_type = [game_description_type];
-                game_description_question = [game_description_question];
+            /// CHECK 2
+            let game_description_img = undefined;
+            let game_description_type = req.body.d_type ;
+            let game_description_question = req.body.d_descriptor_question;
+            try{
+                game_description_img = req.files.d_img;
+                if (game_description_img.length === undefined){
+                    game_description_img = [game_description_img];
+                    game_description_type = [game_description_type];
+                    game_description_question = [game_description_question];
+                }
+            }catch (e) {
+                console.log('nexistuje ziaden descriptor obrazok');
             }
-        }catch (e) {
-            console.log('nexistuje ziaden descriptor obrazok');
-        }
 
-        let check_2 = make_game_descriptors(id_of_new_game,game_description_img,game_description_type,game_description_question,old_path,new_path,path_is_renamed);
-        if (check_2 !== undefined){
-            return res.send(check_2);
-        }
-
-        // CHECK 3
-        let game_img = undefined;
-        let game_img_descriptor = req.body.game_img_auto_descriptor ;
-        let game_img_question = req.body.game_img_question;
-        try{
-            game_img =  req.files.game_img;
-            if (game_img.length === undefined){
-                game_img = [game_img];
-                game_img_descriptor = [game_img_descriptor];
-                game_img_question = [game_img_question];
+            let check_2 = make_game_descriptors(id_of_new_game,game_description_img,game_description_type,game_description_question,old_path,new_path,path_is_renamed);
+            if (check_2 !== undefined){
+                printError(`Something is want wrong with createNewGameImages ${JSON.stringify(check_2)}`)
+                return res.send(check_2);
             }
-        }catch (e) {
-            console.log('Hra zatial nema ziadne obrazky');
-        }
-        let new_path_for_images = new_path+'/images';
-        let old_path_for_images = old_path+'/images';
 
-        make_game_images(id_of_new_game, old_path_for_images, new_path_for_images, game_img, game_img_descriptor, game_img_question, path_is_renamed).then(result =>{
-            return res.send(result);
-        }).catch(err =>{
-            return res.send(err);
+            // CHECK 3
+            let game_img = undefined;
+            let game_img_descriptor = req.body.game_img_auto_descriptor ;
+            let game_img_question = req.body.game_img_question;
+            try{
+                game_img =  req.files.game_img;
+                if (game_img.length === undefined){
+                    game_img = [game_img];
+                    game_img_descriptor = [game_img_descriptor];
+                    game_img_question = [game_img_question];
+                }
+            }catch (e) {
+                console.log('Hra zatial nema ziadne obrazky');
+            }
+            let new_path_for_images = new_path+'/images';
+            let old_path_for_images = old_path+'/images';
+
+            make_game_images(id_of_new_game, old_path_for_images, new_path_for_images, game_img, game_img_descriptor, game_img_question, path_is_renamed).then(result =>{
+                printError(`Something is want wrong with createNewGameImages ${JSON.stringify(result)}`)
+                return res.send(result);
+            }).catch(err =>{
+                printError(`Something is want wrong with createNewGameImages ${JSON.stringify(err)}`)
+                return res.send(err);
+            });
+        }).catch(err => {
+            printError(`Something is want wrong with createNewGameImages ${err}`)
+            return res.send({data:`Something is want wrong with <strong>createNewGameImages</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'})
         });
+
+
     }).catch(err => {
-        return res.send({data:`Something is want wrong with <strong>createNewGameImages</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'})
-    });
+        printError(`post to /upload_new_game => ${err}`)
+        res.send(new Error(`post to /upload_new_game => ${err}`))})
+    // res.send(user);
+    // console.log(`server seis ${user_id}`)
+    // if (user_id === undefined){
+    //     return res.send(new Error('Not valid player'));
+    // }
+
 });
 
 
