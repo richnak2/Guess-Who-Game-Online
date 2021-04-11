@@ -159,10 +159,10 @@ class DbService {
 
                 connection.query(query, [game_id] , (err, result) => {
                     if (err) reject(new Error(err.message));
-                    resolve(result);
+                    resolve('db.deleteGame : Success');
                 })
-            });
-            return 'db.deleteGame : Success'
+            })
+
         } catch (error) {
             return new Error(error)
         }
