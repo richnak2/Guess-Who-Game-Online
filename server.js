@@ -69,7 +69,7 @@ io.on('connection', socket => {
             let msg = format_error('deleting has started',20,'warning')
             socket.emit('error',{error_massage:msg})
         }catch (err) {
-            printError(err)
+            printError(`CHACHE ERROR => ${err}`)
         }
 
 

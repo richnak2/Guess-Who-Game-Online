@@ -8,9 +8,9 @@ function format_message(game_id, socket_id,massage) {
 }
 function format_error(massage, time,type) {
   return {
-    massage:massage,
-    time:time,
-    type:type
+    'massage':massage,
+    'time':time,
+    'type':type
   };
 }
 
