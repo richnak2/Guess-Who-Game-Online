@@ -15,7 +15,7 @@ const DB = require('../DbService');
 const db = DB.getDbServiceInstance();
 const FM = require('../FileManager');
 const FileManager = FM.getFileManagerInstance()
-const AL = require('./utils/users');
+const AL = require('../users');
 const AllUsers = AL.getAllUsersInstance();
 
 
