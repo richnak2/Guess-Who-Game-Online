@@ -155,7 +155,7 @@ class DbService {
             })
         });
     }
-    removeGameHelpDescriptors(game_id){
+    removeGameImages(game_id){
         return new Promise((resolve, reject) => {
             const query = "DELETE FROM game_images where id_game = ? ;";
 
@@ -167,13 +167,20 @@ class DbService {
     }
     async deleteGame(game_id, user_id) {
         try {
-            await this.removeGame(game_id,user_id).then(
-                await this.removeAllGameDirectories(game_id).then(
-                    await this.removeAllGameDirectories(game_id).then( res => {
-                        return 'db.deleteGame : Success';}
-                    ).catch(err => { console.log(`deleteGame => removeAllGameDirectories => ${err}`)})
-                ).catch(err => { console.log(`deleteGame => removeAllGameDirectories => ${err}`)}).then()
-            ).catch(err => { console.log(`deleteGame => removeGame => ${err}`)})
+            return await new Promise((resolve, reject) => {
+                this.removeGame(game_id,user_id).catch(err => { reject(`deleteGame => removeGame => ${err}`)})
+                this.removeGameHelpDescriptors(game_id).catch(err => {reject(`deleteGame => removeAllGameDirectories => ${err}`)})
+                this.removeGameImages(game_id).then( res => {
+                    resolve( 'db.deleteGame : Success')
+                }).catch(err => { reject(`deleteGame => removeAllGameDirectories => ${err}`)})
+            }).catch(err => {return new Error(`deleteGame.promise => ${err}`)})
+            // await this.removeGame(game_id,user_id).then(
+            //     await this.removeAllGameDirectories(game_id).then(
+            //         await this.removeAllGameDirectories(game_id).then( res => {
+            //             return 'db.deleteGame : Success';}
+            //         ).catch(err => { console.log(`deleteGame => removeAllGameDirectories => ${err}`)})
+            //     ).catch(err => { console.log(`deleteGame => removeAllGameDirectories => ${err}`)}).then()
+            // ).catch(err => { console.log(`deleteGame => removeGame => ${err}`)})
 
 
 
