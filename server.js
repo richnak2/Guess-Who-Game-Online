@@ -67,7 +67,7 @@ io.on('connection', socket => {
     socket.on('delete_game' , ({game_id,title,my_socket_id}) =>{
         try{
             let fr = format_error('deleting has started',20,'warning')
-            socket.emit('error',{error_massage:fr})
+            socket.emit('error_massage',{error_massage:fr})
         }catch (err) {
             printError(`CHACHE ERROR => ${err}`)
         }
@@ -97,7 +97,7 @@ io.on('connection', socket => {
         //     socket.emit('error',{error_massage:format_error('You are not allowed to delete games',100,'danger')})
         //
         // })
-    })
+    });
 
 
 
