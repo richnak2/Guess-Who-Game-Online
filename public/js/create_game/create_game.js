@@ -52,7 +52,9 @@ function delete_all_html_games(){
     }
     recreate_html()
     console.log('mazeme');
-    get_all_games_after_time()
+    // get_all_games_after_time()
+    socket.emit('get_all_games_by_you',{my_socket_id});
+    document.getElementById('all_games').style.display = 'contents';
     // setTimeout(get_all_games_after_time,1000); //  5000
 }
 function get_all_games_after_time(){
