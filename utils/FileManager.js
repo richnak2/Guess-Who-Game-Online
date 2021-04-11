@@ -10,7 +10,7 @@ class FileManager {
         return fs.existsSync('./public/images/' + dir_name);
     }
 
-    async deleteFolderServer(path) {
+    deleteFolderServer(path) {
         if (fs.existsSync(path)) {
             fs.readdirSync(path).forEach(function (file) {
                 let current_path = path + "/" + file;
@@ -22,10 +22,10 @@ class FileManager {
             });
             fs.rmdirSync(path);
         }
-        return 'Files has been removed';
+        return true;
     }
 
-    async removeDirsButNotOrigin(origin_path, path){
+    removeDirsButNotOrigin(origin_path, path){
         if( fs.existsSync(path) ) {
             fs.readdirSync(path).forEach(function(file) {
                 let current_path = path + "/" + file;

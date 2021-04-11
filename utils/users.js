@@ -76,19 +76,14 @@ class AllUsers {
     console.log(`Leave : ${this.strGetAllLength()}`)
   }
 
-  static async checkUserValid(id_user){
-    return await this.getUser(id_user).then(user => {
-      if (user.getId()) {
-        console.log(`server check_current_user seys ${user.getId()}`)
-        return user.getId()
-      }else{
-        new Error(`invalid user ${JSON.stringify(user.getUserData())}`)
-      }
-    }).catch(err => {
-      return new Error(`check_current_user => ${err}`)
-    })
-
+  static checkUserValid(socket_id){
+    if (this.all_clients[socket_id]){
+      return this.all_clients[socket_id].getId()
+    }else{
+      return false
+    }
   }
+
   static async getUser(socket_id){
     try {
       return await new Promise((resolve, reject) => {

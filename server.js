@@ -67,9 +67,7 @@ io.on('connection', socket => {
     socket.on('delete_game' , ({game_id,title,my_socket_id}) =>{
         AllUsers.getUser(my_socket_id).then(user => {
             if (user.getId()){
-                const file_result = FileManager.deleteFolderServer(title)
-                file_result.then(removed_massage_server => printError(`FM-DG => ${removed_massage_server}`))
-                    .catch(err => printError(`deleteFolderServer => ${err}`))
+               FileManager.deleteFolderServer(title)
                 const result = db.deleteGame(game_id, user.getId());
                 result.then(removed_massage_db => {
                     printError(`FM-DG => ${removed_massage_db}`)
