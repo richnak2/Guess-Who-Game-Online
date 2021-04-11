@@ -21,9 +21,11 @@ const AllUsers = require('../users');
 
 async function check_current_user(id_user){
     // let AllUsers = AL.getAllUsersInstance();
+
     return await AllUsers.getUser(id_user).then(user => {
         if (user.getId()) {
-            return user.getUserData()
+            console.log(`server check_current_user seys ${user.getId()}`)
+            return user.getId()
         }
     }).catch(err => {
         return new Error(`check_current_user => ${err}`)
@@ -304,10 +306,14 @@ function set_game_category(category){
 
 router.post('/upload_new_game', function(req, res) {
     // TUNA MUSI BYT SERVEROVA KONTROLA CI SU DANe FIles OK  a ci data ktore sa posielaju su tiez oki !!!
-    let user = check_current_user(req.body.my_socket_id)
+    let user_id = check_current_user(req.body.my_socket_id)
+    user_id.then(id => {
+        console.log(`server seys  id after than ${id}`)
+    })
     // res.send(user);
-    if (user.id === undefined){
-        return res.send(user);
+    console.log(`server seis ${user_id}`)
+    if (user_id === undefined){
+        return res.send(new Error('Not valid player'));
     }
     let id_of_new_game = undefined;
     /// CHECK 1
@@ -332,8 +338,8 @@ router.post('/upload_new_game', function(req, res) {
     }
 
     const db = dbService.getDbServiceInstance();
-    console.log('CO UKLADAM DO DB : ',decodeURI(main_game_name[0]),game_category_of_players,'default.png',main_game_description,user.id,created)
-    let result = db.createGameMain(main_game_name[0],game_category_of_players,'default.png',main_game_description,user.id,created);//get_current_user.id,
+    console.log('CO UKLADAM DO DB : ',decodeURI(main_game_name[0]),game_category_of_players,'default.png',main_game_description,user_id,created)
+    let result = db.createGameMain(main_game_name[0],game_category_of_players,'default.png',main_game_description,user_id,created);//get_current_user.id,
     result.then(data => {
         // console.log('ID OF GAME : ',data.inserted_id)
         id_of_new_game = data.inserted_id;
