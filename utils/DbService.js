@@ -85,15 +85,15 @@ class DbService {
     async createGameMain(title, type, image, description, owner_id, is_created) {
         // console.log(title, type, image, description, owner_id, is_created)
         try {
-            const insertId = await new Promise((resolve, reject) => {
+            return await new Promise((resolve, reject) => {
                 const query = "INSERT INTO games (title,type,image,description,owner_id,state) VALUES (?,?,?,?,?,?);";
 
                 connection.query(query, [title,type,image,description,owner_id,is_created] , (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId);
                 })
-            });
-            return { inserted_id : insertId};
+            }).catch(err => { return new Error(`db.createGameMain => ${err}`)});
+            // return { inserted_id : insertId};
         } catch (error) {
             return new Error(error)
         }
@@ -169,30 +169,13 @@ class DbService {
         try {
             return await new Promise((resolve, reject) => {
                 this.removeGame(game_id,user_id).then(res =>{
-                    console.log('ok 1')
                     this.removeGameHelpDescriptors(game_id).then(res =>{
-                        console.log('ok 2')
                         this.removeGameImages(game_id).then(res => {
-                            console.log('ok 3')
                             resolve('db.deleteGame : Success')
-                        }).catch(err => { console.log('1e');reject(`deleteGame =>  ${err}`)})
-                    }).catch(err => { console.log('2e');reject(`deleteGame =>  ${err}`)})
-                }).catch(err => { console.log('3e');reject(`deleteGame =>  ${err}`)})
-
-                // this.removeGameImages(game_id).then( res => {
-                //     resolve( 'db.deleteGame : Success')
-                // }).catch(err => { reject(`deleteGame => removeAllGameDirectories => ${err}`)})
-            }).then(res => {return res}).catch(err => { console.log('4e');new Error(`deleteGame.promise => ${err}`)})
-            // await this.removeGame(game_id,user_id).then(
-            //     await this.removeAllGameDirectories(game_id).then(
-            //         await this.removeAllGameDirectories(game_id).then( res => {
-            //             return 'db.deleteGame : Success';}
-            //         ).catch(err => { console.log(`deleteGame => removeAllGameDirectories => ${err}`)})
-            //     ).catch(err => { console.log(`deleteGame => removeAllGameDirectories => ${err}`)}).then()
-            // ).catch(err => { console.log(`deleteGame => removeGame => ${err}`)})
-
-
-
+                        }).catch(err => { reject(`deleteGame =>  ${err}`)})
+                    }).catch(err => { reject(`deleteGame =>  ${err}`)})
+                }).catch(err => { reject(`deleteGame =>  ${err}`)})
+            }).catch(err => { new Error(`deleteGame.promise => ${err}`)})
         } catch (error) {
             console.log('just error promis problem')
             return new Error(error)

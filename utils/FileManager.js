@@ -25,7 +25,7 @@ class FileManager {
         return 'Files has been removed';
     }
 
-    static async remove_dirs_not_origin(origin_path, path){
+    async removeDirsButNotOrigin(origin_path, path){
         if( fs.existsSync(path) ) {
             fs.readdirSync(path).forEach(function(file) {
                 let current_path = path + "/" + file;
@@ -44,7 +44,9 @@ class FileManager {
             }
 
         }
+        return true
     }
+
 
 }
 module.exports = FileManager

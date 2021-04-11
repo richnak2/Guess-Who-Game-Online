@@ -22,7 +22,7 @@ async function delete_folder_r(path) {
 
 }
 
-function remove_dirs_not_origin(origin_path, path){
+async function remove_dirs_not_origin(origin_path, path){
     if( fs.existsSync(path) ) {
         fs.readdirSync(path).forEach(function(file) {
             let current_path = path + "/" + file;
@@ -39,8 +39,8 @@ function remove_dirs_not_origin(origin_path, path){
         if (origin_path !== path){
             fs.rmdirSync(path);
         }
-
     }
+    return true;
 }
 // function remove_dirs_not_origin(path){
 //

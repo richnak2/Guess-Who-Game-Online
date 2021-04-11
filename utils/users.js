@@ -76,7 +76,19 @@ class AllUsers {
     console.log(`Leave : ${this.strGetAllLength()}`)
   }
 
+  static async checkUserValid(id_user){
+    return await this.getUser(id_user).then(user => {
+      if (user.getId()) {
+        console.log(`server check_current_user seys ${user.getId()}`)
+        return user.getId()
+      }else{
+        new Error(`invalid user ${JSON.stringify(user.getUserData())}`)
+      }
+    }).catch(err => {
+      return new Error(`check_current_user => ${err}`)
+    })
 
+  }
   static async getUser(socket_id){
     try {
       return await new Promise((resolve, reject) => {

@@ -22,195 +22,203 @@ function printError(err){
 }
 //Something is want wrong with createNewGameImages ReferenceError: remove_dirs_not_origin is not defined
 
-async function check_current_user(id_user){
-    // let AllUsers = AL.getAllUsersInstance();
+// async function checkUserValid(id_user){
+//     return await AllUsers.getUser(id_user).then(user => {
+//         if (user.getId()) {
+//             console.log(`server check_current_user seys ${user.getId()}`)
+//             return user.getId()
+//         }else{
+//             new Error(`invalid user ${JSON.stringify(user.getUserData())}`)
+//         }
+//     }).catch(err => {
+//         return new Error(`check_current_user => ${err}`)
+//     })
+//
+// }
 
-    return await AllUsers.getUser(id_user).then(user => {
-        if (user.getId()) {
-            console.log(`server check_current_user seys ${user.getId()}`)
-            return user.getId()
-        }else{
-            new Error(`invalid user ${JSON.stringify(user.getUserData())}`)
-        }
-    }).catch(err => {
-        return new Error(`check_current_user => ${err}`)
-    })
-    // if (get_current_user === undefined){
-    //     return {data:'Canot find user plese login first',time_of_exception:10,type_of_exception:'warning'};
-    // }else{
-    //     return get_current_user
-    // }
-}
-
-function make_main_dir(main_img,old_path, new_path, path_is_renamed) {
-    if (!fs.existsSync(new_path)){
-        fs.mkdirSync(new_path);
-    }
-    if (path_is_renamed){
-        if (main_img.mimetype.includes('image')){
-            main_img.mv(new_path+ '/default.png');
-        }else{
-            fs.copyFile(old_path+ "/default.png", new_path+ "/default.png",function (err) {
-                if (err){
-                    if (err){
-                        return {data:`Something is want wrong with main img file ${err}`,time_of_exception:10,type_of_exception:'warning'};
-                    }
-                }
-            });
-        }
-    }else{
-        if (main_img.mimetype.includes('image')){
-            main_img.mv(new_path+ '/default.png');
-        }else{
-            if (main_img.name === 'create_game.png') {
-                fs.copyFile('./public/images/create_game.png', new_path + '/default.png', (err) => {
-                    if (err) {
-                        return {data: `Something is want wrong with main img file ${err}`, time_of_exception: 10, type_of_exception: 'danger'};
-                    }});
+async function makeMainDir(main_img,old_path, new_path, path_is_renamed) {
+    try{
+        return await new Promise((resolve, reject) => {
+            if (!fs.existsSync(new_path)){
+                fs.mkdirSync(new_path);
             }
-        }
-    }
-    return undefined;
-}
-
-function make_game_descriptors(id_of_game,description_img,description_type,description_question,old_path,new_path,path_is_renamed){
-    let result = undefined;
-
-    if (description_img ===  undefined){
-        if (description_type === undefined){
-            result = db.removeAllGameDirectories(id_of_game);
-            result.then().catch(err => {
-                return {data:`Something is want wrong with <strong>removeAllGameDirectories</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'};
-            });
-        }else{
-            result = db.removeAllGameDirectories(id_of_game);
-            result.then().catch(err => {
-                return {data:`Something is want wrong with <strong>removeAllGameDirectories</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'};
-            });
-
-            let set_of_dirs_descriptors = new Set(description_type);
-            set_of_dirs_descriptors.forEach(descriptor_path =>{
-                for (let path_indexes = 0 ;path_indexes < description_type.length;path_indexes++){
-                    if (description_type[path_indexes] === descriptor_path){
-
-                        result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],'');
-                        result.then().catch(err => {
-                            return {data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'};
+            if (path_is_renamed){
+                if (main_img.mimetype.includes('image')){
+                    main_img.mv(new_path+ '/default.png');
+                }else{
+                    fs.copyFile(old_path+ "/default.png", new_path+ "/default.png",function (err) {
+                        if (err){
+                            reject( {data:`Something is want wrong with replacing main img  ${err}`,time_of_exception:10,type_of_exception:'warning'});
+                        }
+                    });
+                }
+            }else{
+                if (main_img.mimetype.includes('image')){
+                    main_img.mv(new_path+ '/default.png');
+                }else{
+                    if (main_img.name === 'create_game.png') {
+                        fs.copyFile('./public/images/create_game.png', new_path + '/default.png', (err) => {
+                            if (err) {
+                                reject( {data:`Something is want wrong with main img  ${err}`,time_of_exception:10,type_of_exception:'warning'});
+                            }
                         });
                     }
                 }
-            });
-        }
-        remove_dirs_not_origin(old_path,old_path);
-        return undefined;
-    }else{
-        if (path_is_renamed){
-            console.log('PATH RENAMET TRUE DESCRIPTOR')
-            let result = db.removeAllGameDirectories(id_of_game);
-            result.then().catch(err => {
-                return {data:`Something is want wrong with <strong>removeAllGameDirectories</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'};
-            });
+            }
+            resolve(true)
+        }).catch(err => {return err})
+    }catch (err) {
+        return new Error(`makeMainDir => ${err}`)
+    }
 
-            let set_of_dirs_descriptors = new Set(description_type);
-            set_of_dirs_descriptors.forEach(descriptor_path =>{
-                if (!fs.existsSync(new_path+'/'+descriptor_path)){
-                    fs.mkdirSync(new_path+'/'+descriptor_path);
-                }
-                for (let path_indexes = 0 ;path_indexes < description_type.length;path_indexes++){
-                    if (description_type[path_indexes] === descriptor_path){
-                        if (description_img[path_indexes].name === 'images|create_game.png'){
+}
 
-                            result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],'');
-                            result.then().catch(err => {
-                                return {data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'};
-                            });
-                        }else if (description_img[path_indexes].name.includes('|') === false){ // novi IMG
-                            description_img[path_indexes].mv(new_path+'/'+descriptor_path+ '/' + description_img[path_indexes].name);
+async function makeGameDescriptors(id_of_game,description_img,description_type,description_question,old_path,new_path,path_is_renamed){
+    try{
+        return await new Promise((resolve, reject) => {
+            let result =  undefined;
+            if (description_img ===  undefined){
+                if (description_type === undefined){
+                    result = db.removeAllGameDirectories(id_of_game);
+                    result.then().catch(err => {
+                        reject({data:`Something is want wrong with <strong>removeAllGameDirectories</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'});
+                    });
+                }else{
+                    result = db.removeAllGameDirectories(id_of_game);
+                    result.then().catch(err => {
+                        reject({data:`Something is want wrong with <strong>removeAllGameDirectories</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'});
+                    });
 
-                            // uloz descriptor do db
-                            result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],description_img[path_indexes].name);
-                            result.then().catch(err => {
-                                return {data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'};
-                            });
-                        }else{ // iba sa zmenila cesta decriptora
-                            console.log('OLD IMG DES')
-                            let old_dir_name_and_file = description_img[path_indexes].name.split("|");
+                    let set_of_dirs_descriptors = new Set(description_type);
+                    set_of_dirs_descriptors.forEach(descriptor_path =>{
+                        for (let path_indexes = 0 ;path_indexes < description_type.length;path_indexes++){
+                            if (description_type[path_indexes] === descriptor_path){
 
-                            fs.copyFile(old_path+ "/"+old_dir_name_and_file[0]+'/'+old_dir_name_and_file[1], new_path+"/"+descriptor_path+'/'+old_dir_name_and_file[1],function (err) {
-                                if (err){
-                                    console.log(err)
-                                    return {data:`Something is want wrong with old img copy file ${err}`,time_of_exception:10,type_of_exception:'danger'};
-                                }
-                            });
-
-                            result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],old_dir_name_and_file[1]);
-                            result.then().catch(err => {
-                                return {data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'};
-                            });
-
-                        }
-
-                    }
-                }
-            });
-            return undefined;
-        }else {
-            result = db.removeAllGameDirectories(id_of_game);
-            result.then().catch(err => {
-                return {data:`Something is want wrong with <strong>removeAllGameDirectories</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'};
-            });
-
-            console.log('PATH RENAMET FALSE DESCRIPTOR')
-            let set_of_dirs_descriptors = new Set(description_type);
-            set_of_dirs_descriptors.forEach(descriptor_path =>{
-                if (!fs.existsSync(old_path+'/'+descriptor_path)){
-                    fs.mkdirSync(old_path+'/'+descriptor_path);
-                }
-                for (let path_indexes = 0 ;path_indexes < description_type.length;path_indexes++){
-                    if (description_type[path_indexes] === descriptor_path){
-                        if (description_img[path_indexes].name === 'images|create_game.png'){
-                            result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],'');
-                            result.then().catch(err => {
-                                return {data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'};
-                            });
-
-                        }else if (description_img[path_indexes].name.includes('|') === false){ // novi IMG
-                            console.log('NEW IMG DES ',description_img[path_indexes].name)//game_description_img[path_indexes]
-                            description_img[path_indexes].mv(old_path+'/'+descriptor_path+ '/' + description_img[path_indexes].name);
-
-
-                            // uloz descriptor do db
-                            result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],description_img[path_indexes].name);
-                            result.then().catch(err => {
-                                return {data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'};
-                            });
-                        }else{ // iba sa zmenila cesta decriptora
-                            console.log('OLD IMG DES ',description_img[path_indexes].name)//game_description_img[path_indexes]
-                            let old_dir_name_and_file = description_img[path_indexes].name.split("|");
-
-                            // find_img_by_name(game_description_img[path_indexes].name)
-                            if (old_dir_name_and_file[1] !== descriptor_path){
-                                fs.copyFile(old_path+ "/"+old_dir_name_and_file[0]+'/'+old_dir_name_and_file[1], old_path+"/"+descriptor_path+'/'+old_dir_name_and_file[1],function (err) {
-                                    if (err){
-                                        console.log(err)
-                                        return {data:`Something is want wrong with old img copy file ${err}`,time_of_exception:10,type_of_exception:'danger'};
-                                    }
+                                result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],'');
+                                result.then().catch(err => {
+                                    reject({data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'});
                                 });
                             }
-                            result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],old_dir_name_and_file[1]);
-                            result.then().catch(err => {
-                                return {data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'};
-                            });
-
                         }
-                    }
+                    });
                 }
+                FileManager.removeDirsButNotOrigin(old_path,old_path).then( result => { resolve(result) } )
+                    .catch(err => reject(new Error(`CHECK2 => make_game_descriptors => FileManager.removeDirsButNotOrigin => ${err}`)));
 
-            });
-            console.log('Hra je OBR typu ALL PC/STUDENT/KID');
-            return undefined;
-        }
+            }else{
+                if (path_is_renamed){
+                    console.log('PATH RENAMET TRUE DESCRIPTOR')
+                    let result = db.removeAllGameDirectories(id_of_game);
+                    result.then().catch(err => {
+                        reject({data:`Something is want wrong with <strong>removeAllGameDirectories</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'});
+                    });
+
+                    let set_of_dirs_descriptors = new Set(description_type);
+                    set_of_dirs_descriptors.forEach(descriptor_path =>{
+                        if (!fs.existsSync(new_path+'/'+descriptor_path)){
+                            fs.mkdirSync(new_path+'/'+descriptor_path);
+                        }
+                        for (let path_indexes = 0 ;path_indexes < description_type.length;path_indexes++){
+                            if (description_type[path_indexes] === descriptor_path){
+                                if (description_img[path_indexes].name === 'images|create_game.png'){
+
+                                    result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],'');
+                                    result.then().catch(err => {
+                                        reject({data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'});
+                                    });
+                                }else if (description_img[path_indexes].name.includes('|') === false){ // novi IMG
+                                    description_img[path_indexes].mv(new_path+'/'+descriptor_path+ '/' + description_img[path_indexes].name);
+
+                                    // uloz descriptor do db
+                                    result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],description_img[path_indexes].name);
+                                    result.then().catch(err => {
+                                        reject({data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'});
+                                    });
+                                }else{ // iba sa zmenila cesta decriptora
+                                    console.log('OLD IMG DES')
+                                    let old_dir_name_and_file = description_img[path_indexes].name.split("|");
+
+                                    fs.copyFile(old_path+ "/"+old_dir_name_and_file[0]+'/'+old_dir_name_and_file[1], new_path+"/"+descriptor_path+'/'+old_dir_name_and_file[1],function (err) {
+                                        if (err){
+                                            reject( {data:`Something is want wrong with copying of old img  ${err}`,time_of_exception:10,type_of_exception:'danger'})
+                                        }
+                                    });
+
+                                    result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],old_dir_name_and_file[1]);
+                                    result.then().catch(err => {
+                                        reject({data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'});
+                                    });
+
+                                }
+
+                            }
+                        }
+                    });
+                    resolve(true)
+                }else {
+                    result = db.removeAllGameDirectories(id_of_game);
+                    result.then().catch(err => {
+                        reject({data:`Something is want wrong with <strong>removeAllGameDirectories</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'});
+                    });
+
+                    console.log('PATH RENAMET FALSE DESCRIPTOR')
+                    let set_of_dirs_descriptors = new Set(description_type);
+                    set_of_dirs_descriptors.forEach(descriptor_path =>{
+                        if (!fs.existsSync(old_path+'/'+descriptor_path)){
+                            fs.mkdirSync(old_path+'/'+descriptor_path);
+                        }
+                        for (let path_indexes = 0 ;path_indexes < description_type.length;path_indexes++){
+                            if (description_type[path_indexes] === descriptor_path){
+                                if (description_img[path_indexes].name === 'images|create_game.png'){
+                                    result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],'');
+                                    result.then().catch(err => {
+                                        reject({data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'});
+                                    });
+
+                                }else if (description_img[path_indexes].name.includes('|') === false){ // novi IMG
+                                    console.log('NEW IMG DES ',description_img[path_indexes].name)//game_description_img[path_indexes]
+                                    description_img[path_indexes].mv(old_path+'/'+descriptor_path+ '/' + description_img[path_indexes].name);
+
+
+                                    // uloz descriptor do db
+                                    result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],description_img[path_indexes].name);
+                                    result.then().catch(err => {
+                                        reject({data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'});
+                                    });
+                                }else{ // iba sa zmenila cesta decriptora
+                                    console.log('OLD IMG DES ',description_img[path_indexes].name)//game_description_img[path_indexes]
+                                    let old_dir_name_and_file = description_img[path_indexes].name.split("|");
+
+                                    // find_img_by_name(game_description_img[path_indexes].name)
+                                    if (old_dir_name_and_file[1] !== descriptor_path){
+                                        fs.copyFile(old_path+ "/"+old_dir_name_and_file[0]+'/'+old_dir_name_and_file[1], old_path+"/"+descriptor_path+'/'+old_dir_name_and_file[1],function (err) {
+                                            if (err){
+                                                reject( {data:`Something is want wrong with copying of old img  ${err}`,time_of_exception:10,type_of_exception:'danger'})
+                                            }
+                                        });
+                                    }
+                                    result = db.createGameDescriptors(id_of_game,descriptor_path,description_question[path_indexes],old_dir_name_and_file[1]);
+                                    result.then().catch(err => {
+                                        reject({data:`Something is want wrong with <strong>createGameDescriptors</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'});
+                                    });
+
+                                }
+                            }
+                        }
+
+                    });
+                    resolve(true);
+                }
+            }
+        }).catch(err => {return err})
+    }catch (err) {
+        return new Error(`makeMainDir => ${err}`)
     }
+    // let result = undefined;
+    //
+    //         return undefined;
+    //     }
+    // }
 }
 
 
@@ -273,7 +281,7 @@ async function make_game_images(id_of_game, old_path, new_path,game_img,game_img
                 old_path_r.pop();
                 old_path_r = old_path_r.join('/');
                 old_path_r = old_path_r+'/'
-                delete_folder_r(old_path_r).then(r => {
+                FileManager.deleteFolderServer(old_path_r).then(r => {
                     if (r){
                         resolve( {data:'Game has been updated succesfully i hope :D .',time_of_exception:10,type_of_exception:'success'});
                     }else{
@@ -285,7 +293,7 @@ async function make_game_images(id_of_game, old_path, new_path,game_img,game_img
                 resolve( {data:'Game has been updated succesfully i hope :D .',time_of_exception:10,type_of_exception:'success'});
             }
 
-        })
+        }).catch(err => {return err})
 
     } catch (error) {
         return new Error(error);
@@ -309,7 +317,7 @@ function set_game_category(category){
 
 router.post('/upload_new_game', function(req, res) {
     // TUNA MUSI BYT SERVEROVA KONTROLA CI SU DANe FIles OK  a ci data ktore sa posielaju su tiez oki !!!
-    let user_id = check_current_user(req.body.my_socket_id)
+    let user_id = AllUsers.checkUserValid(req.body.my_socket_id)
     user_id.then(id => {
         console.log(`server seys  id after than ${id}`)
         let id_of_new_game = undefined;
@@ -322,81 +330,82 @@ router.post('/upload_new_game', function(req, res) {
 
 
         // vytvorenie hlavneho herneho priecinka
-        // console.log('request  body game neme',main_game_name)
         let old_path = './public/images/'+main_game_name[0];//decodeURI(main_game_name[0]);
         let new_path = './public/images/'+main_game_name[1];//decodeURI(main_game_name[1]);
         console.log(old_path,new_path)
         let path_is_renamed = old_path!==new_path;
 
         // CHECK 1
-        let check_1 = make_main_dir(main_game_img,'./public/images/',new_path,path_is_renamed);
-        if (check_1 !== undefined){
-            return res.send(check_1);
-        }
+        let check_1 = makeMainDir(main_game_img,'./public/images/',new_path,path_is_renamed);
+        check_1.then(result_makeMainDir => {
+            if (typeof result_makeMainDir === 'boolean' ){
+                let result = db.createGameMain(main_game_name[0],game_category_of_players,'default.png',main_game_description,id,created);//get_current_user.id,
+                result.then(inserted_id => {
+                    id_of_new_game = inserted_id;
 
-        // const db = dbService.getDbServiceInstance();
-        console.log('CO UKLADAM DO DB : ',decodeURI(main_game_name[0]),game_category_of_players,'default.png',main_game_description,id,created)
-        let result = db.createGameMain(main_game_name[0],game_category_of_players,'default.png',main_game_description,id,created);//get_current_user.id,
-        result.then(data => {
-            // console.log('ID OF GAME : ',data.inserted_id)
-            id_of_new_game = data.inserted_id;
+                    /// CHECK 2
+                    let game_description_img = undefined;
+                    let game_description_type = req.body.d_type ;
+                    let game_description_question = req.body.d_descriptor_question;
+                    try{
+                        game_description_img = req.files.d_img;
+                        if (game_description_img.length === undefined){
+                            game_description_img = [game_description_img];
+                            game_description_type = [game_description_type];
+                            game_description_question = [game_description_question];
+                        }
+                    }catch (err) {
+                        printError(`Check2 => createGameMain => Non existing object game_description_img`)
+                    }
 
+                    let check_2 = makeGameDescriptors(id_of_new_game,game_description_img,game_description_type,game_description_question,old_path,new_path,path_is_renamed);
+                    check_2.then(result_makeGameDescriptors => {
+                        if (typeof result_makeGameDescriptors === 'boolean'){
+                            // CHECK 3
+                            let game_img = undefined;
+                            let game_img_descriptor = req.body.game_img_auto_descriptor ;
+                            let game_img_question = req.body.game_img_question;
+                            try{
+                                game_img =  req.files.game_img;
+                                if (game_img.length === undefined){
+                                    game_img = [game_img];
+                                    game_img_descriptor = [game_img_descriptor];
+                                    game_img_question = [game_img_question];
+                                }
+                            }catch (e) {
+                                printError(`Check3 => makeGameDescriptors => Non existing object game_img`)
+                            }
+                            let new_path_for_images = new_path+'/images';
+                            let old_path_for_images = old_path+'/images';
 
-
-            /// CHECK 2
-            let game_description_img = undefined;
-            let game_description_type = req.body.d_type ;
-            let game_description_question = req.body.d_descriptor_question;
-            try{
-                game_description_img = req.files.d_img;
-                if (game_description_img.length === undefined){
-                    game_description_img = [game_description_img];
-                    game_description_type = [game_description_type];
-                    game_description_question = [game_description_question];
-                }
-            }catch (e) {
-                console.log('nexistuje ziaden descriptor obrazok');
+                            make_game_images(id_of_new_game, old_path_for_images, new_path_for_images, game_img, game_img_descriptor, game_img_question, path_is_renamed)
+                                .then(result =>{
+                                    printError(`Something is want wrong with createNewGameImages ${JSON.stringify(result)}`)
+                                    return res.send(result);
+                                }).catch(err =>{
+                                    printError(`Something is want wrong with createNewGameImages ${JSON.stringify(err)}`)
+                                    return res.send(err);
+                                });
+                        }else{
+                            printError(`Something is want wrong with createNewGameImages ${JSON.stringify(check_2)}`)
+                            return res.send(check_2);
+                        }
+                    }).catch(err => {
+                        printError(`Something is want wrong with makeGameDescriptors => ${err}`)
+                        return res.send({data:`Something is want wrong with <strong>makeGameDescriptors</strong>  ${err}`,time_of_exception:20,type_of_exception:'danger'})
+                    });
+                }).catch(err => {
+                    printError(`Something is want wrong with createGameMain => ${err}`)
+                    return res.send({data:`Something is want wrong with <strong>createNewGameImages</strong>  ${err}`,time_of_exception:20,type_of_exception:'danger'})
+                });
+            }else{
+                printError(`makeMainDir => ${check_1}`)
+                return res.send(check_1);
             }
-
-            let check_2 = make_game_descriptors(id_of_new_game,game_description_img,game_description_type,game_description_question,old_path,new_path,path_is_renamed);
-            if (check_2 !== undefined){
-                printError(`Something is want wrong with createNewGameImages ${JSON.stringify(check_2)}`)
-                return res.send(check_2);
-            }
-
-            // CHECK 3
-            let game_img = undefined;
-            let game_img_descriptor = req.body.game_img_auto_descriptor ;
-            let game_img_question = req.body.game_img_question;
-            try{
-                game_img =  req.files.game_img;
-                if (game_img.length === undefined){
-                    game_img = [game_img];
-                    game_img_descriptor = [game_img_descriptor];
-                    game_img_question = [game_img_question];
-                }
-            }catch (e) {
-                console.log('Hra zatial nema ziadne obrazky');
-            }
-            let new_path_for_images = new_path+'/images';
-            let old_path_for_images = old_path+'/images';
-
-            make_game_images(id_of_new_game, old_path_for_images, new_path_for_images, game_img, game_img_descriptor, game_img_question, path_is_renamed).then(result =>{
-                printError(`Something is want wrong with createNewGameImages ${JSON.stringify(result)}`)
-                return res.send(result);
-            }).catch(err =>{
-                printError(`Something is want wrong with createNewGameImages ${JSON.stringify(err)}`)
-                return res.send(err);
-            });
-        }).catch(err => {
-            printError(`Something is want wrong with createNewGameImages ${err}`)
-            return res.send({data:`Something is want wrong with <strong>createNewGameImages</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'})
-        });
-
-
+        }).catch(err => {printError(`makeMainDir => ${err}`)})
     }).catch(err => {
         printError(`post to /upload_new_game => ${err}`)
-        res.send(new Error(`post to /upload_new_game => ${err}`))})
+        return res.send(new Error(`post to /upload_new_game => ${err}`))})
     // res.send(user);
     // console.log(`server seis ${user_id}`)
     // if (user_id === undefined){
@@ -410,7 +419,7 @@ router.post('/upload_new_game', function(req, res) {
 router.post('/upload_game', function(req, res) {
     console.log('UPDATUJEM NOVU HRU');
 
-    let user = check_current_user(req.body.my_socket_id)
+    let user = AllUsers.checkUserValid(req.body.my_socket_id)
     // res.send(user);
     if (user.id === undefined){
         return res.send(user);
@@ -430,7 +439,7 @@ router.post('/upload_game', function(req, res) {
     let path_is_renamed = old_path!==new_path;
 
     // CHECK 1
-    let check_1 = make_main_dir(main_game_img,old_path,new_path,path_is_renamed);
+    let check_1 = makeMainDir(main_game_img,old_path,new_path,path_is_renamed);
     if (check_1 !== undefined){
         return res.send(check_1);
     }
@@ -458,7 +467,7 @@ router.post('/upload_game', function(req, res) {
         console.log('nexistuje ziaden descriptor obrazok');
     }
 
-    let check_2 = make_game_descriptors(id_of_game,game_description_img,game_description_type,game_description_question,old_path,new_path,path_is_renamed);
+    let check_2 = makeGameDescriptors(id_of_game,game_description_img,game_description_type,game_description_question,old_path,new_path,path_is_renamed);
     if (check_2 !== undefined){
         return res.send(check_2);
     }

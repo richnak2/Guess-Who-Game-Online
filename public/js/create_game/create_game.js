@@ -52,7 +52,8 @@ function delete_all_html_games(){
     }
     recreate_html()
     console.log('mazeme');
-    setTimeout(get_all_games_after_time,5000);
+    get_all_games_after_time()
+    // setTimeout(get_all_games_after_time,1000); //  5000
 }
 function get_all_games_after_time(){
     console.log('ziskavame');
