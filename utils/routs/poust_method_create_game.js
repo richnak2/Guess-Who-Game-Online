@@ -298,7 +298,7 @@ router.post('/upload_new_game', function(req, res) {
         console.log(`server seys  id after than ${user_id}`)
         let id_of_game = undefined;
         try{
-            id_of_game = req.body.game_id === undefined ? true : req.body.game_id ;
+            id_of_game = req.body.game_id === undefined ? false : req.body.game_id ;
         }catch (err) {
 
             console.log(`This game does not exist`)
@@ -321,14 +321,15 @@ router.post('/upload_new_game', function(req, res) {
         let check_1 = makeMainDir(main_game_img, './public/images/', new_path, path_is_renamed);
         if (typeof check_1 === 'boolean') {
             if (id_of_game){
-                console.log(`creating new game ${id_of_game}`)
-                id_of_game = db.createGameMain(main_game_name[0], game_category_of_players, 'default.png', main_game_description, user_id, created);
-            }else {
                 console.log(`updating game ${id_of_game}`)
                 let result = db.updateYourGameMain(id_of_game,main_game_name,game_category_of_players,main_game_description,created);
                 result.then().catch(err => {
                     return res.send({data:`Something is want wrong with <strong>updateYourGameMain</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'})
                 });
+            }else {
+                console.log(`creating new game ${id_of_game}`)
+                id_of_game = db.createGameMain(main_game_name[0], game_category_of_players, 'default.png', main_game_description, user_id, created);
+
             }
             /// CHECK 2
             let game_description_img = undefined;
