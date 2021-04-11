@@ -272,8 +272,6 @@ async function make_game_images(id_of_game, old_path, new_path,game_img,game_img
 
                 }
 
-            }{
-                console.log('You are scrud')
             }
 
             if (path_is_renamed){
@@ -281,8 +279,8 @@ async function make_game_images(id_of_game, old_path, new_path,game_img,game_img
                 old_path_r.pop();
                 old_path_r = old_path_r.join('/');
                 old_path_r = old_path_r+'/'
-                FileManager.deleteFolderServer(old_path_r).then(r => {
-                    if (r){
+                FileManager.deleteFolderServer(old_path_r).then(err => {
+                    if (err){
                         resolve( {data:'Game has been updated succesfully i hope :D .',time_of_exception:10,type_of_exception:'success'});
                     }else{
                         reject({data:'Something want wrong with deleting old directory !!! .',time_of_exception:10,type_of_exception:'danger'});
@@ -380,22 +378,27 @@ router.post('/upload_new_game', function(req, res) {
 
                             make_game_images(id_of_new_game, old_path_for_images, new_path_for_images, game_img, game_img_descriptor, game_img_question, path_is_renamed)
                                 .then(result =>{
-                                    printError(`Something is want wrong with createNewGameImages ${JSON.stringify(result)}`)
-                                    return res.send(result);
+                                    if (result.data.includes('Game')){
+                                        printError(`CHeck3 => ${result.data}`)
+                                        return res.send(result);
+                                    }else{
+                                        printError(`CHeck3 => Something is want wrong with createNewGameImages => ${JSON.stringify(err)}`)
+                                        return res.send(result);
+                                    }
                                 }).catch(err =>{
-                                    printError(`Something is want wrong with createNewGameImages ${JSON.stringify(err)}`)
+                                    printError(`CHeck3 => Something is want wrong with createNewGameImages => ${JSON.stringify(err)}`)
                                     return res.send(err);
                                 });
                         }else{
-                            printError(`Something is want wrong with createNewGameImages ${JSON.stringify(check_2)}`)
+                            printError(`Check2 => Something is want wrong with createNewGameImages => ${JSON.stringify(check_2)}`)
                             return res.send(check_2);
                         }
                     }).catch(err => {
-                        printError(`Something is want wrong with makeGameDescriptors => ${err}`)
+                        printError(`Check2 =>  Something is want wrong with makeGameDescriptors => ${err}`)
                         return res.send({data:`Something is want wrong with <strong>makeGameDescriptors</strong>  ${err}`,time_of_exception:20,type_of_exception:'danger'})
                     });
                 }).catch(err => {
-                    printError(`Something is want wrong with createGameMain => ${err}`)
+                    printError(`Check1 => Something is want wrong with createGameMain => ${err}`)
                     return res.send({data:`Something is want wrong with <strong>createNewGameImages</strong>  ${err}`,time_of_exception:20,type_of_exception:'danger'})
                 });
             }else{
