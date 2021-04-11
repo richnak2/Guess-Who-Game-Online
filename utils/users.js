@@ -23,7 +23,7 @@ class AllUsers {
     console.log(instance)
     return instance ? instance : new AllUsers();
   }
-  static x = setInterval(() => {console.log(`Interval :  ${this.strGetAllLength()}`)},30 * 1000)
+  x = setInterval(() => {console.log(`Interval :  ${this.strGetAllLength()}`)},30 * 1000)
 
   // static removeLoggedOut(){
   //   console.log(this.getAllToString());
