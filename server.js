@@ -66,8 +66,8 @@ io.on('connection', socket => {
     // FileManager.js related server error tag => FM-DG
     socket.on('delete_game' , ({game_id,title,my_socket_id}) =>{
         try{
-            let msg = format_error('deleting has started',20,'warning')
-            socket.emit('error',{error_massage:msg})
+            let format_error = format_error('deleting has started',20,'warning')
+            socket.emit('error',{format_error:format_error})
         }catch (err) {
             printError(`CHACHE ERROR => ${err}`)
         }
