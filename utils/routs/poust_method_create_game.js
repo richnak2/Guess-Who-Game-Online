@@ -299,7 +299,7 @@ router.post('/upload_new_game', function(req, res) {
         let id_of_new_game = undefined;
         let id_of_game = false
         try{
-            let id_of_game = req.body.game_id;
+            id_of_game = req.body.game_id;
         }catch (err) {
             console.log(`This game does not exist`)
         }
