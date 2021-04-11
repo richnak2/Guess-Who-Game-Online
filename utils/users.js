@@ -78,6 +78,7 @@ class AllUsers {
 
   static checkUserValid(socket_id){
     if (this.all_clients[socket_id]){
+      console.log(`user id is ${this.all_clients[socket_id].getId()}`)
       return this.all_clients[socket_id].getId()
     }else{
       return false
