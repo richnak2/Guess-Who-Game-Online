@@ -8,18 +8,30 @@ router.use(up());
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-const dbService = require('../DbService');
-const {remove_dirs_not_origin,delete_folder_r} = require("../create_game");
-const { getCurrentUser } = require('../users');
+// const dbService = require('../DbService');
+// const {remove_dirs_not_origin,delete_folder_r} = require("../create_game");
+// const { getCurrentUser } = require('../users');
+const DB = require('../DbService');
+const db = DB.getDbServiceInstance();
+const FM = require('../FileManager');
+const FileManager = FM.getFileManagerInstance()
+const AL = require('./utils/users');
+const AllUsers = AL.getAllUsersInstance();
 
 
-function check_current_user(id_user){
-    const get_current_user = getCurrentUser(id_user);
-    if (get_current_user === undefined){
-        return {data:'Canot find user plese login first',time_of_exception:10,type_of_exception:'warning'};
-    }else{
-        return get_current_user
-    }
+async function check_current_user(id_user){
+    return await AllUsers.getUser(id_user).then(user => {
+        if (user.getId()) {
+            return user.getUserData()
+        }
+    }).catch(err => {
+        return new Error(`check_current_user => ${err}`)
+    })
+    // if (get_current_user === undefined){
+    //     return {data:'Canot find user plese login first',time_of_exception:10,type_of_exception:'warning'};
+    // }else{
+    //     return get_current_user
+    // }
 }
 
 function make_main_dir(main_img,old_path, new_path, path_is_renamed) {

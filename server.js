@@ -14,6 +14,9 @@ const DB = require('./utils/DbService');
 const db = DB.getDbServiceInstance();
 const FM = require('./utils/FileManager');
 const FileManager = FM.getFileManagerInstance()
+const AL = require('./utils/users');
+const AllUsers = AL.getAllUsersInstance();
+
 
 // Vytvorenie a spracovanie socketovej stranky
 const socket_io = require('socket.io');
@@ -22,7 +25,7 @@ const io = socket_io(server);
 
 
 // Pripojenie konkretneho usera do aplikacie
-const AllUsers = require('./utils/users');
+
 const {format_message,format_error} = require('./utils/messages');
 
 const {create_game,is_existing_game,search_for_free_game,leave_game} = require('./utils/game');
