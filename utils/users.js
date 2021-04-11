@@ -19,9 +19,9 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
 
 class AllUsers {
   static all_clients = {};
-  static getAllUsersInstance(){
-    return instance ? instance : new AllUsers();
-  }
+  // static getAllUsersInstance(){
+  //   return instance ? instance : new AllUsers();
+  // }
   static  x = setInterval(() => {console.log(`Interval :  ${this.strGetAllLength()}`)},30 * 1000)
 
   // static removeLoggedOut(){
