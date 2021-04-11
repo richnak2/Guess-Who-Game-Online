@@ -40,8 +40,8 @@ socket.on('ping_server' , () => {
     reload();
 })
 
-socket.on('error' ,({format_error}) => {
-    create_exception(format_error.massage,format_error.time,format_error.type)
+socket.on('error' ,({error_massage}) => {
+    create_exception(error_massage.massage,error_massage.time,error_massage.type)
 })
 
 let user_account = undefined
