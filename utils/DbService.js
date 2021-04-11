@@ -175,14 +175,14 @@ class DbService {
                         this.removeGameImages(game_id).then(res => {
                             console.log('ok 3')
                             resolve('db.deleteGame : Success')
-                        }).catch(err => {reject(`deleteGame =>  ${err}`)})
-                    }).catch(err => {reject(`deleteGame =>  ${err}`)})
-                }).catch(err => { reject(`deleteGame =>  ${err}`)})
+                        }).catch(err => { console.log('1e');reject(`deleteGame =>  ${err}`)})
+                    }).catch(err => { console.log('2e');reject(`deleteGame =>  ${err}`)})
+                }).catch(err => { console.log('3e');reject(`deleteGame =>  ${err}`)})
 
                 // this.removeGameImages(game_id).then( res => {
                 //     resolve( 'db.deleteGame : Success')
                 // }).catch(err => { reject(`deleteGame => removeAllGameDirectories => ${err}`)})
-            }).catch(err => {return new Error(`deleteGame.promise => ${err}`)})
+            }).catch(err => { console.log('4e');new Error(`deleteGame.promise => ${err}`)})
             // await this.removeGame(game_id,user_id).then(
             //     await this.removeAllGameDirectories(game_id).then(
             //         await this.removeAllGameDirectories(game_id).then( res => {

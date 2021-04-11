@@ -75,16 +75,19 @@ io.on('connection', socket => {
                     printError(`FM-DG => ${removed_massage_db}`)
                     socket.emit('error',{error_massage:format_error('Game has been deleted successfully',10,'success')})
                 }).catch(err => {
-                    socket.emit('error',{error_massage:format_error('Something want wrong with database, cannot delete this game',20,'danger')})
                     printError(`FM-DG => ${err}`)
+                    socket.emit('error',{error_massage:format_error('Something want wrong with database, cannot delete this game',20,'danger')})
+
                 });
             }else{
-                socket.emit('error',{error_massage:format_error('You should not be here',100,'danger')})
                 printError("FM-DG => This user should not be able to delete games")
+                socket.emit('error',{error_massage:format_error('You should not be here',100,'danger')})
+
             }
         }).catch(err =>{
-            socket.emit('error',{error_massage:format_error('You are not allowed to delete games',100,'danger')})
             printError(`FM-DG => ${err}`)
+            socket.emit('error',{error_massage:format_error('You are not allowed to delete games',100,'danger')})
+
         })
     })
 
