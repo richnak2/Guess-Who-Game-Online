@@ -135,34 +135,42 @@ class DbService {
 
 
     // remove existing game
+    removeGame(game_id,user_id){
+        return new Promise((resolve, reject) => {
+            const query = "DELETE FROM games where id = ? and owner_id = ?;";
 
+            connection.query(query, [game_id,user_id] , (err, result) => {
+                if (err) reject(new Error(err.message));
+                resolve(result);
+            })
+        })
+    }
+    removeGameHelpDescriptors(game_id){
+        return new Promise((resolve, reject) => {
+            const query = "DELETE FROM game_help_descriptors where id_game = ? ;";
+
+            connection.query(query, [game_id] , (err, result) => {
+                if (err) reject(new Error(err.message));
+                resolve(result);
+            })
+        });
+    }
+    removeGameHelpDescriptors(game_id){
+        return new Promise((resolve, reject) => {
+            const query = "DELETE FROM game_images where id_game = ? ;";
+
+            connection.query(query, [game_id] , (err, result) => {
+                if (err) reject(new Error(err.message));
+                resolve(result);
+            })
+        })
+    }
     async deleteGame(game_id, user_id) {
         try {
-            await new Promise((resolve, reject) => {
-                const query = "DELETE FROM games where id = ? and owner_id = ?;";
-
-                connection.query(query, [game_id,user_id] , (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(result);
-                })
-            });
-            await new Promise((resolve, reject) => {
-                const query = "DELETE FROM game_help_descriptors where id_game = ? ;";
-
-                connection.query(query, [game_id] , (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(result);
-                })
-            });
-            await new Promise((resolve, reject) => {
-                const query = "DELETE FROM game_images where id_game = ? ;";
-
-                connection.query(query, [game_id] , (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve('db.deleteGame : Success');
-                })
-            })
-
+            await this.removeGame(game_id,user_id)
+            await this.removeAllGameDirectories(game_id)
+            await this.removeAllGameDirectories(game_id)
+            return 'db.deleteGame : Success'
         } catch (error) {
             return new Error(error)
         }

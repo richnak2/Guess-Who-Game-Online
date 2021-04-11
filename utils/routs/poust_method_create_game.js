@@ -220,7 +220,6 @@ async function make_game_images(id_of_game, old_path, new_path,game_img,game_img
     try {
         return await new Promise((resolve, reject) => {
 
-            const db = dbService.getDbServiceInstance();
             let result = undefined;
 
             if (game_img !==  undefined){
