@@ -168,11 +168,20 @@ class DbService {
     async deleteGame(game_id, user_id) {
         try {
             return await new Promise((resolve, reject) => {
-                this.removeGame(game_id,user_id).catch(err => { reject(`deleteGame => removeGame => ${err}`)})
-                this.removeGameHelpDescriptors(game_id).catch(err => {reject(`deleteGame => removeAllGameDirectories => ${err}`)})
-                this.removeGameImages(game_id).then( res => {
-                    resolve( 'db.deleteGame : Success')
-                }).catch(err => { reject(`deleteGame => removeAllGameDirectories => ${err}`)})
+                this.removeGame(game_id,user_id).then(res =>{
+                    console.log('ok 1')
+                    this.removeGameHelpDescriptors(game_id).then(res =>{
+                        console.log('ok 2')
+                        this.removeGameImages(game_id).then(res => {
+                            console.log('ok 3')
+                            resolve('db.deleteGame : Success')
+                        }).catch(err => {reject(`deleteGame => removeAllGameDirectories => ${err}`)})
+                    }).catch(err => {reject(`deleteGame => removeGameHelpDescriptors => ${err}`)})
+                }).catch(err => { reject(`deleteGame => removeGame => ${err}`)})
+
+                // this.removeGameImages(game_id).then( res => {
+                //     resolve( 'db.deleteGame : Success')
+                // }).catch(err => { reject(`deleteGame => removeAllGameDirectories => ${err}`)})
             }).catch(err => {return new Error(`deleteGame.promise => ${err}`)})
             // await this.removeGame(game_id,user_id).then(
             //     await this.removeAllGameDirectories(game_id).then(
