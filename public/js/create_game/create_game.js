@@ -280,7 +280,7 @@ async function save_game() {
         return create_exception('somthing wand wnog fith formating of request', 10, 'warning')
     }
     if (already_created_game) {
-        const response = await fetch('https://guess-who-online-game.herokuapp.com/upload_game', {
+        const response = await fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
             method: 'POST',
             body: form_data_create_game
         }).then(response => response.json())
