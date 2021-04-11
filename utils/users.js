@@ -20,6 +20,7 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
 class AllUsers {
   all_clients = {};
   static getAllUsersInstance(){
+    console.log(instance)
     return instance ? instance : new AllUsers();
   }
   static x = setInterval(() => {console.log(`Interval :  ${this.strGetAllLength()}`)},30 * 1000)
