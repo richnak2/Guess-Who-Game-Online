@@ -14,8 +14,8 @@ const DB = require('./utils/DbService');
 const db = DB.getDbServiceInstance();
 const FM = require('./utils/FileManager');
 const FileManager = FM.getFileManagerInstance()
-const AL = require('./utils/users');
-const AllUsers = AL.getAllUsersInstance();
+const AllUsers = require('./utils/users');
+// const AllUsers = AL.getAllUsersInstance();
 
 
 // Vytvorenie a spracovanie socketovej stranky
