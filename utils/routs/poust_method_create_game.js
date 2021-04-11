@@ -16,10 +16,11 @@ const db = DB.getDbServiceInstance();
 const FM = require('../FileManager');
 const FileManager = FM.getFileManagerInstance()
 const AL = require('../users');
-const AllUsers = AL.getAllUsersInstance();
+
 
 
 async function check_current_user(id_user){
+    let AllUsers = AL.getAllUsersInstance();
     return await AllUsers.getUser(id_user).then(user => {
         if (user.getId()) {
             return user.getUserData()
