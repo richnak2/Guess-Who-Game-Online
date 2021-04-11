@@ -263,11 +263,10 @@ async function make_game_images(id_of_game, old_path, new_path,game_img,game_img
             old_path_r = old_path_r.join('/');
             old_path_r = old_path_r+'/'
             if (FileManager.deleteFolderServer(old_path_r)){
-                return {data:'Game has been updated succesfully i hope :D .',time_of_exception:10,type_of_exception:'success'}
-            }else{
-                return {data:'Something want wrong with deleting old directory !!! .',time_of_exception:10,type_of_exception:'danger'}
+                return {data:'Saving game',time_of_exception:10,type_of_exception:'success'}
             }
         }
+        return {data:'Saving game .',time_of_exception:10,type_of_exception:'success'}
     }).catch(err => {
         return {data:`Something is want wrong with <strong>createUpdateGameImages</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'}
     });
@@ -300,7 +299,6 @@ router.post('/upload_new_game', function(req, res) {
         try{
             id_of_game = req.body.game_id === undefined ? false : req.body.game_id ;
         }catch (err) {
-
             console.log(`This game does not exist`)
         }
 
@@ -321,13 +319,13 @@ router.post('/upload_new_game', function(req, res) {
         let check_1 = makeMainDir(main_game_img, './public/images/', new_path, path_is_renamed);
         if (typeof check_1 === 'boolean') {
             if (id_of_game){
-                console.log(`updating game ${id_of_game}`)
+                // console.log(`updating game ${id_of_game}`)
                 let result = db.updateYourGameMain(id_of_game,main_game_name,game_category_of_players,main_game_description,created);
                 result.then().catch(err => {
                     return res.send({data:`Something is want wrong with <strong>updateYourGameMain</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'})
                 });
             }else {
-                console.log(`creating new game ${id_of_game}`)
+                // console.log(`creating new game ${id_of_game}`)
                 id_of_game = db.createGameMain(main_game_name[0], game_category_of_players, 'default.png', main_game_description, user_id, created);
 
             }
