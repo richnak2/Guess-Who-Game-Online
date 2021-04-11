@@ -143,7 +143,7 @@ class DbService {
                 if (err) reject(new Error(err.message));
                 resolve(result);
             })
-        })
+        }).catch(err => {return new Error(`removeGame => ${err}`)})
     }
     removeGameHelpDescriptors(game_id){
         return new Promise((resolve, reject) => {
@@ -153,7 +153,7 @@ class DbService {
                 if (err) reject(new Error(err.message));
                 resolve(result);
             })
-        });
+        }).catch(err => {return new Error(`removeGameHelpDescriptors => ${err}`)})
     }
     removeGameImages(game_id){
         return new Promise((resolve, reject) => {
@@ -163,7 +163,7 @@ class DbService {
                 if (err) reject(new Error(err.message));
                 resolve(result);
             })
-        })
+        }).catch(err => {return new Error(`removeGameImages => ${err}`)})
     }
     async deleteGame(game_id, user_id) {
         try {
@@ -175,9 +175,9 @@ class DbService {
                         this.removeGameImages(game_id).then(res => {
                             console.log('ok 3')
                             resolve('db.deleteGame : Success')
-                        }).catch(err => {reject(`deleteGame => removeAllGameDirectories => ${err}`)})
-                    }).catch(err => {reject(`deleteGame => removeGameHelpDescriptors => ${err}`)})
-                }).catch(err => { reject(`deleteGame => removeGame => ${err}`)})
+                        }).catch(err => {reject(`deleteGame =>  ${err}`)})
+                    }).catch(err => {reject(`deleteGame =>  ${err}`)})
+                }).catch(err => { reject(`deleteGame =>  ${err}`)})
 
                 // this.removeGameImages(game_id).then( res => {
                 //     resolve( 'db.deleteGame : Success')
