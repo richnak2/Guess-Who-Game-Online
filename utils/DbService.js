@@ -182,7 +182,7 @@ class DbService {
                 // this.removeGameImages(game_id).then( res => {
                 //     resolve( 'db.deleteGame : Success')
                 // }).catch(err => { reject(`deleteGame => removeAllGameDirectories => ${err}`)})
-            }).catch(err => { console.log('4e');new Error(`deleteGame.promise => ${err}`)})
+            }).then(res => {return res}).catch(err => { console.log('4e');new Error(`deleteGame.promise => ${err}`)})
             // await this.removeGame(game_id,user_id).then(
             //     await this.removeAllGameDirectories(game_id).then(
             //         await this.removeAllGameDirectories(game_id).then( res => {
@@ -194,6 +194,7 @@ class DbService {
 
 
         } catch (error) {
+            console.log('just error promis problem')
             return new Error(error)
         }
     }

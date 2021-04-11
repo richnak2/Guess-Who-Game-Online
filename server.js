@@ -65,6 +65,8 @@ io.on('connection', socket => {
 
     // FileManager.js related server error tag => FM-DG
     socket.on('delete_game' , ({game_id,title,my_socket_id}) =>{
+        socket.emit('error',{error_massage:format_error('deleting has started',20,'warning')})
+
         AllUsers.getUser(my_socket_id).then(user => {
             if (user.getId()){
                 const file_result = FileManager.deleteFolderServer(title)
@@ -72,10 +74,10 @@ io.on('connection', socket => {
                     .catch(err => printError(`deleteFolderServer => ${err}`))
                 const result = db.deleteGame(game_id, user.getId());
                 result.then(removed_massage_db => {
-                    printError(`FM-DG => ${removed_massage_db}`)
+                    printError(`FM-DG => db.deleteGame => ${removed_massage_db}`)
                     socket.emit('error',{error_massage : format_error('Game has been deleted successfully',10,'success')})
                 }).catch(err => {
-                    printError(`FM-DG => ${err}`)
+                    printError(`FM-DG => db.deleteGame.catch => ${err}`)
                     socket.emit('error',{error_massage:format_error('Something want wrong with database, cannot delete this game',20,'danger')})
 
                 });
