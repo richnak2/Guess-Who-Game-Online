@@ -298,7 +298,7 @@ router.post('/upload_new_game', function(req, res) {
         console.log(`server seys  id after than ${user_id}`)
         let id_of_game = undefined;
         try{
-            id_of_game = req.body.game_id === undefined ? false : req.body.game_id ;
+            id_of_game = req.body.game_id === undefined ? true : req.body.game_id ;
         }catch (err) {
 
             console.log(`This game does not exist`)
