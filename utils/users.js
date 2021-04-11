@@ -18,11 +18,11 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
                     'Harry Potter', 'Eric Clapton', 'Nicolas Cage','Will Smith', 'Heisenberg'];
 
 class AllUsers {
-  static all_clients = {};
+  all_clients = {};
   static getAllUsersInstance(){
     return instance ? instance : new AllUsers();
   }
-  static  x = setInterval(() => {console.log(`Interval :  ${this.strGetAllLength()}`)},30 * 1000)
+  x = setInterval(() => {console.log(`Interval :  ${this.strGetAllLength()}`)},30 * 1000)
 
   // static removeLoggedOut(){
   //   console.log(this.getAllToString());
@@ -36,7 +36,7 @@ class AllUsers {
   //
   // }
 
-  static async ping(id_socket){
+  async ping(id_socket){
     try{
       return await new Promise((resolve, reject) => {
         this.all_clients[id_socket].setSession();
@@ -48,18 +48,18 @@ class AllUsers {
 
   }
 
-  static push(id_socket , id, game_name, role , points , character , bought_characters){
+  push(id_socket , id, game_name, role , points , character , bought_characters){
     let user = new Users(id_socket , id, game_name, role , points , character , bought_characters);
     this.all_clients[id_socket] = user;
     console.log(`Join : ${this.strGetAllLength()}`)
     return user;
   }
 
-  static strGetAllLength(){
+  strGetAllLength(){
     return `Count of players : ${Object.keys(this.all_clients).length}`;
   }
 
-  static getAllToString(){
+  getAllToString(){
     let str = ''
     let index = 0
     for (let key in this.all_clients) {
@@ -71,13 +71,13 @@ class AllUsers {
     return str;
   }
 
-  static userLeave(socket_id) {
+  userLeave(socket_id) {
     delete this.all_clients[socket_id]
     console.log(`Leave : ${this.strGetAllLength()}`)
   }
 
 
-  static async getUser(socket_id){
+  async getUser(socket_id){
     try {
       return await new Promise((resolve, reject) => {
         let user = this.all_clients[socket_id];
@@ -91,7 +91,7 @@ class AllUsers {
       return new Error("ALLUsers.getUser => "+err)
     }
   }
-  static async getUserData(socket_id, variable_id_socket){
+  async getUserData(socket_id, variable_id_socket){
     try {
       return await new Promise((resolve, reject) => {
         let user = this.getUser(socket_id);
@@ -115,7 +115,7 @@ class AllUsers {
   //   }
   // }
 
-  static async setCharacter(socket_id, character) {
+  async setCharacter(socket_id, character) {
     try {
       return await new Promise((resolve, reject) => {
         let user = this.getUser(socket_id);
@@ -135,7 +135,7 @@ class AllUsers {
     }
   }
 
-  static async buyCharacterOrColor(socket_id, item) {
+  async buyCharacterOrColor(socket_id, item) {
     try {
       return await new Promise((resolve, reject) => {
         let user = this.getUser(socket_id);
@@ -157,7 +157,7 @@ class AllUsers {
 
 
 
-  static async getAllGames(socket_id){
+  async getAllGames(socket_id){
     try {
       return await new Promise((resolve, reject) => {
         const current_user = this.getUser(socket_id);
@@ -173,7 +173,7 @@ class AllUsers {
     }
   }
 
-  static async getAllYourGames(socket_id){
+  async getAllYourGames(socket_id){
     try {
       return await new Promise((resolve, reject) => {
         const current_user = this.getUser(socket_id);
@@ -189,7 +189,7 @@ class AllUsers {
     }
   }
 
-  static async registerNewUser(name, password, role){
+  async registerNewUser(name, password, role){
     try {
       return await new Promise((resolve, reject) => {
         const exist = db.userExist(name);
@@ -214,7 +214,7 @@ class AllUsers {
   }
 
 
-  static async logIn(socket_id, name, password) {
+  async logIn(socket_id, name, password) {
     try {
       return await new Promise((resolve, reject) => {
         const result = db.findUser(name, password);
