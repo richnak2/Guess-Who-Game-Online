@@ -5,7 +5,7 @@ const up = require('express-fileupload');
 
 const router = express.Router();
 router.use(up());
-router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 // const dbService = require('../DbService');
