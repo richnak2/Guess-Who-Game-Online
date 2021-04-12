@@ -274,19 +274,21 @@ async function save_game() {
     if (form_data_create_game === undefined) {
         return create_exception('somthing wand wnog fith formating of request', 10, 'warning')
     }
-    const response = fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
+    const response = await fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
         method: 'POST',
         body: form_data_create_game
-    }).then(response => response.json())
-        .then(data => {
-            if (data) {
-                create_exception(data.data, data.time_of_exception, data.type_of_exception);
-                delete_all_html_games();
-            }else{
-                console.log(data)
-            }
-        }).catch(err => console.log(err));
+    })
     console.log(response)
+    const json  = await response.json()
+        // .then(data => {
+        //     if (data) {
+                create_exception(json.data, json.time_of_exception, json.type_of_exception);
+                delete_all_html_games();
+        //     }else{
+        //         console.log(data)
+        //     }
+        // }).catch(err => console.log(err));
+    console.log(json)
 }
 
 function check_file_img(which,add_to_this_elem){
