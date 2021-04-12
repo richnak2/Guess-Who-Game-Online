@@ -31,7 +31,6 @@ socket.on('get_all_games_by_you' , ({games}) => {
     for (let index_game = 0; index_game < games.length; index_game++) {
         create_html_games(games[index_game]);
     }
-    pre_make_colors_them();
 });
 
 function check_for_illegal_characters(val){
@@ -51,18 +50,17 @@ function delete_all_html_games(){
         cards[0].remove();
     }
     recreate_html()
-    console.log('mazeme');
-    // get_all_games_after_time()
+    setTimeout(undefined,1000)
     socket.emit('get_all_games_by_you',{my_socket_id});
     document.getElementById('all_games').style.display = 'contents';
     // setTimeout(get_all_games_after_time,1000); //  5000
 }
-function get_all_games_after_time(){
-    console.log('ziskavame');
-    location.reload();
-    // socket.emit('get_all_games_by_you',{my_socket_id});
-    // document.getElementById('all_games').style.display = 'contents';
-}
+// function get_all_games_after_time(){
+//     console.log('ziskavame');
+//     location.reload();
+//     // socket.emit('get_all_games_by_you',{my_socket_id});
+//     // document.getElementById('all_games').style.display = 'contents';
+// }
 function recreate_html(){
     allow_buttons.forEach(elem_btn => {
         let elem_btn_html = document.getElementById(elem_btn);
@@ -165,12 +163,12 @@ function display(witch){
             create_exception('Please check in this section <button class="btn btn-default bg-success "  onclick="display(\'check_2\')">descriptors</button>',10,'warning')
         }
     }else if (witch === 'save'){
-        if (status_of_game_check_1){
+        if (status_of_game_check_1 && status_of_game_check_2 ){
             check_box_3()
 
             // document.getElementById(witch).style.display = 'revert';
         }else{
-            create_exception('Please check in this section <button class="btn btn-default bg-success "  onclick="display(\'check_3\')">descriptors</button>',10,'warning')
+            create_exception('Please check in this section <button class="btn btn-default bg-success "  onclick="display(\'check_2\')">descriptors</button>',10,'warning')
         }
 
     }else{
@@ -207,7 +205,7 @@ function do_you_wont_to_delete_game(game_id, title){
 }
 function delete_game(game_id, title){
     socket.emit('delete_game' , {game_id,title,my_socket_id})
-    // delete_all_html_games();
+    delete_all_html_games();
     // create_exception('game has been deleted',5,'success');
 }
 function make_form_data(){
@@ -225,11 +223,7 @@ function make_form_data(){
     let main_img_file = document.getElementById('input_main_img');
     let main_game_img = document.getElementById('main_img_of_game');
 
-    if (status_of_game_check_1 === false ){//|| status_of_game_check_2 === undefined || status_of_game_check_3 === undefined)
-        // if (game_name_value.value === "" ) {
-        //     create_exception('You must set game title in "main" button',5,'danger');
-        //     status_of_game_check_1 = false;
-        // }
+    if (status_of_game_check_1 === false ){
         return undefined;
     }else {
         if (main_img_file.files[0] !== undefined) {
@@ -277,36 +271,20 @@ function make_form_data(){
 
 async function save_game() {
     let form_data_create_game = make_form_data();
-    // console.log(form_data_create_game);
     if (form_data_create_game === undefined) {
         return create_exception('somthing wand wnog fith formating of request', 10, 'warning')
     }
-    if (already_created_game) {
-        const response = await fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
-            method: 'POST',
-            body: form_data_create_game
-        }).then(response => response.json())
-            .then(data => {
-                if (data) {
-                    create_exception(data.data, data.time_of_exception, data.type_of_exception);
-                    delete_all_html_games();
-                }
-            }).catch(err => console.log(err));
-        console.log(response)
-    } else {
-        const response = await fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
-            method: 'POST',
-            body: form_data_create_game
-        }).then(response => response.json())
-            .then(data => {
-                if (data) {
-                    create_exception(data.data, data.time_of_exception, data.type_of_exception);
-                    delete_all_html_games();
-
-                }
-            }).catch(err => console.log(err));
-        console.log(response)
-    }
+    const response = await fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
+        method: 'POST',
+        body: form_data_create_game
+    }).then(response => response.json())
+        .then(data => {
+            if (data) {
+                create_exception(data.data, data.time_of_exception, data.type_of_exception);
+                delete_all_html_games();
+            }
+        }).catch(err => console.log(err));
+    console.log(response)
 }
 
 function check_file_img(which,add_to_this_elem){

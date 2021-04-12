@@ -67,11 +67,11 @@ io.on('connection', socket => {
     socket.on('delete_game' , ({game_id,title,my_socket_id}) =>{
         AllUsers.getUser(my_socket_id).then(user => {
             if (user.getId()){
-               FileManager.deleteFolderServer(title)
+                FileManager.deleteFolderServer(title)
                 const result = db.deleteGame(game_id, user.getId());
                 result.then(removed_massage_db => {
                     printError(`FM-DG => ${removed_massage_db}`)
-                    socket.emit('error_massage',{error_massage : format_error('Game has been deleted successfully',10,'success')})
+                    socket.emit('error_massage',{error_massage : format_error('Game has been successfully deleted',10,'success')})
                 }).catch(err => {
                     printError(`FM-DG => db.deleteGame.catch => ${err}`)
                     socket.emit('error_massage',{error_massage:format_error('Something want wrong with database, cannot delete this game',20,'danger')})
@@ -88,11 +88,6 @@ io.on('connection', socket => {
 
         })
     });
-
-
-
-
-
 
 
     //// PLAEYER MANAGMENT

@@ -48,5 +48,20 @@ class FileManager {
     }
 
 
+    makeDir(new_path) {
+        if (!fs.existsSync(new_path)){
+            fs.mkdirSync(new_path);
+        }
+    }
+
+    copyFile(old_path,new_path) {
+        fs.copyFile(old_path, new_path,function (err) {
+            if (err){
+                return {data:`Something is want wrong with replacing main img  ${err}`,time_of_exception:10,type_of_exception:'warning'};
+            }else{
+                return false
+            }
+        });
+    }
 }
 module.exports = FileManager
