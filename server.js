@@ -244,7 +244,7 @@ io.on('connection', socket => {
                 socket.emit('obtain_game', {game:game});
             }
         }).catch(err =>{
-            socket.emit('error_massage',{error_massage:format_error('You are not eligible to play game.',100,'danger')})
+            socket.emit('error_massage',{error_massage:format_error(`You are not eligible to play game. \n ${err}`,100,'danger')})
 
         });
     });
