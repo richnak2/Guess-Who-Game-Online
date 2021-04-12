@@ -219,9 +219,11 @@ async function make_game_images(id_of_game, old_path, new_path,game_img,game_img
             old_path_r = old_path_r.join('/');
             old_path_r = old_path_r+'/'
             if (FileManager.deleteFolderServer(old_path_r)){
+                console.log('hotovo ulozene')
                 return {data:'Saving game',time_of_exception:10,type_of_exception:'success'}
             }
         }
+        console.log('hotovo ulozene')
         return {data:'Saving game .',time_of_exception:10,type_of_exception:'success'}
     }).catch(err => {
         return {data:`Something is want wrong with <strong>createUpdateGameImages</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'}
