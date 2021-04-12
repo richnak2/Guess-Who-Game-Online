@@ -2,7 +2,6 @@
 const DB = require('./DbService');
 const db = DB.getDbServiceInstance();
 const {format_message,format_error} = require('./messages');
-let instance = null
 
 
 const color_pallet = [['#00000000',0],// base color default
@@ -19,10 +18,7 @@ const user_names = ['Sara','Britney','Sabal','Amita','Ajay','Walter White',
 
 class AllUsers {
   static all_clients = {};
-  // static getAllUsersInstance(){
-  //   return instance ? instance : new AllUsers();
-  // }
-  static  x = setInterval(() => {console.log(`Interval :  ${this.strGetAllLength()}`)},30 * 1000)
+  static  counter_player = setInterval(() => {console.log(`Interval User :  ${this.strGetAllLength()}`)},30 * 1000)
 
   // static removeLoggedOut(){
   //   console.log(this.getAllToString());
@@ -51,12 +47,12 @@ class AllUsers {
   static push(id_socket , id, game_name, role , points , character , bought_characters){
     let user = new Users(id_socket , id, game_name, role , points , character , bought_characters);
     this.all_clients[id_socket] = user;
-    console.log(`Join : ${this.strGetAllLength()}`)
+    console.log(`Users : ${this.strGetAllLength()}`)
     return user;
   }
 
   static strGetAllLength(){
-    return `Count of players : ${Object.keys(this.all_clients).length}`;
+    return `Users count : ${Object.keys(this.all_clients).length}`;
   }
 
   static getAllToString(){

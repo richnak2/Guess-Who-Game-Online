@@ -28,7 +28,7 @@ const io = socket_io(server);
 
 const {format_message,format_error} = require('./utils/messages');
 
-const {create_game,is_existing_game,search_for_free_game,leave_game} = require('./utils/game');
+const {create_game,is_existing_game,search_for_free_game,leave_game,AllGames} = require('./utils/game');
 const {look_folders,delete_folder_r} = require('./utils/create_game');
 // const {DbService} = require('./utils/dbService')
 // DbService.getDbServiceInstance()
@@ -55,15 +55,11 @@ function printError(err){
 
 io.on('connection', socket => {
 
-
-
-
-    ///// CREATE GAME MANAGMET : CGM
+    // FileManager.js related server error tag => FM-DG
     socket.on('exist_dir',({dir_name})=>{
         socket.emit('exist_dir',{exist : FileManager.lookFolders(dir_name)});
     })
 
-    // FileManager.js related server error tag => FM-DG
     socket.on('delete_game' , ({game_id,title,my_socket_id}) =>{
         AllUsers.getUser(my_socket_id).then(user => {
             if (user.getId()){
@@ -205,25 +201,25 @@ io.on('connection', socket => {
     //     }
     // }
     //
-    // // LTGB
-    // socket.on('luck_to_game_buffer' , ({game_name,game_type,my_socket_id}) => {
-    //     const player = getCurrentUser(my_socket_id);
-    //     if (player === undefined){
-    //         console.log("G-LTGB : Something want wrong with user")
-    //     }else {
-    //         search_for_free_game(game_name, game_type, player).then(answer => {
-    //             if (answer !== undefined){
-    //                 let game_copy  = remove_player_identity(JSON.parse(JSON.stringify(answer))); // Create Deep copy of object
-    //                 socket.emit('game_buffer_answer', {answer: game_copy});
-    //             }else{
-    //                 console.log('LUCK TO GAME ERRROR :',answer);
-    //                 socket.emit('game_buffer_answer', {answer: answer});
-    //             }
-    //         })
-    //     }
-    // })
-    //
-    // // : CSP
+    // LTGB
+    socket.on('luck_to_game_buffer' , ({game_name,game_type,my_socket_id}) => {
+        const player = getCurrentUser(my_socket_id);
+        if (player === undefined){
+            console.log("G-LTGB : Something want wrong with user")
+        }else {
+            search_for_free_game(game_name, game_type, player).then(answer => {
+                if (answer !== undefined){
+                    let game_copy  = remove_player_identity(JSON.parse(JSON.stringify(answer))); // Create Deep copy of object
+                    socket.emit('game_buffer_answer', {answer: game_copy});
+                }else{
+                    console.log('LUCK TO GAME ERRROR :',answer);
+                    socket.emit('game_buffer_answer', {answer: answer});
+                }
+            })
+        }
+    })
+
+    // : CSP
     // socket.on('create_single_player' , ({game_name,game_type,game_id,my_socket_id}) => {
     //     const player = getCurrentUser(my_socket_id);
     //     if (player === undefined){
@@ -238,6 +234,22 @@ io.on('connection', socket => {
     //         }
     //     }
     // });
+
+    socket.on('create_single_player' , ({game_name,game_type,game_id,my_socket_id}) => {
+        AllUsers.getUser(my_socket_id).then(user => {
+            const game = AllGames.push(game_name,game_type,user)
+            if (typeof game === 'string'){
+                socket.emit('error_massage',{error_massage:format_error(`Something want wrong ${game}`,100,'danger')})
+            }else{
+                socket.emit('obtain_game', {game:game});
+            }
+        }).catch(err =>{
+            socket.emit('error_massage',{error_massage:format_error('You are not eligible to play game.',100,'danger')})
+
+        });
+    });
+
+
     // // : ASPG
     // socket.on('ask_single_player_game',({game_id,massage}) =>{
     //     let game = is_existing_game(game_id);

@@ -6,7 +6,7 @@ let html_centered_win = undefined;
 let html_win_lost = undefined;
 let html_leave = undefined;
 let html_play_again = undefined;
-// let html_report_btn = undefined;
+
 let animation = false;
 let your_turn = false;
 
@@ -22,7 +22,6 @@ let guessed_images = {};
 
 document.addEventListener('DOMContentLoaded', function () {
     chat_box = document.getElementById('chat_for_kids');
-    console.log(chat_box)
     html_possible_images = document.getElementsByClassName('possible_image');
     html_button_elem_guess = document.getElementById('guess_button_box');
     html_centered_centered_win =  document.getElementById('centered_centered_win');
@@ -30,11 +29,9 @@ document.addEventListener('DOMContentLoaded', function () {
     html_win_lost = document.getElementById('win_lost');
     html_leave = document.getElementById('leave');
     html_play_again = document.getElementById('again');
-    // html_report_btn = document.getElementById('report_btn');
-    create_game();
 });
 
-function create_game(){
+function createGame(){
     if (sessionStorage.getItem('type_of_game')){
         game_name = sessionStorage.getItem('game_name');
         game_type = sessionStorage.getItem('type_of_game');
@@ -50,7 +47,7 @@ function create_game(){
             socket.emit('luck_to_game_buffer' , {game_name,game_type,my_socket_id}, );
         }
     }else{
-        setTimeout(create_game,100);
+        setTimeout(createGame,100);
     }
 }
 
@@ -203,7 +200,7 @@ function run_animation_waiting(count_of_iteration){
         html_centered_win.style.display = 'none';
         html_win_lost.style.display = 'none';
         html_leave.style.display = 'none';
-        create_game();
+        createGame();
     }
 }
 
