@@ -238,13 +238,9 @@ io.on('connection', socket => {
     socket.on('create_single_player' , ({game_name,game_type,game_id,my_socket_id}) => {
         AllUsers.getUser(my_socket_id).then(user => {
             const game = AllGames.push(game_name,game_type,user)
-            if (typeof game === 'string'){
-                socket.emit('error_massage',{error_massage:format_error(`Something want wrong ${game}`,100,'danger')})
-            }else{
-                socket.emit('obtain_game', {game:game});
-            }
+            socket.emit('obtain_game', {game:game});
         }).catch(err =>{
-            socket.emit('error_massage',{error_massage:format_error(`You are not eligible to play game. \n ${err}`,100,'danger')})
+            socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
 
         });
     });

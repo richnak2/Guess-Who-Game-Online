@@ -12,7 +12,7 @@ class AllGames{
     static  counter_games = setInterval(() => {console.log(`Interval Games:  ${this.strGetAllLength()}`)},30 * 1000)
 
     static push(game_name,game_type,user){
-        const game_id = make_id(20)
+        const game_id = this.makeId(20)
         const game = new NewGame(game_name , game_type, game_id, user);
         const game_info = game.findGameInfoDb()
         if (typeof game_info === 'boolean'){
@@ -27,10 +27,10 @@ class AllGames{
                 }
             }
         }else{
-            return `${game_info}`
+            return new Error(`AllGames.push => ${game_info}`)
         }
     }
-    make_id(length) {
+    static makeId(length) {
         let result = '';
         let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let charactersLength = characters.length;
@@ -83,8 +83,8 @@ class NewGame{
                     this.list_of_images = data3;
                     return true;
 
-                }).catch(err => {return new Error(`db.getGameImage => ${err}`)});
-            }).catch(err => {return new Error(`db.getGameHelpDescriptor => ${err}`)});
+                }).catch(err => { new Error(`db.getGameImage => ${err}`)});
+            }).catch(err => { new Error(`db.getGameHelpDescriptor => ${err}`)});
         }).catch(err => {return new Error(`db.getGameId => ${err}`)});
     }
     makePaths(){
