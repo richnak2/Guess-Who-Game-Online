@@ -280,15 +280,20 @@ async function save_game() {
     })
     console.log(response)
     const json  = await response.json()
+    console.log(json)
+    json.then(data => {
+        console.log(data)
+        create_exception(data.data, data.time_of_exception, data.type_of_exception);
+        delete_all_html_games();
+    })
         // .then(data => {
         //     if (data) {
-                create_exception(json.data, json.time_of_exception, json.type_of_exception);
-                delete_all_html_games();
+
         //     }else{
         //         console.log(data)
         //     }
         // }).catch(err => console.log(err));
-    console.log(json)
+
 }
 
 function check_file_img(which,add_to_this_elem){
