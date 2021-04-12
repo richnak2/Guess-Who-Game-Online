@@ -321,13 +321,13 @@ router.post('/upload_new_game', function(req, res) {
                 let new_path_for_images = new_path + '/images';
                 let old_path_for_images = old_path + '/images';
 
-                return res.send(make_game_images(id_of_game, old_path_for_images, new_path_for_images, game_img, game_img_descriptor, game_img_question, path_is_renamed));
+                res.send(make_game_images(id_of_game, old_path_for_images, new_path_for_images, game_img, game_img_descriptor, game_img_question, path_is_renamed));
             }
-            return res.send(check_2)
+            res.send(check_2)
         }
-        return res.send(check_1)
+        res.send(check_1)
     }
-    return res.send({data:'Something want wrong your profile.',time_of_exception:10,type_of_exception:'danger'})
+    res.send({data:'Something want wrong your profile.',time_of_exception:10,type_of_exception:'danger'})
 })
 
 module.exports = router;
