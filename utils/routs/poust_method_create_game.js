@@ -250,6 +250,7 @@ function set_game_category(category){
 
 router.post('/upload_new_game', function(req, res) {
     // TUNA MUSI BYT SERVEROVA KONTROLA CI SU DANe FIles OK  a ci data ktore sa posielaju su tiez oki !!!
+    res.header("Access-Control-Allow-Origin", "*");
     let user_id = AllUsers.checkUserValid(req.body.my_socket_id)
     if (user_id) {
         console.log(`server seys  id after than ${user_id}`)
