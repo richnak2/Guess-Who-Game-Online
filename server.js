@@ -239,20 +239,20 @@ io.on('connection', socket => {
     socket.on('create_single_player' , ({game_name,game_type,game_id,my_socket_id}) => {
         AllUsers.getUser(my_socket_id).then(user => {
             const game = AllGames.push(game_name,game_type,user)
-
-            socket.join(user.getGameId())
-            // console.log()
-            // console.log(game);
-            // console.log(game.getId());
-            // let parsed = JSON.parse(JSON.stringify(game))
-            // console.log(parsed)
-            try{
-                console.log(game.toJSON())
-            }catch (err) {
-                console.log(err)
-            }
-            socket.emit('obtain_game', {game:game.toJSON()});
-
+            game.then(new_game => {
+                socket.join(user.getGameId())
+                // console.log()
+                // console.log(game);
+                // console.log(game.getId());
+                // let parsed = JSON.parse(JSON.stringify(game))
+                // console.log(parsed)
+                try{
+                    console.log(JSON.parse(JSON.stringify(new_game)))
+                }catch (err) {
+                    console.log(err)
+                }
+                socket.emit('obtain_game', {game:new_game.toJSON()});
+            })
         }).catch(err =>{
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
         });

@@ -11,28 +11,31 @@ class AllGames{
 
     static  counter_games = setInterval(() => {console.log(`Interval Games:  ${this.strGetAllLength()}`)},30 * 1000)
 
-    static push(game_name,game_type,user){
-        const game_id = this.makeId(20)
-        let game = new NewGame(game_name , game_type, game_id, user);
-        const game_info = game.findGameInfoDb()
-        game_info.then(game_info_result =>{
-            if (typeof game_info_result === 'boolean') {
-                const game_paths = game.makePaths()
-                if (game_paths) {
-                    const game_finished = game.shuffleImages()
-                    if (game_finished) {
-                        this.games[game_id] = game;
-                        user.setGameId(game_id)
-                        // console.log(game_id)
-                        // console.log(this.games)
+    static async push(game_name,game_type,user){
+        return await new Promise((resolve, reject) => {
+            const game_id = this.makeId(20)
+            let game = new NewGame(game_name , game_type, game_id, user);
+            const game_info = game.findGameInfoDb()
+            game_info.then(game_info_result =>{
+                if (typeof game_info_result === 'boolean') {
+                    const game_paths = game.makePaths()
+                    if (game_paths) {
+                        const game_finished = game.shuffleImages()
+                        if (game_finished) {
+                            this.games[game_id] = game;
+                            user.setGameId(game_id)
+                            // console.log(game_id)
+                            // console.log(this.games)
 
-                        console.log(`Games : ${this.strGetAllLength()}`)
-                        return game
+                            console.log(`Games : ${this.strGetAllLength()}`)
+                            resolve(this.games[game_id])
 
+                        }
                     }
                 }
-            }
+            }).catch(err => {return new Error(` game_info => ${err}`)})
         }).catch(err => {return new Error(`AllGames.push => game_info => ${err}`)})
+
     }
     static isYourPictureQuestionFromPlayer(game_id,massage){
         const exist = this.isExistingGame(game_id)
@@ -87,7 +90,7 @@ class NewGame{
             type : this.type ,
             id : this.id ,
             list_of_images : this.list_of_images ,
-            list_of_definers : this.list_of_definers 
+            list_of_definers : this.list_of_definers
         }
     }
     async findGameInfoDb(){
