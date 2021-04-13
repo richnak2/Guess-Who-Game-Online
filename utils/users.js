@@ -289,7 +289,7 @@ class Users {
     return await new Promise((resolve, reject) => {
       this.points += points;
       if (this.getId()){
-        db.updateUserPoints(this.getId(),points).then( res => {
+        db.updateUserPoints(this.getId(),this.points).then( res => {
           resolve(true)
         }).catch(err => { new Error(`db.updateUserPoints => ${err}`)});
       }else{
