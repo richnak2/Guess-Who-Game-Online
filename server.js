@@ -251,7 +251,7 @@ io.on('connection', socket => {
 
 
     // // : ASPG
-    socket.on('ask_single_player_game',({my_socket_id,game_id,massage}) =>{
+    socket.on('ask_single_player_game',({my_socket_id,massage}) =>{
         AllUsers.getUser(my_socket_id).then(user => {
             let is_you_picture = AllGames.isYourPictureQuestionFromPlayer(user.getGameId(),massage);
             io.to(user.getGameId()).emit('answer_to_is_you_picture_pc', {answer: is_you_picture})

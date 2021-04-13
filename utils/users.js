@@ -273,15 +273,15 @@ class Users {
   getUserData(variable_id_socket){
     this.variable_id_socket = variable_id_socket ? this.variable_id_socket : variable_id_socket
     return {
-      'id_socket' : this.id_socket,
-      'id' : this.id,
-      'variable_id_socket' : this.variable_id_socket,
-      'game_name' : this.game_name,
-      'role' : this.role,
-      'points' : this.points,
-      'color' : this.color,
-      'character' : this.character,
-      'bought_characters' : this.bought_characters
+      id_socket : this.id_socket,
+      id : this.id,
+      variable_id_socket : this.variable_id_socket,
+      game_name : this.game_name,
+      role : this.role,
+      points : this.points,
+      color : this.color,
+      character : this.character,
+      bought_characters : this.bought_characters
     }
   }
   setCharacter(character) {
@@ -290,7 +290,12 @@ class Users {
     this.character =  splinted_character[1];
   }
 
-
+  getDataForGame(){
+    return {
+      game_name : this.game_name,
+      character : this.character
+    }
+  }
   async addPoints(points) {
     return await new Promise((resolve, reject) => {
       this.points += points;

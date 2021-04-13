@@ -89,7 +89,9 @@ class NewGame{
             game_name : this.game_name ,
             type : this.type ,
             list_of_images : this.list_of_images ,
-            list_of_definers : this.list_of_definers
+            list_of_definers : this.list_of_definers,
+            player1 : this.player1.getDataForGame(),
+            player2 : this.player2 !== undefined ? this.player2.getDataForGame() : undefined
         }
     }
     async findGameInfoDb(){
@@ -186,6 +188,7 @@ class NewGame{
                 this.ask_counter_player1 ++;
                 let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
                 if (you_found_picture){
+                    console.log('you win')
                     const points_add = this.player1.addPoints()
                     points_add.then(res => {
                         resolve(you_found_picture);
