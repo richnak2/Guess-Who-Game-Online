@@ -241,10 +241,12 @@ io.on('connection', socket => {
             const game = AllGames.push(game_name,game_type,user)
 
             socket.join(user.getGameId())
-            console.log(JSON.parse(JSON.stringify(game)))
-            console.log(game);
-            console.log(game.getId());
-            socket.emit('obtain_game', {game:JSON.parse(JSON.stringify(game))});
+            // console.log()
+            // console.log(game);
+            // console.log(game.getId());
+            let parsed = JSON.parse(JSON.stringify(game))
+            console.log(parsed)
+            socket.emit('obtain_game', {game:parsed});
 
         }).catch(err =>{
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
