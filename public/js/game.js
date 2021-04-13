@@ -548,35 +548,26 @@ function add_img_to_asked_certain(img){
 }
 
 function make_card_win(witch_player_win){
-    let opponent_character;
     if (witch_player_win.includes('lost')){
         my_game.state = true
-        opponent_character = ((my_game.player1.game_name === html_name.innerHTML) // ZLE
-            ?my_game.player2.character+' '+my_game.player2.game_name
-            :my_game.player1.character+' '+my_game.player1.game_name).split(' ');
+        my_game.player1.game_name === html_name.innerHTML
+            ? make_profile(my_game.player2.game_name,my_game.player2.color,my_game.player2.character)
+            :make_profile(my_game.player1.game_name,my_game.player1.color,my_game.player1.character)
     }else{
         my_game.state = true
-        opponent_character = ((my_game.player1.game_name === html_name.innerHTML) // ZLE
-            ?my_game.player1.character+' '+my_game.player1.game_name
-            :my_game.player2.character+' '+my_game.player2.game_name ).split(' ');
+        my_game.player1.game_name === html_name.innerHTML
+            ? make_profile(my_game.player1.game_name,my_game.player1.color,my_game.player1.character)
+            :make_profile(my_game.player2.game_name,my_game.player2.color,my_game.player2.character)
     }
-
-    console.log(opponent_character)
-    document.getElementById('opponent_profile_card').style.backgroundColor = opponent_character[0];
-    document.getElementById('opponent_profile_img').src = './images/Users/'+opponent_character[1];
-    document.getElementById('opponent_name').innerHTML = opponent_character[2];
 
 
 }
+function make_profile(name,color,character){
+    document.getElementById('opponent_profile_card').style.backgroundColor = color;
+    document.getElementById('opponent_profile_img').src = `./images/Users/${character}`;
+    document.getElementById('opponent_name').innerHTML = name;
+}
 function make_win_multiplier(text){
-    // POZOR !!!
-    // if (document.getElementById('my_img_guessed_by_opponent').src.includes( '/images/question_mark.png') && game_type !== 'pc'){
-    // }else{
-    //     if (text !== 'You lost because you are not playing !'){
-    //         if (text === 'You win because your opponent is not playing !'){
-    //         }
-    //     }
-    // }
 
     console.log('MULTIPLAYER WIN')
     html_centered_win.style.display = 'revert';

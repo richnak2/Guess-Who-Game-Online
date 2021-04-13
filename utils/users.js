@@ -281,7 +281,8 @@ class Users {
   getDataForGame(){
     return {
       game_name : this.game_name,
-      character : this.character
+      character : this.character,
+      color : this.color
     }
   }
   async addPoints(points) {
