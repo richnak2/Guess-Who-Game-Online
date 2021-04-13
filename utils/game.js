@@ -82,22 +82,28 @@ class NewGame{
         return this.id;
     }
     async findGameInfoDb(){
-        let id  = undefined;
-        const result = db.getGameId(this.game_name);
-        console.log('locking for '+this.game_name)
-        result.then(data1 => {
-            id = data1[0]['id'];
-            const result2 = db.getGameHelpDescriptor(id);
-            result2.then(data2 => {
-                this.list_of_definers = data2;
-                const result3 = db.getGameImage(id);
-                result3.then(data3 => {
-                    this.list_of_images = data3;
-                    return true;
+        return await new Promise((resolve, reject) => {
+            let id  = undefined;
+            const result = db.getGameId(this.game_name);
+            console.log('locking for '+this.game_name)
+            result.then(data1 => {
+                id = data1[0]['id'];
+                console.log('locking for db game id'+id)
+                const result2 = db.getGameHelpDescriptor(id);
+                result2.then(data2 => {
+                    console.log('locking for db getGameHelpDescriptor'+data2)
+                    this.list_of_definers = data2;
+                    const result3 = db.getGameImage(id);
+                    result3.then(data3 => {
+                        console.log('locking for db getGameImage'+data3)
+                        this.list_of_images = data3;
+                        resolve(true);
 
-                }).catch(err => { new Error(`db.getGameImage => ${err}`)});
-            }).catch(err => { new Error(`db.getGameHelpDescriptor => ${err}`)});
-        }).catch(err => {return new Error(`db.getGameId => ${err}`)});
+                    }).catch(err => { new Error(`db.getGameImage => ${err}`)});
+                }).catch(err => { new Error(`db.getGameHelpDescriptor => ${err}`)});
+            }).catch(err => { new Error(`db.getGameId => ${err}`)});
+        }).catch(err => {return new Error(`findGameInfoDb ${err}`)})
+
     }
     makePaths(){
         let files = fs.readdirSync('./public/images/'+this.game_name);
