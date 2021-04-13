@@ -23,7 +23,7 @@ class AllGames{
                     this.games[game_id] = game;
                     user.setGameId(game_id)
                     console.log(`Games : ${this.strGetAllLength()}`)
-                    return game;
+                    return this.games[game_id];
 
                 }
             }
