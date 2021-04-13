@@ -43,24 +43,18 @@ class DbService {
         return instance ? instance : new DbService();
     }
     // user managment
-    async updateUserPoints(player){
-        // console.log(id_of_game,main_game_name,game_category_of_players,main_game_description,created)
-        if (player === undefined){
-            return undefined;
-        }else{
-            try {
-                return await new Promise((resolve, reject) => {
-                    const query = "UPDATE users SET points = ?  where id = ? ";
+    async updateUserPoints(id,points){
+        try {
+            return await new Promise((resolve, reject) => {
+                const query = "UPDATE users SET points = ?  where id = ? ";
 
-                    connection.query(query, [player.points,player.id], (err, results) => {
-                        if (err) reject(new Error(err.message));
-                        resolve(results);
-                    })
+                connection.query(query, [points,id], (err, results) => {
+                    if (err) reject(new Error(err.message));
+                    resolve(results);
                 })
-
-            } catch (error) {
-                return new Error(error);
-            }
+            })
+        } catch (error) {
+            return new Error(error);
         }
     }
     async updateUserCharacter(player){

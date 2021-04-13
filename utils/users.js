@@ -260,7 +260,7 @@ class Users {
       this.session_time = Date.now()
   }
   getId(){
-    return this.id === undefined ? 0 : this.id;
+    return this.id === undefined ? false : this.id;
   }
   setGameId(id){
     this.game_room_id = id;
@@ -291,8 +291,19 @@ class Users {
   }
 
 
-  addPoints(points) {
-    this.points += points;
+  async addPoints(points) {
+    return await new Promise((resolve, reject) => {
+      this.points += points;
+      if (this.getId()){
+        db.updateUserPoints(this.getId(),points).then( res => {
+          resolve(true)
+        }).catch(err => { new Error(`db.updateUserPoints => ${err}`)});
+      }else{
+        resolve(true)
+      }
+    }).catch(err => { return new Error(`User.addPoints => ${err}`)})
+
+
   }
 
   buyCharacterOrColor(character_or_color) {

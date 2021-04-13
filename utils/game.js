@@ -41,7 +41,7 @@ class AllGames{
         const exist = this.isExistingGame(game_id)
         const game = exist === undefined ? false : exist
         if (game){
-            return game.is_your_picture_question(massage)
+            return game.isYourPickedPictureQuestion(massage)
         }else{
             return new Error('Cannot find your game.')
         }
@@ -180,19 +180,23 @@ class NewGame{
             }
         }
     }
-    is_your_picture_question( massage ){
-        if (massage.certain){
-            this.ask_counter_player1 ++;
-            let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
-            if (you_found_picture){
-                leave_game(this.id).then(r => console.log('deleted game id:'+this.id));
-                return you_found_picture;
+    async isYourPickedPictureQuestion(massage ){
+        return await new Promise(resolve => {
+            if (massage.certain){
+                this.ask_counter_player1 ++;
+                let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
+                if (you_found_picture){
+                    const points_add = this.player1.addPoints()
+                    points_add.then(res => {
+                        resolve(you_found_picture);
+                    })
+                }
+            }else{
+                this.ask_counter_player1 ++;
+                resolve(this.picket_picture_pc.description_control.includes(massage.title));
             }
+        }).catch(err => {return new Error(`isYourPickedPictureQuestion => ${err}`)})
 
-        }else{
-            this.ask_counter_player1 ++;
-            return this.picket_picture_pc.description_control.includes(massage.title)
-        }
     }
     add_question(player_name,massage){
         if (player_name === this.player1.id_socket){
@@ -275,157 +279,6 @@ async function leave_game(game_id){
         }
     }
 }
-function create_game(game_name,type,id,player1){
-    console.log('CREATING GAME : ',game_name,type,id)
-    new Game(game_name,type,id,player1);
-}
-class Game {
-    constructor(game_name,type,id,player1) {
-        this.game_name = game_name;
-        this.type = type;
-        this.id = id;
-        this.list_of_images = undefined;
-        this.list_of_definers = undefined;
-        this.state = false;
-        this.player1 = player1
-        this.player2 = undefined;
-        this.picket_picture_player1 = undefined;
-        this.picket_picture_player2 = undefined;
-        this.picket_picture_pc = undefined;
-        this.ask_counter_player1 = 0; // koli tomu ze musi nastat aspon 1 otazka zo strani tohto hraca
-        this.ask_counter_player2 = 1; // koli tomu ze division by 0
-        this.define_end_of_the_game = undefined;
-        this.find_info_game_db();
-    }
-    find_info_game_db(){
-        const db = dbService.getDbServiceInstance();
-        let id  = undefined;
-        const result = db.getGameId(this.game_name);
-        result.then(data1 => {
-            // console.log("DB ID : ",data1);
-            id = data1[0]['id'];
-            const result2 = db.getGameHelpDescriptor(id);
-            result2.then(data2 => {
-                // console.log("DB DESCRIPTION : ",data2);
-                this.list_of_definers = data2;
-                const result3 = db.getGameImage(id);
-                result3.then(data3 => {
-                    // console.log("DB IMAGES : ",data2);
-                    this.list_of_images = data3;
-                    this.make_paths();
 
-                }).catch(err => console.log(err));
-            }).catch(err => console.log(err));
-        }).catch(err => console.log(err));
-    }
-    make_paths(){
-        let files = fs.readdirSync('./public/images/'+this.game_name);
-        for (let file_index = 0 ; file_index < files.length ; file_index++){
-            if (files[file_index].includes('.') === false && files[file_index] === 'images'){
-                let path = './public/images/'+this.game_name+'/'+files[file_index];
-                let dirs = fs.readdirSync(path);
-                for (let image_index = 0 ;image_index < dirs.length;image_index++){
-                    for (let game_image_index = 0 ;game_image_index < this.list_of_images.length;game_image_index++){
-                        if (dirs[image_index] === this.list_of_images[game_image_index]['image']){
-                            this.list_of_images[game_image_index]['image'] = path.replace('./public','.')+'/'+dirs[image_index];
-                            this.list_of_images[game_image_index]['description_control'] = this.list_of_images[game_image_index]['description_control'].split(',');// tuna musi byt ciarka ,
-                            break;
-                        }
-                    }
-                }
-            }else if (files[file_index].includes('.') === false && files[file_index] !== 'images'){
-                let path = './public/images/'+this.game_name+'/'+files[file_index];
-                let dirs = fs.readdirSync(path);
-                for (let image_index = 0 ;image_index < dirs.length;image_index++){
-                    for (let game_image_index = 0 ;game_image_index < this.list_of_definers.length;game_image_index++){
-                        if (dirs[image_index] === this.list_of_definers[game_image_index]['image']){
-                            this.list_of_definers[game_image_index]['image'] =  path.replace('./public','.')+'/'+dirs[image_index];
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        this.finish_creation_of_game();
-    }
-    finish_creation_of_game() {
-        if (this.type === 'pc'){
-            let max_length = (this.list_of_images.length >= 30) ? 30 : 25;
-            if (this.list_of_images.length < 25){
-                max_length = this.list_of_images.length;
-            }
-            if (this.list_of_images.length >= max_length){
-                let new_array_for_this_game = []
-                let index = undefined;
-                for (let max_images_in_game = 0 ; max_images_in_game < max_length; max_images_in_game++){
-                    index = Math.floor(Math.random() * this.list_of_images.length)
-                    new_array_for_this_game.push(this.list_of_images[index]);
-                    this.list_of_images.splice(index,1);
-                }
-                this.list_of_images = new_array_for_this_game;
-                index = Math.floor(Math.random() * this.list_of_images.length)
-                this.picket_picture_pc = this.list_of_images[index];
-                games.push(this);
-
-            }
-        }else{
-            let max_length = (this.list_of_images.length >= 30) ? 30 : 25;
-            if (this.list_of_images.length < 25){
-                max_length = this.list_of_images.length;
-            }
-            if (this.list_of_images.length >= max_length) {
-                let new_array_for_this_game = []
-                let index = undefined;
-                for (let max_images_in_game = 0; max_images_in_game < max_length; max_images_in_game++) {
-                    index = Math.floor(Math.random() * this.list_of_images.length)
-                    new_array_for_this_game.push(this.list_of_images[index]);
-                    this.list_of_images.splice(index, 1);
-                }
-                this.list_of_images = new_array_for_this_game;
-                this.picket_picture_pc = undefined;//this.list_of_images[index];
-                games.push(this);
-            }
-        }
-    }
-    is_your_picture_question( massage ){
-        if (massage.certain){
-            this.ask_counter_player1 ++;
-            let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
-            if (you_found_picture){
-                leave_game(this.id).then(r => console.log('deleted game id:'+this.id));
-                return you_found_picture;
-            }
-
-        }else{
-            this.ask_counter_player1 ++;
-            return this.picket_picture_pc.description_control.includes(massage.title)
-        }
-    }
-    add_question(player_name,massage){
-        if (player_name === this.player1.id_socket){
-            this.ask_counter_player1 ++;
-        }else{
-            this.ask_counter_player2 ++;
-        }
-        if (massage.certain ){
-            this.define_end_of_the_game = massage;
-        }else{
-            this.define_end_of_the_game = undefined;
-        }
-
-        console.log('GAME MASSSAGE !!!! : ',massage)
-    }
-    answer_to_question(player_name,massage){
-        if (this.define_end_of_the_game !== undefined){
-            if (massage){
-                console.log('pytam sa ak uz bola odpoved certain');
-                this.state = true;
-                leave_game(this.id).then(r => console.log('deleted game id:'+this.id));
-                console.log('CERTAIN ACTUAL QUESTION ',this.define_end_of_the_game,player_name,massage,this.ask_counter_player2,this.ask_counter_player1);
-                return massage
-            }
-        }
-    }
-}
 
 module.exports = AllGames

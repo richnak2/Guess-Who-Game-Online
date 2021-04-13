@@ -258,22 +258,6 @@ io.on('connection', socket => {
         }).catch(err =>{
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
         });
-
-
-
-        // let game = is_existing_game(game_id);
-        // if (game) {
-        //     let is_you_picture = game.is_your_picture_question(massage);
-        //     if (massage.certain === true && is_you_picture === true){ // spitanie sa na konkretni obrazok
-        //         addPoints(1000,game.player1.id_socket,game.ask_counter_player1)
-        //         if (game.player1.id !== undefined){
-        //             const db = dbService.getDbServiceInstance();
-        //             db.updateUserPoints(getCurrentUser(game.player1.id_socket)).then();
-        //         }
-        //
-        //     }
-        //
-        // }
     });
 
     //
