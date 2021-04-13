@@ -23,11 +23,11 @@ class AllGames{
                     if (game_finished) {
                         this.games[game_id] = game;
                         user.setGameId(game_id)
-                        console.log(game_id)
-                        console.log(this.games)
+                        // console.log(game_id)
+                        // console.log(this.games)
 
                         console.log(`Games : ${this.strGetAllLength()}`)
-                        return this.games[game_id];
+                        return game
 
                     }
                 }
