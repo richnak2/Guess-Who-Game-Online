@@ -81,6 +81,15 @@ class NewGame{
     getId(){
         return this.id;
     }
+    toJSON(){
+        return {
+            game_name : this.game_name ,
+            type : this.type ,
+            id : this.id ,
+            list_of_images : this.list_of_images ,
+            list_of_definers : this.list_of_definers 
+        }
+    }
     async findGameInfoDb(){
         return await new Promise((resolve, reject) => {
             let id  = undefined;

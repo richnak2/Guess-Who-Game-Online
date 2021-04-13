@@ -244,9 +244,14 @@ io.on('connection', socket => {
             // console.log()
             // console.log(game);
             // console.log(game.getId());
-            let parsed = JSON.parse(JSON.stringify(game))
-            console.log(parsed)
-            socket.emit('obtain_game', {game:parsed});
+            // let parsed = JSON.parse(JSON.stringify(game))
+            // console.log(parsed)
+            try{
+                console.log(game.toJSON())
+            }catch (err) {
+                console.log(err)
+            }
+            socket.emit('obtain_game', {game:game.toJSON()});
 
         }).catch(err =>{
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
