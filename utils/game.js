@@ -15,24 +15,24 @@ class AllGames{
         const game_id = this.makeId(20)
         let game = new NewGame(game_name , game_type, game_id, user);
         const game_info = game.findGameInfoDb()
-        if (typeof game_info === 'boolean'){
-            const game_paths = game.makePaths()
-            if (game_paths){
-                const game_finished = game.shuffleImages()
-                if (game_finished){
-                    this.games[game_id] = game;
-                    user.setGameId(game_id)
-                    console.log(game_id)
-                    console.log(this.games)
+        game_info.then(game_info_result =>{
+            if (typeof game_info_result === 'boolean') {
+                const game_paths = game.makePaths()
+                if (game_paths) {
+                    const game_finished = game.shuffleImages()
+                    if (game_finished) {
+                        this.games[game_id] = game;
+                        user.setGameId(game_id)
+                        console.log(game_id)
+                        console.log(this.games)
 
-                    console.log(`Games : ${this.strGetAllLength()}`)
-                    return this.games[game_id];
+                        console.log(`Games : ${this.strGetAllLength()}`)
+                        return this.games[game_id];
 
+                    }
                 }
             }
-        }else{
-            return new Error(`AllGames.push => ${game_info}`)
-        }
+        }).catch(err => {return new Error(`AllGames.push => game_info => ${err}`)})
     }
     static isYourPictureQuestionFromPlayer(game_id,massage){
         const exist = this.isExistingGame(game_id)
