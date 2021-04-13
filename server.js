@@ -238,7 +238,7 @@ io.on('connection', socket => {
     socket.on('create_single_player' , ({game_name,game_type,game_id,my_socket_id}) => {
         AllUsers.getUser(my_socket_id).then(user => {
             const game = AllGames.push(game_name,game_type,user)
-            socket.join(game.getId())
+            socket.join(user.getGameId())
             socket.emit('obtain_game', {game:JSON.parse(JSON.stringify(game))});
         }).catch(err =>{
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
