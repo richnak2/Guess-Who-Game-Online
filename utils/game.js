@@ -81,9 +81,10 @@ class NewGame{
     getId(){
         return this.id;
     }
-    findGameInfoDb(){
+    async findGameInfoDb(){
         let id  = undefined;
         const result = db.getGameId(this.game_name);
+        console.log('locking for '+this.game_name)
         result.then(data1 => {
             id = data1[0]['id'];
             const result2 = db.getGameHelpDescriptor(id);
