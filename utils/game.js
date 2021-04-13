@@ -37,7 +37,7 @@ class AllGames{
         }).catch(err => {return new Error(`AllGames.push => game_info => ${err}`)})
 
     }
-    static isYourPictureQuestionFromPlayer(game_id,massage){
+    static async isYourPictureQuestionFromPlayer(game_id,massage){
         const exist = this.isExistingGame(game_id)
         const game = exist === undefined ? false : exist
         if (game){
@@ -62,6 +62,10 @@ class AllGames{
     }
     static isExistingGame(game_id){
         return this.games[game_id];
+    }
+    static leaveGame(game_id){
+        delete this.games[game_id];
+        console.log(`Leave AllGames : ${this.strGetAllLength()}`)
     }
 }
 class NewGame{
@@ -183,7 +187,7 @@ class NewGame{
         }
     }
     async isYourPickedPictureQuestion(massage ){
-        return await new Promise(resolve => {
+        return await new Promise((resolve, reject) => {
             if (massage.certain){
                 this.ask_counter_player1 ++;
                 let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
@@ -191,6 +195,7 @@ class NewGame{
                     console.log('you win')
                     const points_add = this.player1.addPoints()
                     points_add.then(res => {
+                        AllGames.leaveGame(this.id)
                         resolve(you_found_picture);
                     })
                 }

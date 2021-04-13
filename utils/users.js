@@ -20,18 +20,6 @@ class AllUsers {
   static all_clients = {};
   static  counter_player = setInterval(() => {console.log(`Interval User :  ${this.strGetAllLength()}`)},30 * 1000)
 
-  // static removeLoggedOut(){
-  //   console.log(this.getAllToString());
-  //   console.log(`Count of players : ${this.getAllLength()}`)
-  //   for (let index = 0; index < this.getAllLength(); index++) {
-  //     if (this.all_clients[index].removeUser() > 6){
-  //       this.all_clients.splice(index, 1);
-  //
-  //     }
-  //   }
-  //
-  // }
-
   static async ping(id_socket){
     try{
       return await new Promise((resolve, reject) => {
@@ -69,7 +57,7 @@ class AllUsers {
 
   static userLeave(socket_id) {
     delete this.all_clients[socket_id]
-    console.log(`Leave : ${this.strGetAllLength()}`)
+    console.log(`Leave AllUser : ${this.strGetAllLength()}`)
   }
 
   static checkUserValid(socket_id){

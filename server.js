@@ -250,11 +250,14 @@ io.on('connection', socket => {
     });
 
 
-    // // : ASPG
+    // game.js
     socket.on('ask_single_player_game',({my_socket_id,massage}) =>{
         AllUsers.getUser(my_socket_id).then(user => {
-            let is_you_picture = AllGames.isYourPictureQuestionFromPlayer(user.getGameId(),massage);
-            io.to(user.getGameId()).emit('answer_to_is_you_picture_pc', {answer: is_you_picture})
+            const is_you_picture = AllGames.isYourPictureQuestionFromPlayer(user.getGameId(),massage);
+            is_you_picture.then(answer_to_question_form_server => {
+                io.to(user.getGameId()).emit('answer_to_is_you_picture_pc', {answer: answer_to_question_form_server})
+            })
+
         }).catch(err =>{
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
         });

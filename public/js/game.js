@@ -546,10 +546,7 @@ function add_img_to_asked_certain(img){
     }
 
 }
-function report_player(){
-    let player_name = ((my_game.player1.game_name === html_name.innerHTML)?my_game.player2.game_name:my_game.player1.game_name); // ZLE
-    create_exception(`player ${player_name} has been reported`,5,'success');
-}
+
 function make_card_win(witch_player_win){
     let opponent_character;
     if (witch_player_win.includes('lost')){
@@ -569,13 +566,6 @@ function make_card_win(witch_player_win){
     document.getElementById('opponent_profile_img').src = './images/Users/'+opponent_character[1];
     document.getElementById('opponent_name').innerHTML = opponent_character[2];
 
-    if (game_type === 'kid' &&
-        (witch_player_win !== 'You win because your opponent is not playing !' &&
-            witch_player_win !== 'You lost because you are not playing !')){
-       // html_report_btn.style.display = 'revert';
-    }else{
-        // html_report_btn.style.display = 'none';
-    }
 
 }
 function make_win_multiplier(text){
