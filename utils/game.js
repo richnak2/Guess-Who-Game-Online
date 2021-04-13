@@ -180,7 +180,7 @@ class NewGame{
             }
         }
     }
-    is_your_picture_question(game_id, massage ){
+    is_your_picture_question( massage ){
         if (massage.certain){
             this.ask_counter_player1 ++;
             let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();

@@ -241,16 +241,6 @@ io.on('connection', socket => {
             const game = AllGames.push(game_name,game_type,user)
             game.then(new_game => {
                 socket.join(user.getGameId())
-                // console.log()
-                // console.log(game);
-                // console.log(game.getId());
-                // let parsed = JSON.parse(JSON.stringify(game))
-                // console.log(parsed)
-                try{
-                    console.log(JSON.parse(JSON.stringify(new_game)))
-                }catch (err) {
-                    console.log(err)
-                }
                 socket.emit('obtain_game', {game:new_game.toJSON()});
             })
         }).catch(err =>{
