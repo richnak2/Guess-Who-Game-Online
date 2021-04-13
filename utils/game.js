@@ -1,7 +1,7 @@
 const fs = require('fs');
 const DB = require('./DbService');
 const db = DB.getDbServiceInstance();
-let games = [];
+// let games = [];
 
 // function all_games(){
 //     return games;
@@ -13,7 +13,7 @@ class AllGames{
 
     static push(game_name,game_type,user){
         const game_id = this.makeId(20)
-        const game = new NewGame(game_name , game_type, game_id, user);
+        let game = new NewGame(game_name , game_type, game_id, user);
         const game_info = game.findGameInfoDb()
         if (typeof game_info === 'boolean'){
             const game_paths = game.makePaths()
@@ -22,6 +22,9 @@ class AllGames{
                 if (game_finished){
                     this.games[game_id] = game;
                     user.setGameId(game_id)
+                    console.log(game_id)
+                    console.log(this.games)
+
                     console.log(`Games : ${this.strGetAllLength()}`)
                     return this.games[game_id];
 
