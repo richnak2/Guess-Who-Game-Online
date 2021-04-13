@@ -61,7 +61,7 @@ class AllGames{
         return `Games count : ${Object.keys(this.games).length}`;
     }
     static isExistingGame(game_id){
-        return games[game_id];
+        return this.games[game_id];
     }
 }
 class NewGame{
@@ -88,7 +88,6 @@ class NewGame{
         return {
             game_name : this.game_name ,
             type : this.type ,
-            id : this.id ,
             list_of_images : this.list_of_images ,
             list_of_definers : this.list_of_definers
         }
@@ -97,17 +96,13 @@ class NewGame{
         return await new Promise((resolve, reject) => {
             let id  = undefined;
             const result = db.getGameId(this.game_name);
-            console.log('locking for '+this.game_name)
             result.then(data1 => {
                 id = data1[0]['id'];
-                console.log('locking for db game id'+id)
                 const result2 = db.getGameHelpDescriptor(id);
                 result2.then(data2 => {
-                    console.log('locking for db getGameHelpDescriptor'+data2)
                     this.list_of_definers = data2;
                     const result3 = db.getGameImage(id);
                     result3.then(data3 => {
-                        console.log('locking for db getGameImage'+data3)
                         this.list_of_images = data3;
                         resolve(true);
 
