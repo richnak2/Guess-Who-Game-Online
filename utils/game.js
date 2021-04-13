@@ -188,11 +188,11 @@ class NewGame{
     }
     async isYourPickedPictureQuestion(massage ){
         return await new Promise((resolve, reject) => {
+            this.ask_counter_player1 ++;
             if (massage.certain){
-                this.ask_counter_player1 ++;
                 let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
                 if (you_found_picture){
-                    const points_add = this.player1.addPoints()
+                    const points_add = this.player1.addPoints(1000/this.ask_counter_player1)
                     points_add.then(res => {
                         AllGames.leaveGame(this.id)
                         resolve(you_found_picture);
@@ -201,7 +201,6 @@ class NewGame{
                     resolve(you_found_picture);
                 }
             }else{
-                this.ask_counter_player1 ++;
                 resolve(this.picket_picture_pc.description_control.includes(massage.title));
             }
         }).catch(err => {return new Error(`isYourPickedPictureQuestion => ${err}`)})
