@@ -192,12 +192,13 @@ class NewGame{
                 this.ask_counter_player1 ++;
                 let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
                 if (you_found_picture){
-                    console.log('you win')
                     const points_add = this.player1.addPoints()
                     points_add.then(res => {
                         AllGames.leaveGame(this.id)
                         resolve(you_found_picture);
                     })
+                }else{
+                    resolve(you_found_picture);
                 }
             }else{
                 this.ask_counter_player1 ++;
