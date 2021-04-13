@@ -21,6 +21,7 @@ class AllGames{
                 const game_finished = game.shuffleImages()
                 if (game_finished){
                     this.games[game_id] = game;
+                    user.setGameId(game_id)
                     console.log(`Games : ${this.strGetAllLength()}`)
                     return game;
 
@@ -29,6 +30,17 @@ class AllGames{
         }else{
             return new Error(`AllGames.push => ${game_info}`)
         }
+    }
+    static isYourPictureQuestionFromPlayer(game_id,massage){
+        const exist = this.isExistingGame(game_id)
+        const game = exist === undefined ? false : exist
+        if (game){
+            return game.is_your_picture_question(massage)
+        }else{
+            return new Error('Cannot find your game.')
+        }
+
+
     }
     static makeId(length) {
         let result = '';
@@ -43,14 +55,7 @@ class AllGames{
         return `Games count : ${Object.keys(this.games).length}`;
     }
     static isExistingGame(game_id){
-        console.log('ALL GAMSE : ',games.length,);//all_games()
-        for (let index_game = 0 ; index_game < games.length; index_game++){
-            if (games[index_game].id === game_id){
-                return games[index_game];
-            }
-        }
-        console.log('game does not exist ', game_id );
-        return undefined;
+        return games[game_id];
     }
 }
 class NewGame{
@@ -69,6 +74,9 @@ class NewGame{
         this.ask_counter_player1 = 0; // koli tomu ze musi nastat aspon 1 otazka zo strani tohto hraca
         this.ask_counter_player2 = 1; // koli tomu ze division by 0
         this.define_end_of_the_game = undefined;
+    }
+    getId(){
+        return this.id;
     }
     findGameInfoDb(){
         let id  = undefined;
@@ -155,7 +163,7 @@ class NewGame{
             }
         }
     }
-    is_your_picture_question( massage ){
+    is_your_picture_question(game_id, massage ){
         if (massage.certain){
             this.ask_counter_player1 ++;
             let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();

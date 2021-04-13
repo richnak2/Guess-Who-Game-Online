@@ -435,7 +435,7 @@ function add_img_to_asked_question(div){
     massage.title = div.innerHTML;
     massage.title = massage.title.replace('Your image ' ,'');
     massage.title = massage.title.replace(' ?' ,'');
-    socket.emit('ask_single_player_game',{game_id, massage});
+    socket.emit('ask_single_player_game',{my_socket_id,game_id, massage});
     guess_back();
 
 }
@@ -467,7 +467,7 @@ function add_img_to_asked(elem_img){
     if (game_type !== 'pc'){
         socket.emit('broadcast_massage',{game_id,my_socket_id, massage});
     }else{
-        socket.emit('ask_single_player_game',{game_id, massage});
+        socket.emit('ask_single_player_game',{my_socket_id,game_id, massage});
     }
 
     your_turn = false;
@@ -520,7 +520,7 @@ function add_img_to_asked_certain(img){
     if (game_type !== 'pc'){
         socket.emit('broadcast_massage',{game_id,my_socket_id, massage});
     }else{
-        socket.emit('ask_single_player_game',{game_id, massage});
+        socket.emit('ask_single_player_game',{my_socket_id,game_id, massage});
     }
 
     let ask_for_kids = document.getElementById('chat_for_kids');

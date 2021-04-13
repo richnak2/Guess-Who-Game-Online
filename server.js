@@ -238,30 +238,40 @@ io.on('connection', socket => {
     socket.on('create_single_player' , ({game_name,game_type,game_id,my_socket_id}) => {
         AllUsers.getUser(my_socket_id).then(user => {
             const game = AllGames.push(game_name,game_type,user)
-            socket.emit('obtain_game', {game:game});
+            socket.join(game.getId())
+            socket.emit('obtain_game', {game:JSON.parse(JSON.stringify(game))});
         }).catch(err =>{
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
-
         });
+
     });
 
 
     // // : ASPG
-    // socket.on('ask_single_player_game',({game_id,massage}) =>{
-    //     let game = is_existing_game(game_id);
-    //     if (game) {
-    //         let is_you_picture = game.is_your_picture_question(massage);
-    //         if (massage.certain === true && is_you_picture === true){ // spitanie sa na konkretni obrazok
-    //             addPoints(1000,game.player1.id_socket,game.ask_counter_player1)
-    //             if (game.player1.id !== undefined){
-    //                 const db = dbService.getDbServiceInstance();
-    //                 db.updateUserPoints(getCurrentUser(game.player1.id_socket)).then();
-    //             }
-    //
-    //         }
-    //         socket.emit('answer_to_is_you_picture_pc', {answer: is_you_picture})
-    //     }
-    // });
+    socket.on('ask_single_player_game',({my_socket_id,game_id,massage}) =>{
+        AllUsers.getUser(my_socket_id).then(user => {
+            let is_you_picture = AllGames.isYourPictureQuestionFromPlayer(user.getGameId(),massage);
+            io.to(user.getGameId()).emit('answer_to_is_you_picture_pc', {answer: is_you_picture})
+        }).catch(err =>{
+            socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
+        });
+
+
+
+        // let game = is_existing_game(game_id);
+        // if (game) {
+        //     let is_you_picture = game.is_your_picture_question(massage);
+        //     if (massage.certain === true && is_you_picture === true){ // spitanie sa na konkretni obrazok
+        //         addPoints(1000,game.player1.id_socket,game.ask_counter_player1)
+        //         if (game.player1.id !== undefined){
+        //             const db = dbService.getDbServiceInstance();
+        //             db.updateUserPoints(getCurrentUser(game.player1.id_socket)).then();
+        //         }
+        //
+        //     }
+        //
+        // }
+    });
 
     //
     // // spracovanie posielania sprav pre celu hru

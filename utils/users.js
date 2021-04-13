@@ -249,6 +249,7 @@ class Users {
     this.setCharacter(character,id_socket)
     this.bought_characters = bought_characters
     this.session_time = Date.now()
+    this.game_room_id = undefined;
   }
 
   toString(){
@@ -260,6 +261,12 @@ class Users {
   }
   getId(){
     return this.id === undefined ? 0 : this.id;
+  }
+  setGameId(id){
+    this.game_room_id = id;
+  }
+  getGameId(){
+    return this.game_room_id;
   }
 
 
