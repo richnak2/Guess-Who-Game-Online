@@ -414,4 +414,4 @@ class Game {
     }
 }
 
-module.exports = {is_existing_game,create_game,search_for_free_game,leave_game,AllGames};
+module.exports = AllGames

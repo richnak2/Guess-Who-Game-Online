@@ -15,6 +15,7 @@ const db = DB.getDbServiceInstance();
 const FM = require('./utils/FileManager');
 const FileManager = FM.getFileManagerInstance()
 const AllUsers = require('./utils/users');
+const AllGames = require('./utils/game');
 // const AllUsers = AL.getAllUsersInstance();
 
 
@@ -28,7 +29,7 @@ const io = socket_io(server);
 
 const {format_message,format_error} = require('./utils/messages');
 
-const {create_game,is_existing_game,search_for_free_game,leave_game,AllGames} = require('./utils/game');
+// const {create_game,is_existing_game,search_for_free_game,leave_game,AllGames} = require('./utils/game');
 const {look_folders,delete_folder_r} = require('./utils/create_game');
 // const {DbService} = require('./utils/dbService')
 // DbService.getDbServiceInstance()
