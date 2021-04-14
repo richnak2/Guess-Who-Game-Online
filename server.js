@@ -204,37 +204,25 @@ io.on('connection', socket => {
     //
     // LTGB
     socket.on('luck_to_game_buffer' , ({game_name,game_type,my_socket_id}) => {
-        const player = getCurrentUser(my_socket_id);
-        if (player === undefined){
-            console.log("G-LTGB : Something want wrong with user")
-        }else {
-            search_for_free_game(game_name, game_type, player).then(answer => {
-                if (answer !== undefined){
-                    let game_copy  = remove_player_identity(JSON.parse(JSON.stringify(answer))); // Create Deep copy of object
-                    socket.emit('game_buffer_answer', {answer: game_copy});
+        AllUsers.getUser(my_socket_id).then(user => {
+            const exist = AllGames.searchForFreeGame(game_name,game_type,user)
+            exist.then(new_game => {
+                if (new_game){
+                    socket.join(user.getGameId())
+                    io.to(user.getGameId()).emit('obtain_game', {game:new_game.toJSON()});
                 }else{
-                    console.log('LUCK TO GAME ERRROR :',answer);
-                    socket.emit('game_buffer_answer', {answer: answer});
+                    const game = AllGames.push(game_name,game_type,user)
+                    game.then(new_game => {
+                        socket.join(user.getGameId())
+                    }).catch(err => {new Error(`luck_to_game_buffer => AllGames.push => ${err}`)})
                 }
-            })
-        }
-    })
+            }).catch(err => {new Error(`AllGames.searchForFreeGame => ${err}`)})
+        }).catch(err =>{
+            socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
+        });
 
-    // : CSP
-    // socket.on('create_single_player' , ({game_name,game_type,game_id,my_socket_id}) => {
-    //     const player = getCurrentUser(my_socket_id);
-    //     if (player === undefined){
-    //         console.log("G-CSP : Something want wrong with user")
-    //     }else {
-    //         let game = is_existing_game(game_id);
-    //         if (game){
-    //             socket.emit('obtain_game', {game:game});
-    //         }else{
-    //             create_game(game_name,game_type,game_id,player);
-    //             is_ready_game(game_id);
-    //         }
-    //     }
-    // });
+    });
+
 
     socket.on('create_single_player' , ({game_name,game_type,game_id,my_socket_id}) => {
         AllUsers.getUser(my_socket_id).then(user => {

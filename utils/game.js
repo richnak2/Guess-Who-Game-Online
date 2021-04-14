@@ -37,6 +37,21 @@ class AllGames{
         }).catch(err => {return new Error(`AllGames.push => game_info => ${err}`)})
 
     }
+    static async searchForFreeGame(game_name,game_type,user){
+        return new Promise((resolve, reject) => {
+            for (let certain_game in this.games) {
+                if (this.games.hasOwnProperty(certain_game)) {
+                    if (this.games[certain_game].player2Exist()){
+                        if (this.games[certain_game].getGameName() === game_name && this.games[certain_game].getGameType() === game_type ){
+                            resolve(this.games[certain_game].addUser2(user))
+                        }
+                    }
+                }
+            }
+            resolve(false)
+        }).catch(err => {return new Error(`AllGames.searchForFreeGame => ${err}`)})
+    }
+
     static async isYourPictureQuestionFromPlayer(game_id,massage){
         const exist = this.isExistingGame(game_id)
         const game = exist === undefined ? false : exist
@@ -45,9 +60,8 @@ class AllGames{
         }else{
             return new Error('Cannot find your game.')
         }
-
-
     }
+
     static makeId(length) {
         let result = '';
         let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -85,8 +99,23 @@ class NewGame{
         this.ask_counter_player2 = 1; // koli tomu ze division by 0
         this.define_end_of_the_game = undefined;
     }
+
     getId(){
         return this.id;
+    }
+    getGameName(){
+        return  this.game_name
+    }
+    getGameType(){
+        return  this.game_type
+    }
+    addUser2(player2){
+        player2.setGameId(this.player1.getGameId())
+        this.player2 = player2;
+        return true
+    }
+    player2Exist(){
+        return this.player2 === undefined
     }
     toJSON(){
         return {

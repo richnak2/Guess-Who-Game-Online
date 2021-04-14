@@ -39,14 +39,23 @@ function createGame(){
         game_id = sessionStorage.getItem('game_id');
         if (game_type === 'pc'){
             socket.emit('create_single_player' , {game_name,game_type,game_id,my_socket_id}, );
-        }
-        if (game_type === 'kid'){
+        }else{
             socket.emit('luck_to_game_buffer' , {game_name,game_type,my_socket_id}, );
+            animation = true;
+            make_waiting_box();
         }
-        if (game_type === 'student'){
-            socket.emit('luck_to_game_buffer' , {game_name,game_type,my_socket_id}, );
-        }
+        // if (game_type === 'kid'){
+        //     socket.emit('luck_to_game_buffer' , {game_name,game_type,my_socket_id}, );
+        //     animation = true;
+        //     make_waiting_box();
+        // }
+        // if (game_type === 'student'){
+        //     socket.emit('luck_to_game_buffer' , {game_name,game_type,my_socket_id}, );
+        //     animation = true;
+        //     make_waiting_box();
+        // }
     }else{
+        console.log('SOM TUNA cakam na CREATE GAME')
         setTimeout(createGame,100);
     }
 }
@@ -66,25 +75,25 @@ socket.on('answer_to_is_you_picture_pc',({answer}) =>{
     }
 })
 
-socket.on('game_buffer_answer' , ({answer}) =>{
-    console.log('BUFFER ANSERR ',answer)
-    if (answer === undefined){
-        socket.emit('create_single_player' , {game_name,game_type,game_id,my_socket_id} );
-    }else{
-        console.log('I found a game !!!',answer);
-        my_game = answer;
-        sessionStorage.setItem('game_id',my_game.id);
-        game_id = my_game.id;
-        if (my_game.player1 === undefined || my_game.player2 === undefined){
-            animation = true;
-            make_waiting_box('w8');
-        }else{
-            let massage = 'connected'
-            socket.emit('broadcast_massage',{game_id,my_socket_id,massage});
-            create_html_for_game();
-        }
-    }
-})
+// socket.on('game_buffer_answer' , ({answer}) =>{
+//     console.log('BUFFER ANSERR ',answer)
+//     if (answer === undefined){
+//         socket.emit('create_single_player' , {game_name,game_type,game_id,my_socket_id} );
+//     }else{
+//         console.log('I found a game !!!',answer);
+//         my_game = answer;
+//         sessionStorage.setItem('game_id',my_game.id);
+//         game_id = my_game.id;
+//         if (my_game.player1 === undefined || my_game.player2 === undefined){
+//             animation = true;
+//             make_waiting_box('w8');
+//         }else{
+//             let massage = 'connected'
+//             socket.emit('broadcast_massage',{game_id,my_socket_id,massage});
+//             create_html_for_game();
+//         }
+//     }
+// })
 
 socket.on('broadcasted_massage', ({broadcast_massage}) => {
     console.log('broadcasted_massage   : ',broadcast_massage,broadcast_massage.massage );
@@ -129,12 +138,14 @@ socket.on('obtain_game' , ({game}) => {
     my_game = game;
     console.log('GAME HAS BEEN OBATINED : ',my_game);
     // console.log('GAME HAS BEEN OBATINED : ',my_socket_id,my_game.player1,my_game.player2,my_game);//, game
-    if(my_game.type === 'pc'){
-        create_html_for_game();
-    }else if (my_game.type === 'kid' || my_game.type === 'student' && (my_game.player1 === undefined || my_game.player2 === undefined)) {
-        animation = true;
-        make_waiting_box('w8');
-    }
+    animation = false;
+    create_html_for_game();
+    // if(my_game.type === 'pc'){
+    //     create_html_for_game();
+    // }else if (my_game.type === 'kid' || my_game.type === 'student' && (my_game.player1 === undefined || my_game.player2 === undefined)) {
+    //     animation = true;
+    //     make_waiting_box('w8');
+    // }
 
 
 });
@@ -169,21 +180,18 @@ function w8_until_player_pick_img(){
 }
 
 function make_waiting_box(option){
-    console.log('W8')
-    // console.log(option,html_centered_centered_win)
-    if (option === 'w8'){
-        // console.log('ANIMACIA :',html_centered_centered_win,html_centered_win,html_win_lost)
-        html_centered_centered_win.style.display = 'revert';
-        html_centered_win.style.display = 'revert';
-        html_win_lost.style.display = 'revert';
-        html_leave.style.display = 'revert';
-        html_play_again.style.display = 'none';
-        // html_report_btn.style.display = 'none';
-        html_win_lost.innerHTML = 'waiting for other player to join ';
-        run_animation_waiting(0);
-    }else{
-        setTimeout(make_waiting_box,100,option);
-    }
+    // if (animation === true){//option === 'w8'
+    html_centered_centered_win.style.display = 'revert';
+    html_centered_win.style.display = 'revert';
+    html_win_lost.style.display = 'revert';
+    html_leave.style.display = 'revert';
+    html_play_again.style.display = 'none';
+    // html_report_btn.style.display = 'none';
+    html_win_lost.innerHTML = 'waiting for other player to join ';
+    run_animation_waiting(0);
+    // }else{
+    //     setTimeout(make_waiting_box,100,option);
+    // }
 }
 
 function run_animation_waiting(count_of_iteration){
@@ -200,7 +208,7 @@ function run_animation_waiting(count_of_iteration){
         html_centered_win.style.display = 'none';
         html_win_lost.style.display = 'none';
         html_leave.style.display = 'none';
-        createGame();
+        // createGame();
     }
 }
 
