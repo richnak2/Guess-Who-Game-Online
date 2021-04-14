@@ -44,6 +44,8 @@ class AllGames{
                     console.log('loocking',this.games[certain_game].toJSON())
                     if (this.games[certain_game].player2Exist()){
                         console.log('empty game loocking')
+                        console.log(this.games[certain_game].getGameName() , game_name)
+                        console.log(this.games[certain_game].getGameType() , game_type)
                         if (this.games[certain_game].getGameName() === game_name && this.games[certain_game].getGameType() === game_type ){
                             this.games[certain_game].addUser2(user)
                             resolve(this.games[certain_game].toJSON())
@@ -109,10 +111,10 @@ class NewGame{
         return this.id;
     }
     getGameName(){
-        return  this.game_name
+        return this.game_name
     }
     getGameType(){
-        return  this.game_type
+        return this.game_type
     }
     addUser2(player2){
         player2.setGameId(this.player1.getGameId())
