@@ -209,6 +209,8 @@ io.on('connection', socket => {
             exist.then(new_game => {
                 console.log("NASIEL : ",new_game )
                 if (new_game){
+                    console.log(new_game.player1.getGameId())
+                    console.log(new_game.player2.getGameId())
                     socket.join(user.getGameId())
                     io.to(user.getGameId()).emit('obtain_game', {game:new_game.toJSON()});
                 }else{

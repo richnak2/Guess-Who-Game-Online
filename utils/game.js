@@ -49,7 +49,8 @@ class AllGames{
                         if (this.games[certain_game].getGameName() === game_name && this.games[certain_game].getGameType() === game_type ){
                             console.log('I FOUND A GAME')
                             this.games[certain_game].addUser2(user)
-                            resolve(this.games[certain_game].toJSON())
+                            resolve(this.games[certain_game])
+                            return
                         }
                         console.log('not found')
                     }
