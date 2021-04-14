@@ -207,6 +207,7 @@ io.on('connection', socket => {
         AllUsers.getUser(my_socket_id).then(user => {
             const exist = AllGames.searchForFreeGame(game_name,game_type,user)
             exist.then(new_game => {
+                console.log(new_game)
                 if (new_game){
                     socket.join(user.getGameId())
                     io.to(user.getGameId()).emit('obtain_game', {game:new_game.toJSON()});
@@ -221,7 +222,6 @@ io.on('connection', socket => {
         }).catch(err =>{
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
         });
-
     });
 
 
@@ -251,7 +251,17 @@ io.on('connection', socket => {
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
         });
     });
-
+    socket.on('leave_game',({my_socket_id}) => {
+        AllUsers.getUser(my_socket_id).then(user => {
+                if (user.getGameId() !== undefined ){
+                    AllGames.leaveGame(user.getGameId())
+                    user.setGameId(undefined)
+                    io.to(user.getGameId()).emit('opponent_left')
+                }
+            }).catch(err =>{
+            socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
+        });
+    })
     //
     // // spracovanie posielania sprav pre celu hru
     // // : BM

@@ -224,6 +224,7 @@ class NewGame{
                 if (you_found_picture){
                     const points_add = this.player1.addPoints(1000/this.ask_counter_player1)
                     points_add.then(res => {
+                        this.player1.setGameId(undefined)
                         AllGames.leaveGame(this.id)
                         resolve(you_found_picture);
                     })

@@ -44,16 +44,6 @@ function createGame(){
             animation = true;
             make_waiting_box();
         }
-        // if (game_type === 'kid'){
-        //     socket.emit('luck_to_game_buffer' , {game_name,game_type,my_socket_id}, );
-        //     animation = true;
-        //     make_waiting_box();
-        // }
-        // if (game_type === 'student'){
-        //     socket.emit('luck_to_game_buffer' , {game_name,game_type,my_socket_id}, );
-        //     animation = true;
-        //     make_waiting_box();
-        // }
     }else{
         console.log('SOM TUNA cakam na CREATE GAME')
         setTimeout(createGame,100);
@@ -68,11 +58,16 @@ socket.on('answer_to_is_you_picture_pc',({answer}) =>{
         if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
             if ( answer){
                 make_win_multiplier("You win");
-                socket.emit('leave_game',{game_id});
+                // socket.emit('leave_game',{my_socket_id});
             }
         }
         elem_ask_img.className = elem_ask_img.className.replace('undefined' , answer? 'bg-success':'bg-danger')
     }
+})
+socket.on('opponent_left',() =>{
+    make_win_multiplier("You win");
+    socket.emit('leave_game',{my_socket_id});
+
 })
 
 // socket.on('game_buffer_answer' , ({answer}) =>{
@@ -149,21 +144,21 @@ socket.on('obtain_game' , ({game}) => {
 
 
 });
-socket.on('opponent_left', ({who_left}) =>{
-    console.log('Opponent left ',my_game.state)
-    if (game_id === who_left && my_game.state === false){
-        console.log('Opponent left ',my_game.state)
-        my_game.state = true;
-        game_id = ''; // prestan pocuvat koli tomu ze hra uz bola ukoncena -- prevetion cross scripting
-        if (document.getElementById('my_img_guessed_by_opponent').src.includes( '/images/question_mark.png') && time_run_out){
-            make_win_multiplier('You lost because you are not playing !')
-            //my_game.state = false;
-            // TUNA
-        }else{
-            make_win_multiplier('You win because your opponent is not playing !')
-        }
-    }
-})
+// socket.on('opponent_left', ({who_left}) =>{
+//     console.log('Opponent left ',my_game.state)
+//     if (game_id === who_left && my_game.state === false){
+//         console.log('Opponent left ',my_game.state)
+//         my_game.state = true;
+//         game_id = ''; // prestan pocuvat koli tomu ze hra uz bola ukoncena -- prevetion cross scripting
+//         if (document.getElementById('my_img_guessed_by_opponent').src.includes( '/images/question_mark.png') && time_run_out){
+//             make_win_multiplier('You lost because you are not playing !')
+//             //my_game.state = false;
+//             // TUNA
+//         }else{
+//             make_win_multiplier('You win because your opponent is not playing !')
+//         }
+//     }
+// })
 
 function w8_until_player_pick_img(){
     // console.log('cakame na img ktori neni stale');
@@ -179,7 +174,7 @@ function w8_until_player_pick_img(){
     }
 }
 
-function make_waiting_box(option){
+function make_waiting_box(){
     // if (animation === true){//option === 'w8'
     html_centered_centered_win.style.display = 'revert';
     html_centered_win.style.display = 'revert';
@@ -643,24 +638,26 @@ function make_question_for_opponent(question){
 
 
 function leave(){
-    socket.emit('leave_game',{game_id,my_socket_id});
+    socket.emit('leave_game',{my_socket_id});
     location.assign('menu.html');
 }
 function leave_game(){
+    socket.emit('leave_game',{my_socket_id});
+    location.assign('menu.html');
     if (game_type === 'pc'){
         leave()
     }
-    else{
-        console.log(my_game.state)
-        if (my_game.state){
-            leave()
-        }else if (my_game.state === false && my_game.player2 !== undefined){
-            create_exception('Are u sure tou want to leave the game ? If you leave unfinished game your score will be affected <button class="bg-success text-light" onclick="leave()"> YES </button>',10,'danger')
-        }else{
-            leave()
-        }
-        console.log("game type ",game_type)
-    }
+    // else{
+    //     console.log(my_game.state)
+    //     if (my_game.state){
+    //         leave()
+    //     }else if (my_game.state === false && my_game.player2 !== undefined){
+    //         create_exception('Are u sure tou want to leave the game ? If you leave unfinished game your score will be affected <button class="bg-success text-light" onclick="leave()"> YES </button>',10,'danger')
+    //     }else{
+    //         leave()
+    //     }
+    //     console.log("game type ",game_type)
+    // }
 }
 
 function play_again(){
