@@ -114,7 +114,7 @@ class NewGame{
         return this.game_name
     }
     getGameType(){
-        return this.game_type
+        return this.type
     }
     addUser2(player2){
         player2.setGameId(this.player1.getGameId())
