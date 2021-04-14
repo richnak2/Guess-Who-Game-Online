@@ -213,6 +213,7 @@ io.on('connection', socket => {
                 }else{
                     const game = AllGames.push(game_name,game_type,user)
                     game.then(new_game => {
+                        console.log('vytvoril som novu')
                         socket.join(user.getGameId())
                     }).catch(err => {new Error(`luck_to_game_buffer => AllGames.push => ${err}`)})
                 }
