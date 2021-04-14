@@ -207,16 +207,12 @@ io.on('connection', socket => {
         AllUsers.getUser(my_socket_id).then(user => {
             const exist = AllGames.searchForFreeGame(game_name,game_type,user)
             exist.then(new_game => {
-                console.log("NASIEL : ",new_game )
                 if (new_game){
-                    console.log(new_game.player1.getGameId())
-                    console.log(new_game.player2.getGameId())
                     socket.join(user.getGameId())
                     io.to(user.getGameId()).emit('obtain_game', {game:new_game.toJSON()});
                 }else{
                     const game = AllGames.push(game_name,game_type,user)
                     game.then(new_game => {
-                        console.log(`vytvoril som novu ${game_name},${game_type}`)
                         socket.join(user.getGameId())
                     }).catch(err => {new Error(`luck_to_game_buffer => AllGames.push => ${err}`)})
                 }
@@ -227,7 +223,7 @@ io.on('connection', socket => {
     });
 
 
-    socket.on('create_single_player' , ({game_name,game_type,game_id,my_socket_id}) => {
+    socket.on('create_single_player' , ({game_name,game_type,my_socket_id}) => {
         AllUsers.getUser(my_socket_id).then(user => {
             const game = AllGames.push(game_name,game_type,user)
             game.then(new_game => {
@@ -257,8 +253,8 @@ io.on('connection', socket => {
         AllUsers.getUser(my_socket_id).then(user => {
                 if (user.getGameId() !== undefined ){
                     AllGames.leaveGame(user.getGameId())
-                    user.setGameId(undefined)
                     io.to(user.getGameId()).emit('opponent_left')
+                    user.setGameId(undefined)
                 }
             }).catch(err =>{
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})

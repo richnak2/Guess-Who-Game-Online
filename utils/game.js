@@ -43,20 +43,14 @@ class AllGames{
                 if (this.games.hasOwnProperty(certain_game)) {
                     // console.log('loocking',this.games[certain_game].toJSON())
                     if (this.games[certain_game].player2Exist()){
-                        console.log('empty game loocking')
-                        console.log(this.games[certain_game].getGameName() , game_name)
-                        console.log(this.games[certain_game].getGameType() , game_type)
                         if (this.games[certain_game].getGameName() === game_name && this.games[certain_game].getGameType() === game_type ){
-                            console.log('I FOUND A GAME')
                             this.games[certain_game].addUser2(user)
                             resolve(this.games[certain_game])
                             return
                         }
-                        console.log('not found')
                     }
                 }
             }
-            console.log('finished loocking')
             resolve(false)
         }).catch(err => {return new Error(`AllGames.searchForFreeGame => ${err}`)})
     }

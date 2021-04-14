@@ -74,7 +74,7 @@
             </div>
         </div>
         <button class="btn btn-default bg-success ht70 mb20 text-light" id="again" onclick="play_again()">play again</button>
-        <button class="btn btn-default bg-danger ht70 mb20 text-light" id="leave" onclick="leave_game()">leave</button>
+        <button class="btn btn-default bg-danger ht70 mb20 text-light" id="leave" onclick="menu()">leave</button>
         <button class="btn btn-default bg-success ht70 wd70 mb20 text-light" id="yes" onclick="answer_to_question(true)">YES</button>
         <img class="wd70 ht70 ml30 mr30 mb20" id="asked_img_question" src="./images/question_mark.png" alt="question img" >
         <button class="btn btn-default bg-danger ht70 wd70 mb20 text-light" id="no"  onclick="answer_to_question(false)">NO</button>
@@ -242,6 +242,6 @@
 </div>
 
 
-<label id="settings" class="btn-light"> <img src="./images/setting.png" alt="settings" title="settings" onclick="show_settings()"></label>
+<label id="settings" class="btn-light" onclick="show_settings()"> <img src="./images/setting.png" alt="settings" title="settings" onclick="show_settings()"></label>
 </body>
 </html>

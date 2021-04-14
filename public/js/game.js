@@ -12,7 +12,6 @@ let your_turn = false;
 
 let game_name = undefined;
 let game_type = undefined;
-let game_id = undefined;
 
 let time_of_complete = 0 ;
 let time_run_out = false;
@@ -35,12 +34,10 @@ function createGame(){
     if (sessionStorage.getItem('type_of_game')){
         game_name = sessionStorage.getItem('game_name');
         game_type = sessionStorage.getItem('type_of_game');
-        sessionStorage.setItem('game_id',make_id(20))
-        game_id = sessionStorage.getItem('game_id');
         if (game_type === 'pc'){
-            socket.emit('create_single_player' , {game_name,game_type,game_id,my_socket_id}, );
+            socket.emit('create_single_player' , {game_name,game_type,my_socket_id}, );
         }else{
-            console.log(`INFO : ${game_name} ${game_type} ${my_socket_id}`)
+            // console.log(`INFO : ${game_name} ${game_type} ${my_socket_id}`)
             socket.emit('luck_to_game_buffer' , {game_name,game_type,my_socket_id}, );
             animation = true;
             make_waiting_box();
@@ -91,44 +88,44 @@ socket.on('opponent_left',() =>{
 //     }
 // })
 
-socket.on('broadcasted_massage', ({broadcast_massage}) => {
-    console.log('broadcasted_massage   : ',broadcast_massage,broadcast_massage.massage );
-    console.log(broadcast_massage.game_id , game_id)
-    if (broadcast_massage.game_id === game_id){
-        if (broadcast_massage.massage === 'unlock_btn'){
-            console.log('masage lock player vriting success   : ',broadcast_massage);
-            w8_until_player_pick_img();
-        }else if (broadcast_massage.massage === 'connected'){
-            console.log('masage connectition success   : ',broadcast_massage);
-            animation = false;
-        }else if (broadcast_massage.massage === 'finished'){
-            console.log('masage game finished   : ',broadcast_massage);
-            my_game.state = true;
-            make_win_multiplier("You lost");
-        }else if (broadcast_massage.massage === true || broadcast_massage.massage === false){
-            console.log('masage aswer to question is : ',broadcast_massage.massage);
-            let elem_ask_img = document.getElementsByClassName('undefined')[0];
-            console.log('NACHADZA SA TUNA ' , '/'+game_name.replaceAll(' ','%20')+'/images' , elem_ask_img.childNodes[0].src , elem_ask_img.childNodes[0].src.includes('/'+game_name.replaceAll(' ','%20')+'/images'))
-            if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
-                if ( broadcast_massage.massage){
-                    my_game.state = true;
-                    make_win_multiplier("You win");
-                }
-
-            }
-            elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage.massage? 'bg-success':'bg-danger')
-        }else{
-            console.log('masage make question is : ',broadcast_massage.massage);
-            if (broadcast_massage.massage.title !== undefined){
-                make_question_for_opponent(broadcast_massage.massage);
-            }else{
-                make_massage(broadcast_massage.massage,'opponent')
-            }
-        }
-    }else{
-        console.log('Massage is not for you  ',broadcast_massage)
-    }
-})
+// socket.on('broadcasted_massage', ({broadcast_massage}) => {
+//     console.log('broadcasted_massage   : ',broadcast_massage,broadcast_massage.massage );
+//     console.log(broadcast_massage.game_id , game_id)
+//     if (broadcast_massage.game_id === game_id){
+//         if (broadcast_massage.massage === 'unlock_btn'){
+//             console.log('masage lock player vriting success   : ',broadcast_massage);
+//             w8_until_player_pick_img();
+//         }else if (broadcast_massage.massage === 'connected'){
+//             console.log('masage connectition success   : ',broadcast_massage);
+//             animation = false;
+//         }else if (broadcast_massage.massage === 'finished'){
+//             console.log('masage game finished   : ',broadcast_massage);
+//             my_game.state = true;
+//             make_win_multiplier("You lost");
+//         }else if (broadcast_massage.massage === true || broadcast_massage.massage === false){
+//             console.log('masage aswer to question is : ',broadcast_massage.massage);
+//             let elem_ask_img = document.getElementsByClassName('undefined')[0];
+//             console.log('NACHADZA SA TUNA ' , '/'+game_name.replaceAll(' ','%20')+'/images' , elem_ask_img.childNodes[0].src , elem_ask_img.childNodes[0].src.includes('/'+game_name.replaceAll(' ','%20')+'/images'))
+//             if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
+//                 if ( broadcast_massage.massage){
+//                     my_game.state = true;
+//                     make_win_multiplier("You win");
+//                 }
+//
+//             }
+//             elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage.massage? 'bg-success':'bg-danger')
+//         }else{
+//             console.log('masage make question is : ',broadcast_massage.massage);
+//             if (broadcast_massage.massage.title !== undefined){
+//                 make_question_for_opponent(broadcast_massage.massage);
+//             }else{
+//                 make_massage(broadcast_massage.massage,'opponent')
+//             }
+//         }
+//     }else{
+//         console.log('Massage is not for you  ',broadcast_massage)
+//     }
+// })
 
 socket.on('obtain_game' , ({game}) => {
     my_game = game;
@@ -322,7 +319,7 @@ function check_if_img_is_picket(elem,time){
         elem.className = "bg-danger";
     }else{
         make_win_multiplier('You lost because you are not playing !')
-        socket.emit('leave_game',{game_id,my_socket_id});
+        socket.emit('leave_game',{my_socket_id});
         time_run_out = true
         return;
     }
@@ -555,12 +552,12 @@ function make_card_win(witch_player_win){
     if (witch_player_win.includes('lost')){
         my_game.state = true
         my_game.player1.game_name === html_name.innerHTML
-            ? make_profile(my_game.player2.game_name,my_game.player2.color,my_game.player2.character)
+            ?make_profile(my_game.player2.game_name,my_game.player2.color,my_game.player2.character)
             :make_profile(my_game.player1.game_name,my_game.player1.color,my_game.player1.character)
     }else{
         my_game.state = true
         my_game.player1.game_name === html_name.innerHTML
-            ? make_profile(my_game.player1.game_name,my_game.player1.color,my_game.player1.character)
+            ?make_profile(my_game.player1.game_name,my_game.player1.color,my_game.player1.character)
             :make_profile(my_game.player2.game_name,my_game.player2.color,my_game.player2.character)
     }
 
@@ -638,46 +635,19 @@ function make_question_for_opponent(question){
 }
 
 
-function leave(){
+function leave(target){
     socket.emit('leave_game',{my_socket_id});
-    location.assign('menu.html');
+    location.assign(target);
 }
-function leave_game(){
-    socket.emit('leave_game',{my_socket_id});
-    location.assign('menu.html');
-    if (game_type === 'pc'){
-        leave()
-    }
-    // else{
-    //     console.log(my_game.state)
-    //     if (my_game.state){
-    //         leave()
-    //     }else if (my_game.state === false && my_game.player2 !== undefined){
-    //         create_exception('Are u sure tou want to leave the game ? If you leave unfinished game your score will be affected <button class="bg-success text-light" onclick="leave()"> YES </button>',10,'danger')
-    //     }else{
-    //         leave()
-    //     }
-    //     console.log("game type ",game_type)
-    // }
+function leave_game(target){
+    create_exception(`Are u sure tou want to leave the game ? If you leave unfinished game your score will be affected <button class="bg-success text-light" onclick="leave(${target})"> YES </button>`,10,'danger')
 }
 
 function play_again(){
-    socket.emit('leave_game',{game_id,my_socket_id});
-    let new_game_id = make_id(5);
-    sessionStorage.setItem('game_id',new_game_id);
-    console.log('play again ',new_game_id)
+
     location.reload();
 }
 
-function make_id(length) {
-    let result           = '';
-    let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let charactersLength = characters.length;
-    for ( let i = 0; i < length; i++ ) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-}
 
 function hide(elem){
     if ((game_type === 'kid' || game_type === 'student') && document.getElementById('my_img_guessed_by_opponent').src.includes( '/images/question_mark.png')){

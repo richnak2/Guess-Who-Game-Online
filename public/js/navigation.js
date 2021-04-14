@@ -20,17 +20,17 @@ function setImageAndBackground(html_img,html_img_bg){
 
 
 function shop(){
-    typeof createGame === 'function' ? socket.emit('leave_game',{my_socket_id}) : null
+    typeof createGame === 'function' ? leave_game('shop.html'): null
     location.assign('shop.html');
 
 }
 function menu(){
-    typeof createGame === 'function' ? socket.emit('leave_game',{my_socket_id}) : null
+    typeof createGame === 'function' ? leave_game('menu.html') : null
     location.assign('menu.html');
 
 }
 function log_out(){
-    typeof createGame === 'function' ? socket.emit('leave_game',{my_socket_id}) : null
+    typeof createGame === 'function' ? leave_game('index.html') : null
     socket.emit('remove_player_from_connection',{my_socket_id});
     location.assign('index.html');
 }
