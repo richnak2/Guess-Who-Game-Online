@@ -207,14 +207,14 @@ io.on('connection', socket => {
         AllUsers.getUser(my_socket_id).then(user => {
             const exist = AllGames.searchForFreeGame(game_name,game_type,user)
             exist.then(new_game => {
-                console.log(new_game)
+                console.log("NASIEL : "+new_game === false? new_game : true)
                 if (new_game){
                     socket.join(user.getGameId())
                     io.to(user.getGameId()).emit('obtain_game', {game:new_game.toJSON()});
                 }else{
                     const game = AllGames.push(game_name,game_type,user)
                     game.then(new_game => {
-                        console.log('vytvoril som novu')
+                        console.log(`vytvoril som novu ${game_name},${game_type}`)
                         socket.join(user.getGameId())
                     }).catch(err => {new Error(`luck_to_game_buffer => AllGames.push => ${err}`)})
                 }

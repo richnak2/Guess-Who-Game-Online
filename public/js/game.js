@@ -40,6 +40,7 @@ function createGame(){
         if (game_type === 'pc'){
             socket.emit('create_single_player' , {game_name,game_type,game_id,my_socket_id}, );
         }else{
+            console.log(`INFO : ${game_name} ${game_type} ${my_socket_id}`)
             socket.emit('luck_to_game_buffer' , {game_name,game_type,my_socket_id}, );
             animation = true;
             make_waiting_box();
