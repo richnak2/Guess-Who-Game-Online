@@ -86,11 +86,10 @@ socket.on('multiplayer_massage', ({broadcast_massage}) => {
         elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage.massage? 'bg-success':'bg-danger')
     }else{
         console.log('masage make question is : ',broadcast_massage);
-        console.log('masage make question is : ',broadcast_massage.massage);
         if (broadcast_massage.massage.title !== undefined){
-            make_question_for_opponent(broadcast_massage.massage);
+            make_question_for_opponent(broadcast_massage);
         }else{
-            make_massage(broadcast_massage.massage,'opponent')
+            make_massage(broadcast_massage,'opponent')
         }
     }
 })
@@ -581,9 +580,9 @@ function make_question_for_opponent(question){
 }
 
 
-function leave(){
+function leave(target){
     socket.emit('leave_game',{my_socket_id});
-    location.assign(leave_target);
+    location.assign(target !== undefined ? target:leave_target);
 }
 function leave_game(target){
     leave_target = target
@@ -600,9 +599,6 @@ function hide(elem){
     if ((game_type === 'kid' || game_type === 'student') && document.getElementById('my_img_guessed_by_opponent').src.includes( '/images/question_mark.png')){
         document.getElementById('my_img_guessed_by_opponent').src = elem.childNodes[1].src;
         document.getElementById('my_img_guessed_by_opponent').title = elem.childNodes[1].title;
-        console.log('posielam spravu s usera',my_socket_id)
-        let massage = 'block';
-        socket.emit('broadcast_massage',{game_id,my_socket_id,massage});
         return;
     }
 

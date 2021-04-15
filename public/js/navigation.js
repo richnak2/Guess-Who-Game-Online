@@ -20,25 +20,18 @@ function setImageAndBackground(html_img,html_img_bg){
 
 
 function shop(){
-    typeof createGame === 'function' ? leave_game('shop.html'): null
-    location.assign('shop.html');
-
+    typeof createGame === 'function' ? leave_game('shop.html'): location.assign('shop.html');
 }
 function menu(){
-    typeof createGame === 'function' ? leave_game('menu.html') : null
-    location.assign('menu.html');
-
+    typeof createGame === 'function' ? leave_game('menu.html') : location.assign('menu.html');
 }
 function log_out(){
-    typeof createGame === 'function' ? leave_game('index.html') : null
     socket.emit('remove_player_from_connection',{my_socket_id});
     location.assign('index.html');
 }
 function play(){
-    typeof createGame === 'function' ? socket.emit('leave_game',{my_socket_id}) : null
     location.assign('menu.html');
 }
 function create_own_game(){
-    typeof createGame === 'function' ? socket.emit('leave_game',{my_socket_id}) : null
     location.assign('create_game.html');
 }
