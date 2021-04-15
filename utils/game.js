@@ -264,7 +264,7 @@ class NewGame{
     async answerToQuestionMultiplayer(player, massage){
         return await new Promise((resolve, reject) => {
             if (this.define_end_of_the_game !== undefined){
-                if (massage){
+                if (massage.certain){
                     const points_add_player1 = this.player1.addPoints(1000/ ((this.player1.id_socket !== player.id_socket ? 10:0 )+ this.ask_counter_player1))
                     points_add_player1.then(res => {
                         this.player1.setGameId(undefined)
@@ -279,9 +279,9 @@ class NewGame{
                     // this.state = true;
                     // leave_game(this.id).then(r => console.log('deleted game id:'+this.id));
                     console.log('CERTAIN ACTUAL QUESTION ',this.ask_counter_player2,this.ask_counter_player1);
-                    return resolve(massage)
+                    return resolve(massage.certain)
                 }
-                return resolve(massage)
+                return resolve(massage.certain)
             }else{
                 return resolve(massage)
             }

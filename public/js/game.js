@@ -70,21 +70,21 @@ socket.on('opponent_left',({}) => {
 })
 
 socket.on('multiplayer_massage', ({broadcast_massage}) => {
-    if (broadcast_massage.certain === true || broadcast_massage.certain === false){
-        console.log('masage aswer to question is : ',broadcast_massage.massage);
+    console.log('multiplayer_massage',broadcast_massage)
+    if (broadcast_massage === true || broadcast_massage === false){
         let elem_ask_img = document.getElementsByClassName('undefined')[0];
         console.log('NACHADZA SA TUNA ' , '/'+game_name.replaceAll(' ','%20')+'/images' , elem_ask_img.childNodes[0].src , elem_ask_img.childNodes[0].src.includes('/'+game_name.replaceAll(' ','%20')+'/images'))
         if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
-            if ( broadcast_massage.massage){
+            if ( broadcast_massage){
                 my_game.state = true;
                 make_win_multiplier("You win");
             }
 
         }
-        elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage.massage? 'bg-success':'bg-danger')
+        elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage? 'bg-success':'bg-danger')
     }else{
         console.log('masage make question is : ',broadcast_massage);
-        if (broadcast_massage.massage.title !== undefined){
+        if (broadcast_massage.title !== undefined){
             make_question_for_opponent(broadcast_massage);
         }else{
             make_massage(broadcast_massage,'opponent')

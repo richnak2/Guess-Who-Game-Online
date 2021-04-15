@@ -179,29 +179,7 @@ io.on('connection', socket => {
     });
 
 
-
-    // //GAME : G
-    // // zmena udajou pre bezpecnost profilu hraca
-    // function remove_player_identity(game){
-    //     game.picket_picture_pc = undefined;
-    //     game.player1.id_socket = undefined;
-    //     if (game.player2 !== undefined){
-    //         game.player2.id_socket = undefined;
-    //     }
-    //     return game
-    // }
-    // // IRG
-    // function is_ready_game(game_id){
-    //     let game = is_existing_game(game_id);
-    //     if (game){
-    //         let game_copy  = remove_player_identity(JSON.parse(JSON.stringify(game))); // Create Deep copy of object
-    //         console.log('IRG : ',game_id)
-    //         socket.emit('obtain_game', {game:game_copy});
-    //     }else{
-    //         setTimeout(is_ready_game, 100 , game_id);
-    //     }
-    // }
-    //
+    // public/js/game.js
     // LTGB
     socket.on('luck_to_game_buffer' , ({game_name,game_type,my_socket_id}) => {
         AllUsers.getUser(my_socket_id).then(user => {
@@ -259,9 +237,8 @@ io.on('connection', socket => {
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
         });
     })
-    //
-    // // spracovanie posielania sprav pre celu hru
-    // // : BM
+
+    // MM
     socket.on('multiplayer_massage',({my_socket_id,massage}) =>{
         if (massage === true || massage === false ){// otazka na ktora prichadza od hraca na server certain image pod tlacidlom guess
             let player = AllUsers.getUser(my_socket_id)
@@ -270,7 +247,7 @@ io.on('connection', socket => {
                 if (game !== undefined) {
                     const massage_from_server = game.answerToQuestionMultiplayer(user, massage);
                     massage_from_server.then(answer => {
-                        socket.broadcast.to(user.getGameId()).emit('multiplayer_massage', {broadcast_massage: massage});
+                        socket.broadcast.to(user.getGameId()).emit('multiplayer_massage', {broadcast_massage: answer});
                     })
                 }
             }).catch(err => printError(`certain => ${err}`))
