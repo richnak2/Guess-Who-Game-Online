@@ -127,10 +127,10 @@ io.on('connection', socket => {
     })
 
     socket.on('remove_player_from_connection',({my_socket_id}) =>{
-        const game_id = this.all_clients[my_socket_id].getGameId()
+        const game_id = AllUsers.all_clients[my_socket_id].getGameId()
         game_id.then(id => {
             if (id !== undefined){
-                AllGames.leaveGame(id,this.all_clients[my_socket_id].id_socket)
+                AllGames.leaveGame(id,AllUsers.all_clients[my_socket_id].id_socket)
                 socket.broadcast.to(id).emit('opponent_left',{})
             }
         })
