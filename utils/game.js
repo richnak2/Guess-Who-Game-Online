@@ -42,7 +42,7 @@ class AllGames{
             for (let certain_game in this.games) {
                 if (this.games.hasOwnProperty(certain_game)) {
                     // console.log('loocking',this.games[certain_game].toJSON())
-                    if (this.games[certain_game].player2Exist()){
+                    if (this.games[certain_game].player2Exist() === false){
                         if (this.games[certain_game].getGameName() === game_name && this.games[certain_game].getGameType() === game_type ){
                             this.games[certain_game].addUser2(user)
                             resolve(this.games[certain_game])
@@ -80,7 +80,14 @@ class AllGames{
     static isExistingGame(game_id){
         return this.games[game_id];
     }
-    static leaveGame(game_id){
+    static leaveGame(game_id,id_of_player_socket_who_left){
+        if (this.games[game_id].player2Exist() ){
+            if (this.games[game_id].player1.id_socket === id_of_player_socket_who_left){
+                this.games[game_id].player2.addPoints(100).then(r => {}) // pokial sa hrac odpoji s prebiehajucej hri
+            }else{
+                this.games[game_id].player1.addPoints(100).then(r => {}) // pokial sa hrac odpoji s prebiehajucej hri
+            }
+        }
         delete this.games[game_id];
         console.log(`Leave AllGames : ${this.strGetAllLength()}`)
     }
@@ -239,8 +246,8 @@ class NewGame{
         }).catch(err => {return new Error(`isYourPickedPictureQuestion => ${err}`)})
 
     }
-    add_question(player_name,massage){
-        if (player_name === this.player1.id_socket){
+    addQuestionMultiplayer(player, massage){
+        if (player.id_socket === this.player1.id_socket){
             this.ask_counter_player1 ++;
         }else{
             this.ask_counter_player2 ++;
@@ -251,18 +258,34 @@ class NewGame{
             this.define_end_of_the_game = undefined;
         }
 
-        console.log('GAME MASSSAGE !!!! : ',massage)
+        // console.log('GAME MASSSAGE !!!! : ',massage)
     }
-    answer_to_question(player_name,massage){
-        if (this.define_end_of_the_game !== undefined){
-            if (massage){
-                console.log('pytam sa ak uz bola odpoved certain');
-                this.state = true;
-                leave_game(this.id).then(r => console.log('deleted game id:'+this.id));
-                console.log('CERTAIN ACTUAL QUESTION ',this.define_end_of_the_game,player_name,massage,this.ask_counter_player2,this.ask_counter_player1);
-                return massage
+    async answerToQuestionMultiplayer(player, massage){
+        return await new Promise((resolve, reject) => {
+            if (this.define_end_of_the_game !== undefined){
+                if (massage){
+                    const points_add_player1 = this.player1.addPoints(1000/ ((this.player1.id_socket !== player.id_socket ? 10:0 )+ this.ask_counter_player1))
+                    points_add_player1.then(res => {
+                        this.player1.setGameId(undefined)
+
+                    })
+                    const points_add_player2 = this.player2.addPoints(1000/((this.player2.id_socket !== player.id_socket ? 10:0 )+ this.ask_counter_player2))
+                    points_add_player2.then(res => {
+                        this.player2.setGameId(undefined)
+
+                    })
+                    // console.log('pytam sa ak uz bola odpoved certain');
+                    // this.state = true;
+                    // leave_game(this.id).then(r => console.log('deleted game id:'+this.id));
+                    console.log('CERTAIN ACTUAL QUESTION ',this.ask_counter_player2,this.ask_counter_player1);
+                    return resolve(massage)
+                }
+                return resolve(massage)
+            }else{
+                return resolve(massage)
             }
-        }
+        }).catch(err => {return new Error(`answerToQuestionMultiplayer => ${err}`)})
+
     }
 }
 

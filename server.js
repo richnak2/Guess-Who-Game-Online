@@ -252,8 +252,8 @@ io.on('connection', socket => {
     socket.on('leave_game',({my_socket_id}) => {
         AllUsers.getUser(my_socket_id).then(user => {
                 if (user.getGameId() !== undefined ){
-                    AllGames.leaveGame(user.getGameId())
-                    io.to(user.getGameId()).emit('opponent_left')
+                    AllGames.leaveGame(user.getGameId(),user.getSocketId())
+                    socket.broadcast.to(user.getGameId()).emit('opponent_left')
                     user.setGameId(undefined)
                 }
             }).catch(err =>{
@@ -263,40 +263,48 @@ io.on('connection', socket => {
     //
     // // spracovanie posielania sprav pre celu hru
     // // : BM
-    // socket.on('broadcast_massage',({game_id,my_socket_id,massage}) =>{// posli spravu na hru s id "game_id" od hraca "my_socket_id" a content == "massage"
-    //     let broadcast_massage = {}
-    //     if (massage === 'block'){// zablokuj druhemu hracovi moznost klikania
-    //         broadcast_massage = format_message(game_id,my_socket_id,'unlock_btn');
-    //         socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
-    //     }else if (massage === 'connected'){// pripojenie hraca do hry
-    //         broadcast_massage = format_message(game_id,my_socket_id,massage);
-    //         socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
-    //     }else if (massage === true || massage === false ){// otazka na ktora prichadza od hraca na server certain image pod tlacidlom guess
-    //         let game = is_existing_game(game_id);
-    //         let answer = game.answer_to_question(my_socket_id,massage);
-    //         if (answer){ // pokial hrac odpovedat dal na otazku certain image 'button YES' v public/game.html
-    //             addPoints(1000,game.player1.id_socket,game.ask_counter_player1+(game.player1.id_socket === my_socket_id ? 10:0))
-    //             addPoints(1000,game.player2.id_socket,game.ask_counter_player2+(game.player1.id_socket === my_socket_id ? 0:10))
-    //             if (game.player1.id !== undefined){
-    //                 const db = dbService.getDbServiceInstance();
-    //                 db.updateUserPoints(getCurrentUser(game.player1.id_socket)).then();
-    //             }
-    //             if (game.player2.id !== undefined){
-    //                 const db = dbService.getDbServiceInstance();
-    //                 db.updateUserPoints(getCurrentUser(game.player2.id_socket)).then();
-    //             }
-    //         }
-    //         broadcast_massage = format_message(game_id,my_socket_id,massage);
-    //         socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
-    //     }else{// vytvorenie obicajnej otazky
-    //         let game = is_existing_game(game_id);
-    //         if (game !== undefined){
-    //             game.add_question(my_socket_id,massage);
-    //             broadcast_massage = format_message(game_id,my_socket_id,massage);
-    //             socket.broadcast.emit('broadcasted_massage', {broadcast_massage:broadcast_massage});
-    //         }
-    //     }
-    // })
+    socket.on('multiplayer_massage',({my_socket_id,massage}) =>{
+        if (massage === true || massage === false ){// otazka na ktora prichadza od hraca na server certain image pod tlacidlom guess
+            let player = AllUsers.getUser(my_socket_id)
+            player.then(user => {
+                let game = AllGames.isExistingGame(user.getGameId());
+                if (game !== undefined) {
+                    const massage_from_server = game.answerToQuestionMultiplayer(user, massage);
+                    massage_from_server.then(answer => {
+                        socket.broadcast.to(user.getGameId()).emit('multiplayer_massage', {broadcast_massage: massage});
+                    })
+                }
+            }).catch(err => printError(`certain => ${err}`))
+
+
+
+            // let game = is_existing_game(game_id);
+            // let answer = game.answer_to_question(my_socket_id,massage);
+            // if (answer){ // pokial hrac odpovedat dal na otazku certain image 'button YES' v public/game.html
+            //     addPoints(1000,game.player1.id_socket,game.ask_counter_player1+(game.player1.id_socket === my_socket_id ? 10:0))
+            //     addPoints(1000,game.player2.id_socket,game.ask_counter_player2+(game.player1.id_socket === my_socket_id ? 0:10))
+            //     if (game.player1.id !== undefined){
+            //         const db = dbService.getDbServiceInstance();
+            //         db.updateUserPoints(getCurrentUser(game.player1.id_socket)).then();
+            //     }
+            //     if (game.player2.id !== undefined){
+            //         const db = dbService.getDbServiceInstance();
+            //         db.updateUserPoints(getCurrentUser(game.player2.id_socket)).then();
+            //     }
+            // }
+            // socket.broadcast.to(user.getGameId()).emit('multiplayer_massage', {broadcast_massage:massage});
+        }else{// vytvorenie obicajnej otazky
+            let player = AllUsers.getUser(my_socket_id)
+            player.then(user =>{
+                let game = AllGames.isExistingGame(user.getGameId());
+                if (game !== undefined){
+                    game.addQuestionMultiplayer(user,massage);
+                    socket.broadcast.to(user.getGameId()).emit('multiplayer_massage', {broadcast_massage:massage});
+                }
+            }).catch(err => printError(`normal => ${err}`))
+
+        }
+    })
     // // : GL
     // socket.on('leave_game',({game_id,my_socket_id}) => {
     //     // odpojenie hraca s hry

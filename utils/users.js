@@ -69,6 +69,7 @@ class AllUsers {
     }
   }
 
+
   static async getUser(socket_id){
     try {
       return await new Promise((resolve, reject) => {
@@ -285,9 +286,12 @@ class Users {
       color : this.color
     }
   }
+  getSocketId(){
+    return this.id_socket
+  }
   async addPoints(points) {
     return await new Promise((resolve, reject) => {
-      this.points += points;
+      this.points += Math.ceil(points);
       if (this.getId()){
         db.updateUserPoints(this.getId(),this.points).then( res => {
           resolve(true)

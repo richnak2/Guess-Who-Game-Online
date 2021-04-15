@@ -13,6 +13,7 @@ let your_turn = false;
 let game_name = undefined;
 let game_type = undefined;
 
+let leave_target = undefined
 let time_of_complete = 0 ;
 let time_run_out = false;
 let my_game = undefined;
@@ -88,44 +89,31 @@ socket.on('opponent_left',() =>{
 //     }
 // })
 
-// socket.on('broadcasted_massage', ({broadcast_massage}) => {
-//     console.log('broadcasted_massage   : ',broadcast_massage,broadcast_massage.massage );
-//     console.log(broadcast_massage.game_id , game_id)
-//     if (broadcast_massage.game_id === game_id){
-//         if (broadcast_massage.massage === 'unlock_btn'){
-//             console.log('masage lock player vriting success   : ',broadcast_massage);
-//             w8_until_player_pick_img();
-//         }else if (broadcast_massage.massage === 'connected'){
-//             console.log('masage connectition success   : ',broadcast_massage);
-//             animation = false;
-//         }else if (broadcast_massage.massage === 'finished'){
-//             console.log('masage game finished   : ',broadcast_massage);
-//             my_game.state = true;
-//             make_win_multiplier("You lost");
-//         }else if (broadcast_massage.massage === true || broadcast_massage.massage === false){
-//             console.log('masage aswer to question is : ',broadcast_massage.massage);
-//             let elem_ask_img = document.getElementsByClassName('undefined')[0];
-//             console.log('NACHADZA SA TUNA ' , '/'+game_name.replaceAll(' ','%20')+'/images' , elem_ask_img.childNodes[0].src , elem_ask_img.childNodes[0].src.includes('/'+game_name.replaceAll(' ','%20')+'/images'))
-//             if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
-//                 if ( broadcast_massage.massage){
-//                     my_game.state = true;
-//                     make_win_multiplier("You win");
-//                 }
-//
-//             }
-//             elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage.massage? 'bg-success':'bg-danger')
-//         }else{
-//             console.log('masage make question is : ',broadcast_massage.massage);
-//             if (broadcast_massage.massage.title !== undefined){
-//                 make_question_for_opponent(broadcast_massage.massage);
-//             }else{
-//                 make_massage(broadcast_massage.massage,'opponent')
-//             }
-//         }
-//     }else{
-//         console.log('Massage is not for you  ',broadcast_massage)
-//     }
-// })
+socket.on('multiplayer_massage', ({broadcast_massage}) => {
+    console.log('multiplayer_massage   : ',broadcast_massage );
+    console.log('multiplayer_massage   : ',broadcast_massage,broadcast_massage.massage );
+    if (broadcast_massage.massage === true || broadcast_massage.massage === false){
+        console.log('masage aswer to question is : ',broadcast_massage.massage);
+        let elem_ask_img = document.getElementsByClassName('undefined')[0];
+        console.log('NACHADZA SA TUNA ' , '/'+game_name.replaceAll(' ','%20')+'/images' , elem_ask_img.childNodes[0].src , elem_ask_img.childNodes[0].src.includes('/'+game_name.replaceAll(' ','%20')+'/images'))
+        if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
+            if ( broadcast_massage.massage){
+                my_game.state = true;
+                make_win_multiplier("You win");
+            }
+
+        }
+        elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage.massage? 'bg-success':'bg-danger')
+    }else{
+        console.log('masage make question is : ',broadcast_massage);
+        console.log('masage make question is : ',broadcast_massage.massage);
+        if (broadcast_massage.massage.title !== undefined){
+            make_question_for_opponent(broadcast_massage.massage);
+        }else{
+            make_massage(broadcast_massage.massage,'opponent')
+        }
+    }
+})
 
 socket.on('obtain_game' , ({game}) => {
     my_game = game;
@@ -133,14 +121,9 @@ socket.on('obtain_game' , ({game}) => {
     // console.log('GAME HAS BEEN OBATINED : ',my_socket_id,my_game.player1,my_game.player2,my_game);//, game
     animation = false;
     create_html_for_game();
-    // if(my_game.type === 'pc'){
-    //     create_html_for_game();
-    // }else if (my_game.type === 'kid' || my_game.type === 'student' && (my_game.player1 === undefined || my_game.player2 === undefined)) {
-    //     animation = true;
-    //     make_waiting_box('w8');
-    // }
-
-
+    if (my_game.type === 'kid'){
+        w8_until_player_pick_img()
+    }
 });
 // socket.on('opponent_left', ({who_left}) =>{
 //     console.log('Opponent left ',my_game.state)
@@ -335,7 +318,7 @@ function send_massage() {
 
     let massage = document.getElementById('chat_input_box').value;
     document.getElementById('chat_input_box').value = ''
-    socket.emit('broadcast_massage',{game_id,my_socket_id, massage});
+    socket.emit('multiplayer_massage',{my_socket_id, massage});
 }
 function make_massage(text,type){
     if (type === 'disappear'){
@@ -363,9 +346,6 @@ function make_massage(text,type){
 }
 
 function created_images_form_buttons(witch){
-    // tuna bude rozdiel ak obrazok k danej hre nexistuje pre pc a kid musia byt obrzky
-    // pokial obrazky niesu musia byt otazky namiesto img  otazky budu formov select boxu a buttonu ask...
-    // console.log('created_images_form_buttons   : ',guessed_images[witch]);
     document.getElementById('guess_back').style.display = 'revert';
     document.getElementById('guess_certain').style.display = 'none';
     let elements_button_guess = document.getElementsByClassName('guess_dir');
@@ -466,7 +446,7 @@ function add_img_to_asked(elem_img){
     massage.src = elem_img.src;
     massage.title = elem_img.title;
     if (game_type !== 'pc'){
-        socket.emit('broadcast_massage',{game_id,my_socket_id, massage});
+        socket.emit('multiplayer_massage',{my_socket_id, massage});
     }else{
         socket.emit('ask_single_player_game',{my_socket_id, massage});
     }
@@ -513,13 +493,13 @@ function add_img_to_asked_certain(img){
     massage.src = img.src;
     massage.title = img.title;
     massage.certain = img.src.includes((game_name.replaceAll(' ','%20')) + '/images');
-    if (game_type === 'pc'){
-        massage.certain = img.src.includes((game_name.replaceAll(' ','%20')) + '/images');
-    }else{
-        console.log('certain NOT')
-    }
+    // if (game_type === 'pc'){
+    //     massage.certain = img.src.includes((game_name.replaceAll(' ','%20')) + '/images');
+    // }else{
+    //     console.log('certain NOT')
+    // }
     if (game_type !== 'pc'){
-        socket.emit('broadcast_massage',{game_id,my_socket_id, massage});
+        socket.emit('multiplayer_massage',{my_socket_id, massage});
     }else{
         socket.emit('ask_single_player_game',{my_socket_id, massage});
     }
@@ -595,8 +575,9 @@ function make_win_multiplier(text){
 }
 
 function answer_to_question(bull){
+    socket.emit('multiplayer_massage',{my_socket_id, massage:bull});
     // console.log('ANSWER TO QUESTION IS : ',bull)
-    socket.emit('broadcast_massage',{game_id,my_socket_id, massage:bull});
+    // socket.emit('broadcast_massage',{game_id,my_socket_id, massage:bull});
     if (document.getElementById('asked_img_question').src.includes(game_name.replace(' ','%20')+'/images') && bull){
         my_game.state = true;
         make_win_multiplier('You lost');
@@ -607,8 +588,8 @@ function answer_to_question(bull){
         }
         hide_win_lost();
     }
-
 }
+
 function hide_win_lost(){
     html_centered_win.style.display = 'none';
     html_centered_centered_win.style.display = 'none';
@@ -635,12 +616,13 @@ function make_question_for_opponent(question){
 }
 
 
-function leave(target){
+function leave(){
     socket.emit('leave_game',{my_socket_id});
-    location.assign(target);
+    location.assign(leave_target);
 }
 function leave_game(target){
-    create_exception(`Are u sure tou want to leave the game ? If you leave unfinished game your score will be affected <button class="bg-success text-light" onclick="leave(${target})"> YES </button>`,10,'danger')
+    leave_target = target
+    create_exception(`Are u sure tou want to leave the game ? If you leave unfinished game your score will be affected <button class="bg-success text-light" onclick="leave()"> YES </button>`,10,'danger')
 }
 
 function play_again(){
