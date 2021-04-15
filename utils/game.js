@@ -272,7 +272,7 @@ class NewGame{
         return await new Promise((resolve, reject) => {
             if (this.define_end_of_the_game !== undefined){
                 console.log('masage if certain ',massage)
-                if (massage.certain){
+                if (massage){
                     const points_add_player1 = this.player1.addPoints(1000/ ((this.player1.id_socket !== player.id_socket ? 10:0 )+ this.ask_counter_player1))
                     points_add_player1.then(res => {
                         this.player1.setGameId(undefined)
@@ -281,15 +281,15 @@ class NewGame{
                         const points_add_player2 = this.player2.addPoints(1000/((this.player2.id_socket !== player.id_socket ? 10:0 )+ this.ask_counter_player2))
                         points_add_player2.then(res => {
                             this.player2.setGameId(undefined)
-                            return resolve(massage.certain)
+                            resolve(massage)
                         })
                     }).catch(err => new Error(`answerToQuestionMultiplayer => certain image => ${err}`))
                 }else{
-                    return resolve(massage.certain)
+                    resolve(massage)
                 }
             }else{
                 console.log('masage if NOT certain ',massage)
-                return resolve(massage)
+                resolve(massage)
             }
         }).catch(err => {return new Error(`answerToQuestionMultiplayer => ${err}`)})
 
