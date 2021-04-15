@@ -252,9 +252,8 @@ io.on('connection', socket => {
     socket.on('leave_game',({my_socket_id}) => {
         AllUsers.getUser(my_socket_id).then(user => {
                 if (user.getGameId() !== undefined ){
-                    AllGames.leaveGame(user.getGameId(),user.getSocketId())
                     socket.broadcast.to(user.getGameId()).emit('opponent_left')
-                    user.setGameId(undefined)
+                    AllGames.leaveGame(user.getGameId(),user.getSocketId())
                 }
             }).catch(err =>{
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})

@@ -82,12 +82,14 @@ class AllGames{
     }
     static leaveGame(game_id,id_of_player_socket_who_left){
         if (this.games[game_id].player2Exist() ){
+            this.games[game_id].player2.setGameId(undefined)
             if (this.games[game_id].player1.id_socket === id_of_player_socket_who_left){
                 this.games[game_id].player2.addPoints(100).then(r => {}) // pokial sa hrac odpoji s prebiehajucej hri
             }else{
                 this.games[game_id].player1.addPoints(100).then(r => {}) // pokial sa hrac odpoji s prebiehajucej hri
             }
         }
+        this.games[game_id].player1.setGameId(undefined)
         delete this.games[game_id];
         console.log(`Leave AllGames : ${this.strGetAllLength()}`)
     }
