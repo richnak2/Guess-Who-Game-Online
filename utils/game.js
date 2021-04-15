@@ -78,11 +78,14 @@ class AllGames{
     static isExistingGame(game_id){
         return this.games[game_id];
     }
-    static leaveGame(game_id,id_of_player_socket_who_left){
-        if (this.games[game_id].player2Exist() !== undefined){
+    static leaveGame(game_id,id_of_player_socket_who_left,game_finished){
+        if (game_finished){
             this.games[game_id].player1.setGameId(undefined)
             this.games[game_id].player2.setGameId(undefined)
-            if (this.games[game_id].player1.id_socket === id_of_player_socket_who_left){
+        }else if (this.games[game_id].player2Exist() !== undefined){
+            this.games[game_id].player1.setGameId(undefined)
+            this.games[game_id].player2.setGameId(undefined)
+            if (this.games[game_id].player1.id_socket === id_of_player_socket_who_left ){
                 this.games[game_id].player2.addPoints(100).then(r => {
                     this.deleteGame(game_id)
                 }) // pokial sa hrac odpoji s prebiehajucej hri
@@ -91,8 +94,9 @@ class AllGames{
                     this.deleteGame(game_id)
                 }) // pokial sa hrac odpoji s prebiehajucej hri
             }
+        }else{
+            this.deleteGame(game_id)
         }
-        this.deleteGame(game_id)
     }
 
     static deleteGame(game_id){
@@ -273,14 +277,12 @@ class NewGame{
             if (this.define_end_of_the_game !== undefined){
                 console.log('masage if certain ',massage)
                 if (massage){
-                    const points_add_player1 = this.player1.addPoints(1000/ ((this.player1.id_socket !== player.id_socket ? 10:0 )+ this.ask_counter_player1))
+                    const points_add_player1 = this.player1.addPoints(1000/ ((this.player1.id_socket !== player.id_socket ? 0:10 )+ this.ask_counter_player1))
                     points_add_player1.then(res => {
-                        this.player1.setGameId(undefined)
 
                     }).then(() => {
-                        const points_add_player2 = this.player2.addPoints(1000/((this.player2.id_socket !== player.id_socket ? 10:0 )+ this.ask_counter_player2))
+                        const points_add_player2 = this.player2.addPoints(1000/((this.player2.id_socket !== player.id_socket ? 0:10 )+ this.ask_counter_player2))
                         points_add_player2.then(res => {
-                            this.player2.setGameId(undefined)
                             resolve(massage)
                         })
                     }).catch(err => new Error(`answerToQuestionMultiplayer => certain image => ${err}`))
