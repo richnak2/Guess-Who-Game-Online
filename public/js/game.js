@@ -63,31 +63,11 @@ socket.on('answer_to_is_you_picture_pc',({answer}) =>{
         elem_ask_img.className = elem_ask_img.className.replace('undefined' , answer? 'bg-success':'bg-danger')
     }
 })
-socket.on('opponent_left',() =>{
+socket.on('opponent_left',({}) => {
     make_win_multiplier("You win");
     socket.emit('leave_game',{my_socket_id});
 
 })
-
-// socket.on('game_buffer_answer' , ({answer}) =>{
-//     console.log('BUFFER ANSERR ',answer)
-//     if (answer === undefined){
-//         socket.emit('create_single_player' , {game_name,game_type,game_id,my_socket_id} );
-//     }else{
-//         console.log('I found a game !!!',answer);
-//         my_game = answer;
-//         sessionStorage.setItem('game_id',my_game.id);
-//         game_id = my_game.id;
-//         if (my_game.player1 === undefined || my_game.player2 === undefined){
-//             animation = true;
-//             make_waiting_box('w8');
-//         }else{
-//             let massage = 'connected'
-//             socket.emit('broadcast_massage',{game_id,my_socket_id,massage});
-//             create_html_for_game();
-//         }
-//     }
-// })
 
 socket.on('multiplayer_massage', ({broadcast_massage}) => {
     console.log('multiplayer_massage   : ',broadcast_massage );
@@ -125,21 +105,6 @@ socket.on('obtain_game' , ({game}) => {
         w8_until_player_pick_img()
     }
 });
-// socket.on('opponent_left', ({who_left}) =>{
-//     console.log('Opponent left ',my_game.state)
-//     if (game_id === who_left && my_game.state === false){
-//         console.log('Opponent left ',my_game.state)
-//         my_game.state = true;
-//         game_id = ''; // prestan pocuvat koli tomu ze hra uz bola ukoncena -- prevetion cross scripting
-//         if (document.getElementById('my_img_guessed_by_opponent').src.includes( '/images/question_mark.png') && time_run_out){
-//             make_win_multiplier('You lost because you are not playing !')
-//             //my_game.state = false;
-//             // TUNA
-//         }else{
-//             make_win_multiplier('You win because your opponent is not playing !')
-//         }
-//     }
-// })
 
 function w8_until_player_pick_img(){
     // console.log('cakame na img ktori neni stale');

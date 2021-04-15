@@ -252,7 +252,7 @@ io.on('connection', socket => {
     socket.on('leave_game',({my_socket_id}) => {
         AllUsers.getUser(my_socket_id).then(user => {
                 if (user.getGameId() !== undefined ){
-                    socket.broadcast.to(user.getGameId()).emit('opponent_left')
+                    socket.broadcast.to(user.getGameId()).emit('opponent_left',{})
                     AllGames.leaveGame(user.getGameId(),user.getSocketId())
                 }
             }).catch(err =>{
@@ -274,24 +274,6 @@ io.on('connection', socket => {
                     })
                 }
             }).catch(err => printError(`certain => ${err}`))
-
-
-
-            // let game = is_existing_game(game_id);
-            // let answer = game.answer_to_question(my_socket_id,massage);
-            // if (answer){ // pokial hrac odpovedat dal na otazku certain image 'button YES' v public/game.html
-            //     addPoints(1000,game.player1.id_socket,game.ask_counter_player1+(game.player1.id_socket === my_socket_id ? 10:0))
-            //     addPoints(1000,game.player2.id_socket,game.ask_counter_player2+(game.player1.id_socket === my_socket_id ? 0:10))
-            //     if (game.player1.id !== undefined){
-            //         const db = dbService.getDbServiceInstance();
-            //         db.updateUserPoints(getCurrentUser(game.player1.id_socket)).then();
-            //     }
-            //     if (game.player2.id !== undefined){
-            //         const db = dbService.getDbServiceInstance();
-            //         db.updateUserPoints(getCurrentUser(game.player2.id_socket)).then();
-            //     }
-            // }
-            // socket.broadcast.to(user.getGameId()).emit('multiplayer_massage', {broadcast_massage:massage});
         }else{// vytvorenie obicajnej otazky
             let player = AllUsers.getUser(my_socket_id)
             player.then(user =>{

@@ -42,11 +42,10 @@ class AllGames{
             for (let certain_game in this.games) {
                 if (this.games.hasOwnProperty(certain_game)) {
                     // console.log('loocking',this.games[certain_game].toJSON())
-                    if (this.games[certain_game].player2Exist() === false){
+                    if (this.games[certain_game].player2Exist()){
                         if (this.games[certain_game].getGameName() === game_name && this.games[certain_game].getGameType() === game_type ){
                             this.games[certain_game].addUser2(user)
-                            resolve(this.games[certain_game])
-                            return
+                            return resolve(this.games[certain_game])
                         }
                     }
                 }
