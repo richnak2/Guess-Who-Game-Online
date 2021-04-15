@@ -56,6 +56,7 @@ class AllUsers {
   }
 
   static userLeave(socket_id) {
+
     delete this.all_clients[socket_id]
     console.log(`Leave AllUser : ${this.strGetAllLength()}`)
   }

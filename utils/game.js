@@ -55,8 +55,7 @@ class AllGames{
     }
 
     static async isYourPictureQuestionFromPlayer(game_id,massage){
-        const exist = this.isExistingGame(game_id)
-        const game = exist === undefined ? false : exist
+        const game = this.isExistingGame(game_id)  === undefined ? false : this.isExistingGame(game_id)
         if (game){
             return game.isYourPickedPictureQuestion(massage)
         }else{
@@ -80,15 +79,23 @@ class AllGames{
         return this.games[game_id];
     }
     static leaveGame(game_id,id_of_player_socket_who_left){
-        if (this.games[game_id].player2Exist() ){
+        if (this.games[game_id].player2Exist() !== undefined){
+            this.games[game_id].player1.setGameId(undefined)
             this.games[game_id].player2.setGameId(undefined)
             if (this.games[game_id].player1.id_socket === id_of_player_socket_who_left){
-                this.games[game_id].player2.addPoints(100).then(r => {}) // pokial sa hrac odpoji s prebiehajucej hri
+                this.games[game_id].player2.addPoints(100).then(r => {
+                    this.deleteGame(game_id)
+                }) // pokial sa hrac odpoji s prebiehajucej hri
             }else{
-                this.games[game_id].player1.addPoints(100).then(r => {}) // pokial sa hrac odpoji s prebiehajucej hri
+                this.games[game_id].player1.addPoints(100).then(r => {
+                    this.deleteGame(game_id)
+                }) // pokial sa hrac odpoji s prebiehajucej hri
             }
         }
-        this.games[game_id].player1.setGameId(undefined)
+        this.deleteGame(game_id)
+    }
+
+    static deleteGame(game_id){
         delete this.games[game_id];
         console.log(`Leave AllGames : ${this.strGetAllLength()}`)
     }
@@ -270,80 +277,22 @@ class NewGame{
                     points_add_player1.then(res => {
                         this.player1.setGameId(undefined)
 
-                    })
-                    const points_add_player2 = this.player2.addPoints(1000/((this.player2.id_socket !== player.id_socket ? 10:0 )+ this.ask_counter_player2))
-                    points_add_player2.then(res => {
-                        this.player2.setGameId(undefined)
-
-                    })
-                    // console.log('pytam sa ak uz bola odpoved certain');
-                    // this.state = true;
-                    // leave_game(this.id).then(r => console.log('deleted game id:'+this.id));
-                    console.log('CERTAIN ACTUAL QUESTION ',this.ask_counter_player2,this.ask_counter_player1);
+                    }).then(() => {
+                        const points_add_player2 = this.player2.addPoints(1000/((this.player2.id_socket !== player.id_socket ? 10:0 )+ this.ask_counter_player2))
+                        points_add_player2.then(res => {
+                            this.player2.setGameId(undefined)
+                            return resolve(massage.certain)
+                        })
+                    }).catch(err => new Error(`answerToQuestionMultiplayer => certain image => ${err}`))
+                }else{
                     return resolve(massage.certain)
                 }
-                return resolve(massage.certain)
             }else{
                 console.log('masage if NOT certain ',massage)
                 return resolve(massage)
             }
         }).catch(err => {return new Error(`answerToQuestionMultiplayer => ${err}`)})
 
-    }
-}
-
-
-async function search_for_free_game(game_name,game_type,player){ // tuna asi chyba id hry pre zistenie komu patry hra
-    for (let index_game = 0; index_game < games.length; index_game++) {
-        if (games[index_game].player1.id_socket === player.id_socket ){
-            console.log('serach for game : Found New Created Game ');
-            return games[index_game];
-        }
-        if (game_name === games[index_game].game_name && game_type === games[index_game].type && games[index_game].player2 === undefined){//  || games[index_game].player1 === undefined
-            console.log('serach for game : Found Game ');
-            games[index_game].player2 = player
-            return games[index_game];
-        }
-    }
-    console.log('serach for game : Not Found Game  ');
-    return undefined;
-
-}
-function is_existing_game(game_id){
-    console.log('ALL GAMSE : ',games.length,);//all_games()
-    for (let index_game = 0 ; index_game < games.length; index_game++){
-        if (games[index_game].id === game_id){
-            return games[index_game];
-        }
-    }
-    console.log('game does not exist ', game_id );
-    return undefined;
-}
-async function leave_game(game_id){
-    console.log('ALL GAMSES : '+games.length)
-    console.log('REMOVING GAME : ',game_id)
-    for (let index_game = 0; index_game < games.length; index_game++) {
-        if (games[index_game].id === game_id && games[index_game].type === 'pc'){
-            console.log('LEAVE PC')
-            games.splice(index_game, 1)
-            return;
-        }else if (games[index_game].id === game_id && games[index_game].state === false){//(  games[index_game].type === 'kid' ||  games[index_game].type === 'kid')){
-            console.log('LEAVE game id id_game state false')
-            games.splice(index_game, 1)
-            return 'inform_second_player';
-
-        }else if (games[index_game].id === game_id && games[index_game].state === true){//(  games[index_game].type === 'kid' ||  games[index_game].type === 'kid')){
-            console.log('LEAVE game id id_game state true')
-            games.splice(index_game, 1)
-            return;
-
-        }else if (games[index_game].id === game_id){
-            console.log('LEAVE game id id_game just leave becouse other player is not connecting');
-            games.splice(index_game, 1);
-            return undefined
-        }else{
-            console.log('Did not find game with id :', game_id,' != ',games[index_game].id);
-        }
     }
 }
 
