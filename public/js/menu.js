@@ -1,8 +1,10 @@
 let html_all_games = undefined;
+let html_chat_global = undefined;
 
 document.addEventListener('DOMContentLoaded', function () {
     html_all_games = document.getElementById('all_games');
-
+    html_chat_global = document.getElementById('chat_global');
+    html_chat_global_massage = document.getElementById('chat_global_massage');
 });
 
 // find all posible games for users
@@ -93,4 +95,49 @@ function create_html_games(game){
 
     div_card.append(div_for_image,div_body_card,div_card_buttons);
     html_all_games.append(div_card);
+}
+function show_chat(){
+    html_all_games.style.display = html_all_games.style.display === 'flex' ? 'none' : 'flex'
+    html_chat_global.style.display = html_chat_global.style.display === 'none' ? 'block' : 'none'
+    document.getElementById('sp-online').innerHTML =`${user_account.active_players} online players`
+}
+function send_massage() {
+    let msg_val = document.getElementById('chat_input_box').value
+    if (msg_val !== ''){
+        let massage = {
+            massage : msg_val
+        }
+        // let massage = {
+        //     from : user_account.game_name,
+        //     massage : msg_val
+        // }
+        make_massage(massage.massage,'you')
+        // socket.emit('multiplayer_massage',{my_socket_id, massage});
+        document.getElementById('chat_input_box').value = ''
+
+    }
+
+
+
+}
+function make_massage(text,type){
+    if (type === 'you'){
+        let new_task = document.createElement('p');
+        new_task.className = "btn-primary no_btn text-light chat_massage";
+        new_task.innerHTML = `YOU : ${text}`;
+        html_chat_global_massage.append(new_task);
+    }else if(type === 'event'){
+        let new_task = document.createElement('p');
+        new_task.className = "bg-success text-light chat_massage";
+        new_task.innerHTML = text;
+        html_chat_global_massage.append(new_task);
+    }else{
+        let new_task = document.createElement('p');
+        new_task.className = "bg-secondary text-light chat_massage";
+        new_task.innerHTML = text;
+        html_chat_global_massage.append(new_task);
+    }
+    html_chat_global_massage.scrollBy(0,300);
+    apply_color_them();
+
 }

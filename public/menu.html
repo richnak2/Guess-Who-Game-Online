@@ -87,9 +87,29 @@
     </div>
 </nav>
 
-<div id="all_games" >
+<div id="all_games" style="display:flex;">
 <!--    class="card-columns"-->
+
+<!--    <div class="card btn-light no_btn game_card" style="background: rgb(102, 178, 173);"><div class=" card-title text-center mb0"><img src="/images/Classic game guess/default.png" class="wd100 ht100 mt20"></div><div class="card-body"><h5 class="text-center text_black" style="color: rgb(255, 255, 255);">Classic game guess</h5><p class="text_black mb0" style="color: rgb(255, 255, 255);">guess image faces</p></div><div class="text-center mb10"><button class="btn btn-default bg-light wd90 ht90"><img src="./images/game_vs_pc.png" class="wd70"></button><button class="btn btn-default bg-light wd90 ht90 ml10"><img src="./images/pl_vs_pl_kids.png" class="wd70"></button><button class="btn btn-default bg-light wd90 ht90 ml10"><img src="./images/pl_vs_pl_students.png" class="wd70"></button></div></div>-->
+<!--    <div class="card btn-light no_btn game_card" style="background: rgb(102, 178, 173);"><div class=" card-title text-center mb0"><img src="/images/Classic game guess/default.png" class="wd100 ht100 mt20"></div><div class="card-body"><h5 class="text-center text_black" style="color: rgb(255, 255, 255);">Classic game guess</h5><p class="text_black mb0" style="color: rgb(255, 255, 255);">guess image faces</p></div><div class="text-center mb10"><button class="btn btn-default bg-light wd90 ht90"><img src="./images/game_vs_pc.png" class="wd70"></button><button class="btn btn-default bg-light wd90 ht90 ml10"><img src="./images/pl_vs_pl_kids.png" class="wd70"></button><button class="btn btn-default bg-light wd90 ht90 ml10"><img src="./images/pl_vs_pl_students.png" class="wd70"></button></div></div>-->
+<!--    <div class="card btn-light no_btn game_card" style="background: rgb(102, 178, 173);"><div class=" card-title text-center mb0"><img src="/images/Classic game guess/default.png" class="wd100 ht100 mt20"></div><div class="card-body"><h5 class="text-center text_black" style="color: rgb(255, 255, 255);">Classic game guess</h5><p class="text_black mb0" style="color: rgb(255, 255, 255);">guess image faces</p></div><div class="text-center mb10"><button class="btn btn-default bg-light wd90 ht90"><img src="./images/game_vs_pc.png" class="wd70"></button><button class="btn btn-default bg-light wd90 ht90 ml10"><img src="./images/pl_vs_pl_kids.png" class="wd70"></button><button class="btn btn-default bg-light wd90 ht90 ml10"><img src="./images/pl_vs_pl_students.png" class="wd70"></button></div></div>-->
+<!--    <div class="card btn-light no_btn game_card" style="background: rgb(102, 178, 173);"><div class=" card-title text-center mb0"><img src="/images/Classic game guess/default.png" class="wd100 ht100 mt20"></div><div class="card-body"><h5 class="text-center text_black" style="color: rgb(255, 255, 255);">Classic game guess</h5><p class="text_black mb0" style="color: rgb(255, 255, 255);">guess image faces</p></div><div class="text-center mb10"><button class="btn btn-default bg-light wd90 ht90"><img src="./images/game_vs_pc.png" class="wd70"></button><button class="btn btn-default bg-light wd90 ht90 ml10"><img src="./images/pl_vs_pl_kids.png" class="wd70"></button><button class="btn btn-default bg-light wd90 ht90 ml10"><img src="./images/pl_vs_pl_students.png" class="wd70"></button></div></div>-->
+
 </div>
+<div  id="chat_global" style="display:none;">
+    <div id="chat_box" >
+        <h2 class="text-center  btn-primary no_btn text-light mb-0 position-relative" id="chat_title"> Global Chat</h2><img id="online_img" src="./images/available.png"   alt="img" title="online players"><span id="sp-online" class="text-light"> 1 online players</span>
+        <div   id="chat_global_massage">
+        </div>
+        <div class="d-flex " id="chat_box_input">
+            <input type="text" id="chat_input_box" maxlength="100" name="chat_input_box" class="form-control" placeholder="write text ..." onchange="send_massage()" >
+            <label for="chat_input_box"></label>
+            <button class="btn btn-default btn-primary text-light"  id="chat_send_btn" onclick="send_massage()">send</button>
+        </div>
+    </div>
+</div>
+
 <div id="settings" class="btn-light" onclick="show_settings()"> <img src="./images/setting.png" alt="settings" title="settings"></div>
+<div id="chat_menu" class="btn-light" onclick="show_chat()"  > <img src="./images/chat.png" width="30" height="28" alt="settings" title="settings"></div>
 </body>
 </html>

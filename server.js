@@ -89,6 +89,7 @@ io.on('connection', socket => {
 
     //// PLAEYER MANAGMENT
     socket.on('offline', () => {
+        console.log(socket.id)
         AllUsers.push(socket.id, undefined, undefined, undefined, 10000, '#00000000 def.png', '#00000000 def.png');
     });
     // login_page.js related server error tag => L-O

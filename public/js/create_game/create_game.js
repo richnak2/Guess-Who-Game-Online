@@ -50,7 +50,7 @@ function delete_all_html_games(){
         cards[0].remove();
     }
     recreate_html()
-    setTimeout(undefined,1000)
+    setTimeout(undefined,4000)
     socket.emit('get_all_games_by_you',{my_socket_id});
     document.getElementById('all_games').style.display = 'contents';
     // setTimeout(get_all_games_after_time,1000); //  5000

@@ -1,5 +1,5 @@
 const sessionStorage = window.sessionStorage;
-const socket = io();
+let socket = io();
 
 document.addEventListener('DOMContentLoaded', function () {
     html_alert = document.getElementById('alert');

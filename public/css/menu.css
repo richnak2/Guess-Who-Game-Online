@@ -1,20 +1,77 @@
 .card{
-    height: 340px;
-    max-width: 300px;
-    min-width: 300px;
-    margin-left: 10px;
-    margin-right: 10px;
+    /*height: 340px;*/
+    /*max-width: 300px;*/
+    /*min-width: 300px;*/
+    width: 300px;
+    height: 315px;
+    margin: 10px;
+    /*margin-left: 10px;*/
+    /*margin-right: 10px;*/
 }
 #for_teacher{
     display: none;
 }
 #all_games{
-    margin-left: 10%;
-    margin-right: 10%;
+    /*margin-left: 0%;*/
+    /*margin-right: 20%;*/
     /*display: contents;*/
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: flex-start;
 }
-.game_card{
+/*.game_card{*/
+/*    float: left;*/
+/*    margin-left: 20px;*/
+/*    margin-bottom: 20px;*/
+/*}*/
+#chat_global{
+    z-index: 50;
+    height: 0px;
+    width: 95vw;
+    background: white;
+    position: absolute;
+    /* float: right; */
+    margin-left: 17px;
+}
+#chat_global_massage{
+    /*chat_box*/
+    background-clip: border-box;
+    border: 10px solid rgba(0,0,0,.125);
+    /*border-radius: 1rem;*/
+    width: 100%;
+    height: 366px;
+    z-index: -100;
+
+    overflow-y : scroll;
+
+}
+#chat_title{
+    top: 32px;
+    border-radius: 25px 25px 0px 0px;
+}
+#chat_input_box{
+    position: relative;
+    bottom: 5px;
+    border-radius: 0px 0px 0px 25px;
+}
+#chat_send_btn{
+    position: relative;
+    bottom: 5px;
+    border-radius: 0px 0px 25px 0px;
+}
+.chat_massage{
+    margin: 5px;
+    padding-left: 10px;
+    border-radius: 10px;
+}
+#online_img{
+    position: relative;
     float: left;
     margin-left: 20px;
-    margin-bottom: 20px;
+    top: 6px;
+}
+#sp-online{
+    margin-left: 10px;
+    position: relative;
+    font-size: initial;
 }

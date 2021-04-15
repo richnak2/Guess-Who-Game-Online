@@ -90,7 +90,9 @@ class AllUsers {
       return await new Promise((resolve, reject) => {
         let user = this.getUser(socket_id);
         user.then(user_located => {
-          resolve(user_located.getUserData(variable_id_socket))
+          let user_data = user_located.getUserData(variable_id_socket)
+          user_data.active_players = Object.keys(this.all_clients).length
+          resolve(user_data)
         }).catch(err => { reject( new Error(`Users.getUserData => ${err}`) ) })
       }).catch(err => {return new Error("ALLUsers.getUserData.promise => "+err)})
     }catch (err) {
