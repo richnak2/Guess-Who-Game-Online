@@ -264,6 +264,7 @@ class NewGame{
     async answerToQuestionMultiplayer(player, massage){
         return await new Promise((resolve, reject) => {
             if (this.define_end_of_the_game !== undefined){
+                console.log('masage if certain ',massage)
                 if (massage.certain){
                     const points_add_player1 = this.player1.addPoints(1000/ ((this.player1.id_socket !== player.id_socket ? 10:0 )+ this.ask_counter_player1))
                     points_add_player1.then(res => {
@@ -283,6 +284,7 @@ class NewGame{
                 }
                 return resolve(massage.certain)
             }else{
+                console.log('masage if NOT certain ',massage)
                 return resolve(massage)
             }
         }).catch(err => {return new Error(`answerToQuestionMultiplayer => ${err}`)})
