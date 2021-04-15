@@ -245,8 +245,72 @@ function set_game_category(category){
     }
     return type;
 }
+async function check1(id_of_game,user_id,main_game_name,game_category_of_players,main_game_description,created){
+    return await new Promise((resolve, reject) => {
+        if (id_of_game){
+            console.log(`updating game ${id_of_game}`)
+            let result = db.updateYourGameMain(id_of_game,main_game_name,game_category_of_players,main_game_description,created);
+            result.then(res => {
+                resolve(id_of_game)
+                }).catch(err => {return new Error(`Something is want wrong with <strong>updateYourGameMain</strong> ${err}`)})
+        }else {
+            console.log(`creating new game ${id_of_game}`)
+            const new_game_id = db.createGameMain(main_game_name[0], game_category_of_players, 'default.png', main_game_description, user_id, created);
+            new_game_id.then(id => {
+                resolve(id)
+            }).catch(err => {return new Error(`Something is want wrong with <strong>updateYourGameMain</strong> ${err}`) })
 
+        }
+    }).catch(err => {return new Error(`POST => check1 =>  ${err}`)})
 
+}
+async function check2(req,id_of_game,old_path , new_path,path_is_renamed){
+    return await new Promise((resolve, reject) => {
+        console.log(`creating new game ${id_of_game}`)
+        /// CHECK 2
+        let game_description_img = undefined;
+        let game_description_type = req.body.d_type;
+        let game_description_question = req.body.d_descriptor_question;
+        try {
+            game_description_img = req.files.d_img;
+            if (game_description_img.length === undefined) {
+                game_description_img = [game_description_img];
+                game_description_type = [game_description_type];
+                game_description_question = [game_description_question];
+            }
+        } catch (err) {
+            printError(`Check2 => createGameMain => Non existing object game_description_img`)
+        }
+
+        let check_2 = makeGameDescriptors(id_of_game, game_description_img, game_description_type, game_description_question, old_path, new_path, path_is_renamed);
+        resolve(check_2)
+
+    }).catch(err => {return new Error(`POST => check2 =>  ${err}`)})
+
+}
+async function check3(req,id_of_game,path_is_renamed,old_path,new_path){
+    return await new Promise((resolve, reject) => {
+        // CHECK 3
+        let game_img = undefined;
+        let game_img_descriptor = req.body.game_img_auto_descriptor;
+        let game_img_question = req.body.game_img_question;
+        try {
+            game_img = req.files.game_img;
+            if (game_img.length === undefined) {
+                game_img = [game_img];
+                game_img_descriptor = [game_img_descriptor];
+                game_img_question = [game_img_question];
+            }
+        } catch (e) {
+            printError(`Check3 => makeGameDescriptors => Non existing object game_img`)
+        }
+        let new_path_for_images = new_path + '/images';
+        let old_path_for_images = old_path + '/images';
+
+        const is_made_image = make_game_images(id_of_game, old_path_for_images, new_path_for_images, game_img, game_img_descriptor, game_img_question, path_is_renamed);
+        resolve(is_made_image)
+    }).catch(err => {return new Error(`POST => check3 => ${err}`)})
+}
 
 router.post('/upload_new_game', function(req, res) {
     // TUNA MUSI BYT SERVEROVA KONTROLA CI SU DANe FIles OK  a ci data ktore sa posielaju su tiez oki !!!
@@ -276,62 +340,21 @@ router.post('/upload_new_game', function(req, res) {
         // CHECK 1
         let check_1 = makeMainDir(main_game_img, './public/images/', new_path, path_is_renamed);
         if (typeof check_1 === 'boolean') {
-            if (id_of_game){
-                console.log(`updating game ${id_of_game}`)
-                let result = db.updateYourGameMain(id_of_game,main_game_name,game_category_of_players,main_game_description,created);
-                result.then().catch(err => {
-                    return res.send({data:`Something is want wrong with <strong>updateYourGameMain</strong> ${err}`,time_of_exception:20,type_of_exception:'danger'})
-                });
-            }else {
-                console.log(`creating new game ${id_of_game}`)
-                const new_game_id = db.createGameMain(main_game_name[0], game_category_of_players, 'default.png', main_game_description, user_id, created);
-                new_game_id.then(id => {
-                    id_of_game = id
-                    console.log(id)
-                    console.log(id_of_game)
-                })
-
-            }
-            console.log(`creating new game ${id_of_game}`)
-            /// CHECK 2
-            let game_description_img = undefined;
-            let game_description_type = req.body.d_type;
-            let game_description_question = req.body.d_descriptor_question;
-            try {
-                game_description_img = req.files.d_img;
-                if (game_description_img.length === undefined) {
-                    game_description_img = [game_description_img];
-                    game_description_type = [game_description_type];
-                    game_description_question = [game_description_question];
-                }
-            } catch (err) {
-                printError(`Check2 => createGameMain => Non existing object game_description_img`)
-            }
-
-            let check_2 = makeGameDescriptors(id_of_game, game_description_img, game_description_type, game_description_question, old_path, new_path, path_is_renamed);
-            if (typeof check_2 === 'boolean') {
-                // CHECK 3
-                let game_img = undefined;
-                let game_img_descriptor = req.body.game_img_auto_descriptor;
-                let game_img_question = req.body.game_img_question;
-                try {
-                    game_img = req.files.game_img;
-                    if (game_img.length === undefined) {
-                        game_img = [game_img];
-                        game_img_descriptor = [game_img_descriptor];
-                        game_img_question = [game_img_question];
+            const id_of_game_check1 = check1(id_of_game,user_id,main_game_name,game_category_of_players,main_game_description,created)// main_game_name,game_category_of_players,main_game_description,created
+            id_of_game_check1.then(id_of_game => {
+                const is_check2 = check2(req,id_of_game,old_path , new_path,path_is_renamed)
+                is_check2.then(res => {
+                    if (typeof res === 'boolean') {
+                        const is_check_3 = check3(req,id_of_game,path_is_renamed,old_path,new_path)
+                        is_check_3.then(res => {
+                            return res.send(res)
+                        })
+                    }else{
+                        return res.send(res)
                     }
-                } catch (e) {
-                    printError(`Check3 => makeGameDescriptors => Non existing object game_img`)
-                }
-                let new_path_for_images = new_path + '/images';
-                let old_path_for_images = old_path + '/images';
+                }).catch(err => {return res.send({data:`Something want wrong ${err}`,time_of_exception:10,type_of_exception:'danger'})})
 
-                return res.send(make_game_images(id_of_game, old_path_for_images, new_path_for_images, game_img, game_img_descriptor, game_img_question, path_is_renamed));
-
-            }
-
-            return res.send(check_2)
+            }).catch(err => { return res.send({data:`Something want wrong ${err}`,time_of_exception:10,type_of_exception:'danger'})})
         }
         return res.send(check_1)
     }
