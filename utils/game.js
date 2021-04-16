@@ -299,14 +299,12 @@ class NewGame{
                     console.log(`points  player 1 => ${(AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/ ((this.player1.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player1)}`)
                     const points_add_player1 = this.player1.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/ ((this.player1.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player1))
                     points_add_player1.then(res => {
-
-                    }).then(() => {
-                        console.log(`points  player 1 => ${(AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/ ((this.player2.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player2)}`)
+                        console.log(`points  player 2 => ${(AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/ ((this.player2.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player2)}`)
 
                         const points_add_player2 = this.player2.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/((this.player2.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player2))
                         points_add_player2.then(res => {
                             resolve(massage)
-                        })
+                        }).catch(err => new Error(`answerToQuestionMultiplayer => certain image => ${err}`))
                     }).catch(err => new Error(`answerToQuestionMultiplayer => certain image => ${err}`))
                 }else{
                     resolve(massage)

@@ -229,7 +229,7 @@ io.on('connection', socket => {
             is_you_picture.then(answer_to_question_form_server => {
                 io.to(user.getGameId()).emit('answer_to_is_you_picture_pc', {answer: answer_to_question_form_server})
                 if (massage.certain && answer_to_question_form_server){
-                    AllGames.leaveGame(this.player1.getGameId())
+                    AllGames.leaveGame(user.getGameId())
                 }
             })
 
