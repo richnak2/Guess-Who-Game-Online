@@ -152,8 +152,9 @@ function make_massage(text,type){
     apply_color_them();
 }
 function check_massage_buffer_counter(){
-    if (massage_buffer_counter){
+    if (massage_buffer_counter && html_chat_global.style.display === 'none'){
         html_massage_buffer_counter.style.display = 'flex'
+        html_massage_buffer_counter.innerHTML = massage_buffer_counter
     }else{
         html_massage_buffer_counter.style.display = 'none'
     }
