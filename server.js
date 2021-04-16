@@ -53,7 +53,7 @@ server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 function printError(err){
     console.log(err)
 }
-
+const list_of_old_massages = []
 io.on('connection', socket => {
 
     // FileManager.js related server error tag => FM-DG
@@ -143,6 +143,7 @@ io.on('connection', socket => {
     socket.on('get_all_games' , ({my_socket_id}) => {
         AllUsers.getAllGames(my_socket_id).then(data => {
             socket.emit('get_all_games' , {games : data})
+            socket.emit('old_list_of_global_massage' , {massage: list_of_old_massages})
         }).catch(err =>{
             printError(`M-GAG => ${err}`)
             socket.emit('error_massage', {error_massage : format_error(`M-GAG => ${err}` , 30, 'danger')})
@@ -274,7 +275,8 @@ io.on('connection', socket => {
 
         }
     })
-    socket.on('global_massage', ({my_socket_id,massage}) => {
+    socket.on('global_massage', ({massage}) => {
+        list_of_old_massages.push(massage)
         socket.broadcast.emit('global_massage', {massage:massage});
     })
 
@@ -308,12 +310,16 @@ io.on('connection', socket => {
     // });
 });
 function event(){
-    Object.keys(AllUsers.all_clients).length
-    let massage = {
-        massage : 'EVENT : Now you can win 2X on game "GUESS EGG" ',
-        type : 'event'
-    }
-    io.emit('global_massage', {massage:massage});
-    setTimeout(event,10000)
+    let luck_for_game = AllGames.getEventGame()
+    luck_for_game.then(game_name => {
+        let massage = {
+            massage : `EVENT : Now you can win 2X on game "${game_name}}".`,
+            type : 'event'
+        }
+        list_of_old_massages.push(massage)
+        io.emit('global_massage', {massage:massage});
+    }).catch(err => {printError(`event => ${err}`)})
+
+    setTimeout(event,60*1000*5)
 }
 event()

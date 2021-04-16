@@ -8,7 +8,7 @@ const db = DB.getDbServiceInstance();
 // }
 class AllGames{
     static games = {};
-
+    static game_with_bonus = undefined
     static  counter_games = setInterval(() => {console.log(`Interval Games:  ${this.strGetAllLength()}`)},30 * 1000)
 
     static async push(game_name,game_type,user){
@@ -37,6 +37,21 @@ class AllGames{
         }).catch(err => {return new Error(`AllGames.push => game_info => ${err}`)})
 
     }
+    static async getEventGame() {
+        return await new Promise((resolve, reject) => {
+            const all_games = db.getAllGames(0)
+            all_games.then(all_founded_games => {
+                let list_of_titles = []
+                for (let i = 0; i < all_founded_games.length; i++) {
+                    list_of_titles.push(all_founded_games[i]['title'])
+                }
+                let index = Math.floor(Math.random() * list_of_titles.length)
+                this.game_with_bonus = list_of_titles[index]
+                resolve(list_of_titles[index]);
+            })
+        }).catch(err => {return new Error(`getEventGame => ${err}`)})
+    }
+
     static async searchForFreeGame(game_name,game_type,user){
         return new Promise((resolve, reject) => {
             for (let certain_game in this.games) {
@@ -243,7 +258,7 @@ class NewGame{
             if (massage.certain){
                 let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
                 if (you_found_picture){
-                    const points_add = this.player1.addPoints(1000/this.ask_counter_player1)
+                    const points_add = this.player1.addPoints((AllGames.game_with_bonus === this.game_name ?2000 : 1000) /this.ask_counter_player1)
                     points_add.then(res => {
                         this.player1.setGameId(undefined)
                         AllGames.leaveGame(this.id)
@@ -277,11 +292,11 @@ class NewGame{
             if (this.define_end_of_the_game !== undefined){
                 console.log('masage if certain ',massage)
                 if (massage){
-                    const points_add_player1 = this.player1.addPoints(1000/ ((this.player1.id_socket !== player.id_socket ? 0:10 )+ this.ask_counter_player1))
+                    const points_add_player1 = this.player1.addPoints((AllGames.game_with_bonus === this.game_name ?2000 : 1000)/ ((this.player1.id_socket !== player.id_socket ? 0:10 )+ this.ask_counter_player1))
                     points_add_player1.then(res => {
 
                     }).then(() => {
-                        const points_add_player2 = this.player2.addPoints(1000/((this.player2.id_socket !== player.id_socket ? 0:10 )+ this.ask_counter_player2))
+                        const points_add_player2 = this.player2.addPoints((AllGames.game_with_bonus === this.game_name ?2000 : 1000)/((this.player2.id_socket !== player.id_socket ? 0:10 )+ this.ask_counter_player2))
                         points_add_player2.then(res => {
                             resolve(massage)
                         })

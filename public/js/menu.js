@@ -1,10 +1,14 @@
 let html_all_games = undefined;
 let html_chat_global = undefined;
+let html_chat_global_massage = undefined;
+let html_massage_buffer_counter = undefined;
+let massage_buffer_counter = 0;
 
 document.addEventListener('DOMContentLoaded', function () {
     html_all_games = document.getElementById('all_games');
     html_chat_global = document.getElementById('chat_global');
     html_chat_global_massage = document.getElementById('chat_global_massage');
+    html_massage_buffer_counter  = document.getElementById('buffer_counter');
 });
 
 // find all posible games for users
@@ -16,7 +20,12 @@ socket.on('get_all_games' , ({games}) => {
     }
     pre_make_colors_them();
 });
+socket.on('old_list_of_global_massage', ({massage}) =>{
+    for (let i = 0; i < massage.length; i++) {
+        make_massage(massage[i].massage,massage[i].type)
+    }
 
+})
 socket.on('global_massage', ({massage}) =>{
     make_massage(massage.massage,massage.type)
 })
@@ -104,13 +113,17 @@ function show_chat(){
     html_all_games.style.display = html_all_games.style.display === 'flex' ? 'none' : 'flex'
     html_chat_global.style.display = html_chat_global.style.display === 'none' ? 'block' : 'none'
     document.getElementById('sp-online').innerHTML =`${user_account.active_players} online players`
+    massage_buffer_counter = 0
 }
 function send_massage() {
     let msg_val = document.getElementById('chat_input_box').value
     if (msg_val !== ''){
-        let massage = `${user_account.game_name} : ${msg_val}`
+        let massage = {
+            massage : `${user_account.game_name} : ${msg_val}`,
+            type : "normal"
+        }
         make_massage(msg_val,'you')
-        socket.emit('global_massage',{my_socket_id, massage});
+        socket.emit('global_massage',{massage});
         document.getElementById('chat_input_box').value = ''
     }
 }
@@ -122,11 +135,13 @@ function make_massage(text,type){
         new_task.innerHTML = `YOU : ${text}`;
         html_chat_global_massage.append(new_task);
     }else if(type === 'event'){
+        html_chat_global.style.display === 'none' ? massage_buffer_counter ++ : null
         let new_task = document.createElement('p');
         new_task.className = "bg-success text-light chat_massage";
         new_task.innerHTML = text;
         html_chat_global_massage.append(new_task);
     }else{
+        html_chat_global.style.display === 'none' ? massage_buffer_counter ++ : null
         let new_task = document.createElement('p');
         new_task.className = "bg-secondary text-light chat_massage";
         new_task.innerHTML = text;
@@ -134,5 +149,13 @@ function make_massage(text,type){
     }
     html_chat_global_massage.scrollBy(0,300);
     apply_color_them();
-
 }
+function check_massage_buffer_counter(){
+    if (massage_buffer_counter){
+        html_chat_global_massage.style.display = 'flex'
+    }else{
+        html_chat_global_massage.style.display = 'none'
+    }
+    setTimeout(check_massage_buffer_counter,1000)
+}
+check_massage_buffer_counter()
