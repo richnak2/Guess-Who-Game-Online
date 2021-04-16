@@ -294,11 +294,11 @@ class NewGame{
         return await new Promise((resolve, reject) => {
             if (this.define_end_of_the_game !== undefined){
                 if (massage){
-                    const points_add_player1 = this.player1.addPoints(AllGames.game_with_bonus === this.game_name ?2000 : 1000/ ((this.player1.id_socket !== player.id_socket ? 0:10 )+ this.ask_counter_player1))
+                    const points_add_player1 = this.player1.addPoints(AllGames.game_with_bonus === this.game_name ?2000 : 1000/ ((this.player1.id_socket === player.id_socket ? 0:10 )+ this.ask_counter_player1))
                     points_add_player1.then(res => {
 
                     }).then(() => {
-                        const points_add_player2 = this.player2.addPoints(AllGames.game_with_bonus === this.game_name ?2000 : 1000/((this.player2.id_socket !== player.id_socket ? 0:10 )+ this.ask_counter_player2))
+                        const points_add_player2 = this.player2.addPoints(AllGames.game_with_bonus === this.game_name ?2000 : 1000/((this.player2.id_socket === player.id_socket ? 0:10 )+ this.ask_counter_player2))
                         points_add_player2.then(res => {
                             resolve(massage)
                         })
