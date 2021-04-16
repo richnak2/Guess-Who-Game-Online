@@ -263,14 +263,11 @@ class NewGame{
                 console.log(you_found_picture)
                 console.log(this.picket_picture_pc.image.split('/').pop(), massage.src.split('/').pop())
                 if (you_found_picture){
-
-                    const points_add = this.player1.addPoints(AllGames.game_with_bonus === this.game_name ? 2000 : 1000 /this.ask_counter_player1)
+                    console.log(`${AllGames.game_with_bonus === this.game_name} , ${AllGames.game_with_bonus} , ${this.game_name}`)
+                    const points_add = this.player1.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000) /this.ask_counter_player1)
                     points_add.then(res => {
-                        // let game_id = this.player1.getGameId()
-                        // this.player1.setGameId(undefined)
-                        AllGames.leaveGame(this.player1.getGameId())
                         resolve(you_found_picture);
-                    })
+                    }).catch(err => {new Error(`isYourPickedPictureQuestion ${err}`)})
                 }else{
                     resolve(you_found_picture);
                 }
@@ -298,11 +295,15 @@ class NewGame{
         return await new Promise((resolve, reject) => {
             if (this.define_end_of_the_game !== undefined){
                 if (massage){
-                    const points_add_player1 = this.player1.addPoints(AllGames.game_with_bonus === this.game_name ?2000 : 1000/ ((this.player1.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player1))
+                    console.log(`${AllGames.game_with_bonus === this.game_name} , ${AllGames.game_with_bonus} , ${this.game_name}`)
+                    console.log(`points  player 1 => ${(AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/ ((this.player1.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player1)}`)
+                    const points_add_player1 = this.player1.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/ ((this.player1.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player1))
                     points_add_player1.then(res => {
 
                     }).then(() => {
-                        const points_add_player2 = this.player2.addPoints(AllGames.game_with_bonus === this.game_name ?2000 : 1000/((this.player2.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player2))
+                        console.log(`points  player 1 => ${(AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/ ((this.player2.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player2)}`)
+
+                        const points_add_player2 = this.player2.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/((this.player2.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player2))
                         points_add_player2.then(res => {
                             resolve(massage)
                         })

@@ -51,6 +51,7 @@ function createGame(){
 }
 
 socket.on('answer_to_is_you_picture_pc',({answer}) =>{
+    console.log('SINGLPLAYER ANSWER TO GAME NAME => ',answer)
     let elem_ask_img = document.getElementsByClassName('undefined')[0];
     if (elem_ask_img.childNodes[0].src === undefined){ // Question type game play
         elem_ask_img.className = elem_ask_img.className.replace('undefined' , answer? 'bg-success':'bg-danger')
