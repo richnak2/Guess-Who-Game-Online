@@ -73,13 +73,12 @@ socket.on('multiplayer_massage', ({broadcast_massage}) => {
     console.log('multiplayer_massage',broadcast_massage)
     if (broadcast_massage.certain === true || broadcast_massage.certain === false){
         let elem_ask_img = document.getElementsByClassName('undefined')[0];
-        console.log('NACHADZA SA TUNA ' , '/'+game_name.replaceAll(' ','%20')+'/images' , elem_ask_img.childNodes[0].src , elem_ask_img.childNodes[0].src.includes('/'+game_name.replaceAll(' ','%20')+'/images'))
+        // console.log('NACHADZA SA TUNA ' , '/'+game_name.replaceAll(' ','%20')+'/images' , elem_ask_img.childNodes[0].src , elem_ask_img.childNodes[0].src.includes('/'+game_name.replaceAll(' ','%20')+'/images'))
         if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
             if ( broadcast_massage.certain){
                 my_game.state = true;
                 make_win_multiplier("You win");
             }
-
         }
         elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage.certain? 'bg-success':'bg-danger')
     }else{
