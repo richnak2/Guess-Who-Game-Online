@@ -96,8 +96,9 @@ class AllGames{
     static leaveGame(game_id,id_of_player_socket_who_left,game_finished){
         if (game_finished){
             this.games[game_id].player1.setGameId(undefined)
-            this.games[game_id].player2.setGameId(undefined)
-        }else if (this.games[game_id].player2Exist() !== undefined){
+            this.games[game_id].player2Exist() ? undefined : this.games[game_id].player2.setGameId(undefined)
+            this.deleteGame(game_id)
+        }else if (this.games[game_id].player2Exist() ){
             this.games[game_id].player1.setGameId(undefined)
             this.games[game_id].player2.setGameId(undefined)
             if (this.games[game_id].player1.id_socket === id_of_player_socket_who_left ){
@@ -260,9 +261,9 @@ class NewGame{
                 if (you_found_picture){
                     const points_add = this.player1.addPoints(AllGames.game_with_bonus === this.game_name ? 2000 : 1000 /this.ask_counter_player1)
                     points_add.then(res => {
-                        let game_id = this.player1.getGameId()
-                        this.player1.setGameId(undefined)
-                        AllGames.leaveGame(game_id)
+                        // let game_id = this.player1.getGameId()
+                        // this.player1.setGameId(undefined)
+                        AllGames.leaveGame(this.player1.getGameId(),true)
                         resolve(you_found_picture);
                     })
                 }else{
