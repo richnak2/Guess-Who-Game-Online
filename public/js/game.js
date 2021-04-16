@@ -18,6 +18,7 @@ let time_of_complete = 0 ;
 let time_run_out = false;
 let my_game = undefined;
 let chat_box = undefined
+let last_massage_is_certain = undefined;
 let guessed_images = {};
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -84,6 +85,7 @@ socket.on('multiplayer_massage', ({broadcast_massage}) => {
     }else{
         console.log('masage make question is : ',broadcast_massage);
         if (broadcast_massage.title !== undefined){
+            last_massage_is_certain = broadcast_massage.certain !== undefined
             make_question_for_opponent(broadcast_massage);
         }else{
             make_massage(broadcast_massage,'opponent')
@@ -537,24 +539,20 @@ function make_win_multiplier(text){
 
 function answer_to_question(bull){
     socket.emit('multiplayer_massage',{my_socket_id, massage:bull});
-    // console.log('ANSWER TO QUESTION IS : ',bull)
-    // socket.emit('broadcast_massage',{game_id,my_socket_id, massage:bull});
-    if (document.getElementById('asked_img_question').src.includes(game_name.replace(' ','%20')+'/images') && bull){
-        my_game.state = true;
+    if (last_massage_is_certain && bull){
         make_win_multiplier('You lost');
     }else{
-        your_turn = true;
         if (game_type === 'kid') {
             lock_unlock_buttons();
         }
-        hide_win_lost();
+        // hide_win_lost()
     }
 }
 
-function hide_win_lost(){
-    html_centered_win.style.display = 'none';
-    html_centered_centered_win.style.display = 'none';
-}
+// function hide_win_lost(){
+//     html_centered_win.style.display = 'none';
+//     html_centered_centered_win.style.display = 'none';
+// }
 function make_question_for_opponent(question){
 
     console.log('THE QUESTION IS : ',question)
