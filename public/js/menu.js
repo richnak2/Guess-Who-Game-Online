@@ -153,9 +153,9 @@ function make_massage(text,type){
 }
 function check_massage_buffer_counter(){
     if (massage_buffer_counter){
-        html_chat_global_massage.style.display = 'flex'
+        html_massage_buffer_counter.style.display = 'flex'
     }else{
-        html_chat_global_massage.style.display = 'none'
+        html_massage_buffer_counter.style.display = 'none'
     }
     setTimeout(check_massage_buffer_counter,1000)
 }
