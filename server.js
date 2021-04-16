@@ -256,7 +256,7 @@ io.on('connection', socket => {
                     massage_from_server.then(answer => {
                         // console.log(answer)
                         // console.log(massage)
-                        socket.broadcast.to(user.getGameId()).emit('multiplayer_massage', {broadcast_massage: massage});
+                        socket.broadcast.to(user.getGameId()).emit('multiplayer_massage', {broadcast_massage: answer});
                         if (massage){
                             AllGames.leaveGame(user.getGameId(),true)
                         }
