@@ -96,9 +96,9 @@ class AllGames{
     static leaveGame(game_id,id_of_player_socket_who_left,game_finished){
         if (game_finished){
             this.games[game_id].player1.setGameId(undefined)
-            this.games[game_id].player2Exist() ? undefined : this.games[game_id].player2.setGameId(undefined)
+            this.games[game_id].player2 === undefined ? undefined : this.games[game_id].player2.setGameId(undefined)
             this.deleteGame(game_id)
-        }else if (this.games[game_id].player2Exist() ){
+        }else if (this.games[game_id].player2 !== undefined ){
             this.games[game_id].player1.setGameId(undefined)
             this.games[game_id].player2.setGameId(undefined)
             if (this.games[game_id].player1.id_socket === id_of_player_socket_who_left ){
@@ -111,6 +111,7 @@ class AllGames{
                 }) // pokial sa hrac odpoji s prebiehajucej hri
             }
         }else{
+            this.games[game_id].player1.setGameId(undefined)
             this.deleteGame(game_id)
         }
     }
