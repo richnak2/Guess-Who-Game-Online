@@ -1,5 +1,5 @@
 const sessionStorage = window.sessionStorage;
-let socket = io();
+const socket = io();
 
 document.addEventListener('DOMContentLoaded', function () {
     html_alert = document.getElementById('alert');
@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 socket.on('log_answer' , ({massage}) => {
     if (massage.type === 'success'){
+
         sessionStorage.setItem("socket_id",socket.id);
         sessionStorage.setItem('game_id','');
         location.assign('menu.html');

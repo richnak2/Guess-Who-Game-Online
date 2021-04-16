@@ -17,6 +17,10 @@ socket.on('get_all_games' , ({games}) => {
     pre_make_colors_them();
 });
 
+socket.on('global_massage', ({massage}) =>{
+    make_massage(massage.massage,massage.type)
+})
+
 function create_html_games(game){
     let div_card = document.createElement('div');
     let div_for_image = document.createElement('div');
@@ -104,22 +108,13 @@ function show_chat(){
 function send_massage() {
     let msg_val = document.getElementById('chat_input_box').value
     if (msg_val !== ''){
-        let massage = {
-            massage : msg_val
-        }
-        // let massage = {
-        //     from : user_account.game_name,
-        //     massage : msg_val
-        // }
-        make_massage(massage.massage,'you')
-        // socket.emit('multiplayer_massage',{my_socket_id, massage});
+        let massage = `${user_account.game_name} : ${msg_val}`
+        make_massage(msg_val,'you')
+        socket.emit('global_massage',{my_socket_id, massage});
         document.getElementById('chat_input_box').value = ''
-
     }
-
-
-
 }
+
 function make_massage(text,type){
     if (type === 'you'){
         let new_task = document.createElement('p');

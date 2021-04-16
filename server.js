@@ -274,6 +274,11 @@ io.on('connection', socket => {
 
         }
     })
+    socket.on('global_massage', ({my_socket_id,massage}) => {
+        socket.broadcast.emit('global_massage', {massage:massage});
+    })
+
+
     // // : GL
     // socket.on('leave_game',({game_id,my_socket_id}) => {
     //     // odpojenie hraca s hry
@@ -297,8 +302,18 @@ io.on('connection', socket => {
     //                 const db = dbService.getDbServiceInstance();
     //                 db.updateUserPoints(getCurrentUser(game.player2.id_socket)).then();
     //             }
-    //             socket.broadcast.emit('opponent_left', {who_left:game_id});
+    //
     //         }
     //     })
     // });
 });
+function event(){
+    Object.keys(AllUsers.all_clients).length
+    let massage = {
+        massage : 'EVENT : Now you can win 2X on game "GUESS EGG" ',
+        type : 'event'
+    }
+    io.emit('global_massage', {massage:massage});
+    setTimeout(event,10000)
+}
+event()
