@@ -9,7 +9,7 @@ const db = DB.getDbServiceInstance();
 class AllGames{
     static games = {};
     static game_with_bonus = undefined
-    static  counter_games = setInterval(() => {console.log(`Interval Games:  ${this.strGetAllLength()}`)},30 * 1000)
+    static counter_games = setInterval(() => {console.log(`Interval Games:  ${this.strGetAllLength()}`)},30 * 1000)
 
     static async push(game_name,game_type,user){
         return await new Promise((resolve, reject) => {
@@ -258,10 +258,11 @@ class NewGame{
             if (massage.certain){
                 let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
                 if (you_found_picture){
-                    const points_add = this.player1.addPoints(AllGames.game_with_bonus === this.game_name ?2000 : 1000 /this.ask_counter_player1)
+                    const points_add = this.player1.addPoints(AllGames.game_with_bonus === this.game_name ? 2000 : 1000 /this.ask_counter_player1)
                     points_add.then(res => {
+                        let game_id = this.player1.getGameId()
                         this.player1.setGameId(undefined)
-                        AllGames.leaveGame(this.id)
+                        AllGames.leaveGame(game_id)
                         resolve(you_found_picture);
                     })
                 }else{
