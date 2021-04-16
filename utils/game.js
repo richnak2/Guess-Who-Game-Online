@@ -134,7 +134,7 @@ class NewGame{
         this.picket_picture_player1 = undefined;
         this.picket_picture_player2 = undefined;
         this.picket_picture_pc = undefined;
-        this.ask_counter_player1 = 0; // koli tomu ze musi nastat aspon 1 otazka zo strani tohto hraca
+        this.ask_counter_player1 = 1; // koli tomu ze musi nastat aspon 1 otazka zo strani tohto hraca
         this.ask_counter_player2 = 1; // koli tomu ze division by 0
         this.define_end_of_the_game = undefined;
     }
@@ -257,14 +257,18 @@ class NewGame{
     async isYourPickedPictureQuestion(massage ){
         return await new Promise((resolve, reject) => {
             this.ask_counter_player1 ++;
+            console.log('isYourPickedPictureQuestion' ,massage)
             if (massage.certain){
                 let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
+                console.log(you_found_picture)
+                console.log(this.picket_picture_pc.image.split('/').pop(), massage.src.split('/').pop())
                 if (you_found_picture){
+
                     const points_add = this.player1.addPoints(AllGames.game_with_bonus === this.game_name ? 2000 : 1000 /this.ask_counter_player1)
                     points_add.then(res => {
                         // let game_id = this.player1.getGameId()
                         // this.player1.setGameId(undefined)
-                        AllGames.leaveGame(this.player1.getGameId(),true)
+                        AllGames.leaveGame(this.player1.getGameId())
                         resolve(you_found_picture);
                     })
                 }else{
@@ -294,11 +298,11 @@ class NewGame{
         return await new Promise((resolve, reject) => {
             if (this.define_end_of_the_game !== undefined){
                 if (massage){
-                    const points_add_player1 = this.player1.addPoints(AllGames.game_with_bonus === this.game_name ?2000 : 1000/ ((this.player1.id_socket === player.id_socket ? 0:10 )+ this.ask_counter_player1))
+                    const points_add_player1 = this.player1.addPoints(AllGames.game_with_bonus === this.game_name ?2000 : 1000/ ((this.player1.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player1))
                     points_add_player1.then(res => {
 
                     }).then(() => {
-                        const points_add_player2 = this.player2.addPoints(AllGames.game_with_bonus === this.game_name ?2000 : 1000/((this.player2.id_socket === player.id_socket ? 0:10 )+ this.ask_counter_player2))
+                        const points_add_player2 = this.player2.addPoints(AllGames.game_with_bonus === this.game_name ?2000 : 1000/((this.player2.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player2))
                         points_add_player2.then(res => {
                             resolve(massage)
                         })
