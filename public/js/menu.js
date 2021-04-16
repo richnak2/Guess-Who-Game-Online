@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     html_chat_global = document.getElementById('chat_global');
     html_chat_global_massage = document.getElementById('chat_global_massage');
     html_massage_buffer_counter  = document.getElementById('buffer_counter');
+    check_massage_buffer_counter()
 });
 
 // find all posible games for users
@@ -158,4 +159,3 @@ function check_massage_buffer_counter(){
     }
     setTimeout(check_massage_buffer_counter,1000)
 }
-check_massage_buffer_counter()

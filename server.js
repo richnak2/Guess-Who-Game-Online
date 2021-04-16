@@ -279,41 +279,12 @@ io.on('connection', socket => {
         list_of_old_massages.push(massage)
         socket.broadcast.emit('global_massage', {massage:massage});
     })
-
-
-    // // : GL
-    // socket.on('leave_game',({game_id,my_socket_id}) => {
-    //     // odpojenie hraca s hry
-    //     let game = is_existing_game(game_id);
-    //     let answer_if_game_is_multiplayer = leave_game(game_id);
-    //     answer_if_game_is_multiplayer.then(data => {
-    //         if (data === 'inform_second_player' && game.player2 !== undefined){
-    //             // prididelenie bodou ak hrac nahle odide
-    //             if (game.player1.id_socket === my_socket_id){
-    //                 addPoints(1000,game.player2.id_socket,10);
-    //             }else if (game.player2.id_socket === my_socket_id){
-    //                 addPoints(1000,game.player1.id_socket,10);
-    //             }else{
-    //                 console.log('G-GL : error');
-    //             }
-    //             if (game.player1.id !== undefined){
-    //                 const db = dbService.getDbServiceInstance();
-    //                 db.updateUserPoints(getCurrentUser(game.player1.id_socket)).then();
-    //             }
-    //             if (game.player2.id !== undefined){
-    //                 const db = dbService.getDbServiceInstance();
-    //                 db.updateUserPoints(getCurrentUser(game.player2.id_socket)).then();
-    //             }
-    //
-    //         }
-    //     })
-    // });
 });
 function event(){
     let luck_for_game = AllGames.getEventGame()
     luck_for_game.then(game_name => {
         let massage = {
-            massage : `EVENT : Now you can win 2X on game "${game_name}}".`,
+            massage : `EVENT : Now you can win 2X on game "${game_name}".`,
             type : 'event'
         }
         list_of_old_massages.push(massage)
