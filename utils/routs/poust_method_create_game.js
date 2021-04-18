@@ -9,7 +9,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 // const dbService = require('../DbService');
-const {remove_dirs_not_origin,delete_folder_r} = require("../create_game");
+// const {remove_dirs_not_origin,delete_folder_r} = require("../create_game");
 // const { getCurrentUser } = require('../users');
 const DB = require('../DbService');
 const db = DB.getDbServiceInstance();

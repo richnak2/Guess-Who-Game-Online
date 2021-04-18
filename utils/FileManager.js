@@ -15,7 +15,7 @@ class FileManager {
             fs.readdirSync(path).forEach(function (file) {
                 let current_path = path + "/" + file;
                 if (fs.lstatSync(current_path).isDirectory()) { // recurse
-                    delete_folder_r(current_path);
+                    this.deleteFolderServer(current_path);
                 } else { // delete file
                     fs.unlinkSync(current_path);
                 }
@@ -31,7 +31,7 @@ class FileManager {
                 let current_path = path + "/" + file;
                 if(fs.lstatSync(current_path).isDirectory() ) { // recurse
                     if (current_path.includes('images') === false){
-                        remove_dirs_not_origin(origin_path,current_path);
+                        this.removeDirsButNotOrigin(origin_path,current_path);
                     }
                 } else { // delete file
                     if (current_path.includes('default.png') === false){

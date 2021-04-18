@@ -9,14 +9,12 @@ const path = require('path');
 // Kniznica na spracovanie requestov
 const bodyParser = require("body-parser");
 
-// Include file s DB - database / GB - game builder
 const DB = require('./utils/DbService');
 const db = DB.getDbServiceInstance();
 const FM = require('./utils/FileManager');
 const FileManager = FM.getFileManagerInstance()
 const AllUsers = require('./utils/users');
 const AllGames = require('./utils/game');
-// const AllUsers = AL.getAllUsersInstance();
 
 
 // Vytvorenie a spracovanie socketovej stranky
@@ -25,18 +23,17 @@ const server = http.createServer(app);
 const io = socket_io(server);
 
 
-// Pripojenie konkretneho usera do aplikacie
 
-const {format_message,format_error} = require('./utils/messages');
+const {format_error} = require('./utils/messages');
 
-// const {create_game,is_existing_game,search_for_free_game,leave_game,AllGames} = require('./utils/game');
-const {look_folders,delete_folder_r} = require('./utils/create_game');
-// const {DbService} = require('./utils/dbService')
-// DbService.getDbServiceInstance()
-//
-// const up = require('express-fileupload')
-//
-// app.use(up());
+// // const {create_game,is_existing_game,search_for_free_game,leave_game,AllGames} = require('./utils/game');
+// const {look_folders,delete_folder_r} = require('./utils/create_game');
+// // const {DbService} = require('./utils/dbService')
+// // DbService.getDbServiceInstance()
+// //
+// // const up = require('express-fileupload')
+// //
+// // app.use(up());
 const create_game_post_method = require('./utils/routs/poust_method_create_game');
 app.use(create_game_post_method);
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -54,8 +51,8 @@ function printError(err){
     console.log(err)
 }
 const list_of_old_massages = []
-io.on('connection', socket => {
 
+io.on('connection', socket => {
     // FileManager.js related server error tag => FM-DG
     socket.on('exist_dir',({dir_name})=>{
         socket.emit('exist_dir',{exist : FileManager.lookFolders(dir_name)});
@@ -187,7 +184,7 @@ io.on('connection', socket => {
 
 
     // public/js/game.js
-    // LTGB
+    // game.js related server error
     socket.on('luck_to_game_buffer' , ({game_name,game_type,my_socket_id}) => {
         AllUsers.getUser(my_socket_id).then(user => {
             const exist = AllGames.searchForFreeGame(game_name,game_type,user)
@@ -221,8 +218,6 @@ io.on('connection', socket => {
 
     });
 
-
-    // game.js
     socket.on('ask_single_player_game',({my_socket_id,massage}) =>{
         AllUsers.getUser(my_socket_id).then(user => {
             const is_you_picture = AllGames.isYourPictureQuestionFromPlayer(user.getGameId(),massage);
@@ -248,7 +243,6 @@ io.on('connection', socket => {
         });
     })
 
-    // MM
     socket.on('multiplayer_massage',({my_socket_id,massage}) =>{
         if (massage === true || massage === false ){// otazka na ktora prichadza od hraca na server certain image pod tlacidlom guess
             let player = AllUsers.getUser(my_socket_id)
@@ -257,8 +251,6 @@ io.on('connection', socket => {
                 if (game !== undefined) {
                     const massage_from_server = game.answerToQuestionMultiplayer(user, massage);
                     massage_from_server.then(answer => {
-                        // console.log(answer)
-                        // console.log(massage)
                         socket.broadcast.to(user.getGameId()).emit('multiplayer_massage', {broadcast_massage: answer});
                         if (massage){
                             AllGames.leaveGame(user.getGameId(),undefined,true)
@@ -275,14 +267,15 @@ io.on('connection', socket => {
                     socket.broadcast.to(user.getGameId()).emit('multiplayer_massage', {broadcast_massage:massage});
                 }
             }).catch(err => printError(`normal => ${err}`))
-
         }
     })
+
     socket.on('global_massage', ({massage}) => {
         list_of_old_massages.push(massage)
         socket.broadcast.emit('global_massage', {massage:massage});
     })
 });
+
 function event(){
     let luck_for_game = AllGames.getEventGame()
     luck_for_game.then(game_name => {

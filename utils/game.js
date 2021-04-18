@@ -1,11 +1,7 @@
 const fs = require('fs');
 const DB = require('./DbService');
 const db = DB.getDbServiceInstance();
-// let games = [];
 
-// function all_games(){
-//     return games;
-// }
 class AllGames{
     static games = {};
     static game_with_bonus = undefined
@@ -24,9 +20,6 @@ class AllGames{
                         if (game_finished) {
                             this.games[game_id] = game;
                             user.setGameId(game_id)
-                            // console.log(game_id)
-                            // console.log(this.games)
-
                             console.log(`Games : ${this.strGetAllLength()}`)
                             resolve(this.games[game_id])
 
@@ -257,13 +250,9 @@ class NewGame{
     async isYourPickedPictureQuestion(massage ){
         return await new Promise((resolve, reject) => {
             this.ask_counter_player1 ++;
-            console.log('isYourPickedPictureQuestion' ,massage)
             if (massage.certain){
                 let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
-                console.log(you_found_picture)
-                console.log(this.picket_picture_pc.image.split('/').pop(), massage.src.split('/').pop())
-                if (you_found_picture){
-                    console.log(`${AllGames.game_with_bonus === this.game_name} , ${AllGames.game_with_bonus} , ${this.game_name}`)
+               if (you_found_picture){
                     const points_add = this.player1.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000) /this.ask_counter_player1)
                     points_add.then(res => {
                         resolve(you_found_picture);
@@ -275,8 +264,8 @@ class NewGame{
                 resolve(this.picket_picture_pc.description_control.includes(massage.title));
             }
         }).catch(err => {return new Error(`isYourPickedPictureQuestion => ${err}`)})
-
     }
+
     addQuestionMultiplayer(player, massage){
         if (player.id_socket === this.player1.id_socket){
             this.ask_counter_player1 ++;
@@ -288,20 +277,15 @@ class NewGame{
         }else{
             this.define_end_of_the_game = undefined;
         }
-
-        // console.log('GAME MASSSAGE !!!! : ',massage)
     }
+
     async answerToQuestionMultiplayer(player, massage){
         return await new Promise((resolve, reject) => {
             if (this.define_end_of_the_game !== undefined){
                 if (massage){
-                    console.log(`${AllGames.game_with_bonus === this.game_name} , ${AllGames.game_with_bonus} , ${this.game_name}`)
-                    console.log(`points  player 1 => ${(AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/ ((this.player1.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player1)}`)
-                    const points_add_player1 = this.player1.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/ ((this.player1.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player1))
+                   const points_add_player1 = this.player1.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/ ((this.player1.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player1))
                     points_add_player1.then(res => {
-                        console.log(`points  player 2 => ${(AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/ ((this.player2.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player2)}`)
-
-                        const points_add_player2 = this.player2.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/((this.player2.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player2))
+                       const points_add_player2 = this.player2.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/((this.player2.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player2))
                         points_add_player2.then(res => {
                             resolve(massage)
                         }).catch(err => new Error(`answerToQuestionMultiplayer => certain image => ${err}`))
@@ -310,7 +294,6 @@ class NewGame{
                     resolve(massage)
                 }
             }else{
-                console.log('masage if NOT certain ',massage)
                 resolve(massage)
             }
         }).catch(err => {return new Error(`answerToQuestionMultiplayer => ${err}`)})

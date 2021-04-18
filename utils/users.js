@@ -1,7 +1,6 @@
-// Include file s DB
 const DB = require('./DbService');
 const db = DB.getDbServiceInstance();
-const {format_message,format_error} = require('./messages');
+const {format_error} = require('./messages');
 
 
 const color_pallet = [['#00000000',0],// base color default

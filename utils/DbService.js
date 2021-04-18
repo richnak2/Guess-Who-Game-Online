@@ -1,5 +1,4 @@
 const mysql = require('mysql');
-// const fs = require('fs');
 let instance = null;
 
 const db_config  = {
