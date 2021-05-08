@@ -202,6 +202,7 @@ function check_define_images(){
         let bg_color = getRandomColor()
         for (let same_d_control in same) {
             for (let same_key in same[same_d_control]) {
+                console.log(same_key)
                 document.getElementById(`card_img_definer_${same_key}`).style.backgroundColor = bg_color
             }
         }
