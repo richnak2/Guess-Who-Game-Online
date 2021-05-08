@@ -24,7 +24,7 @@ function waitUntilUserIsLoaded(){
         typeof createGame === 'function' ? createGame() : console.log('createGame is not defined')
         typeof createGame === 'function' ? findYourGames() : console.log('findYourGames is not defined')
     }else{
-        setTimeout(waitUntilUserIsLoaded,100);
+        setTimeout(waitUntilUserIsLoaded,200);
     }
 }
 
