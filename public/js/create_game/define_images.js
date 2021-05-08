@@ -32,7 +32,8 @@ function add_images_to_images_define_images_html(){
         let image_define = document.createElement('IMG');
 
         if (my_new_or_edited_game.game_images[key].id === undefined){
-            image_define.setAttribute("src", `./images/${my_new_or_edited_game.origin_title}/images/${my_new_or_edited_game.game_images[key].image.name}`) ;
+            image_define.setAttribute("src", `./images/${my_new_or_edited_game.origin_title}/images/${my_new_or_edited_game.game_images[key].image.name}`);
+
         }else{
             check_file_multiple(my_new_or_edited_game.game_images[key].image,image_define)
         }
@@ -145,7 +146,7 @@ function add_attributes_to_attributes_define_images_html(){
             div_card_attribute.className = 'card btn-light no_btn card_img_definer create_game mt10 certain_attributes'
             div_card_attribute.id = my_new_or_edited_game.game_descriptors[key].description
             let image_define = document.createElement('IMG')
-            if (my_new_or_edited_game.game_descriptors[key].id){
+            if (my_new_or_edited_game.game_descriptors[key].id === undefined){
                 image_define.setAttribute("src", `./images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(my_new_or_edited_game.game_images[key].image.name.replace('|','/'))}`) ;
             }else{
                 check_file_multiple(my_new_or_edited_game.game_descriptors[key].image,image_define)
