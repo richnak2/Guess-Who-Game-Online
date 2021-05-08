@@ -1,4 +1,4 @@
-let main_config_divs_html_btn = {}
+
 class NewGame{
     description = undefined
     game_descriptors = {}
