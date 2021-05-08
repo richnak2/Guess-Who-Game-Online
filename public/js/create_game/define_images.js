@@ -183,12 +183,12 @@ function check_define_images(){
             if (key1 !== key2){
                 if (my_new_or_edited_game.game_images[key1].description_control === my_new_or_edited_game.game_images[key2].description_control){
                     counter[1] += 1
-                    if (same[description_control] === undefined){
-                        same[description_control] = new Set()
-                        same[description_control].add(key1)
-                        same[description_control].add(key2)
+                    if (same[my_new_or_edited_game.game_images[key1].description_control] === undefined){
+                        same[my_new_or_edited_game.game_images[key1].description_control] = new Set()
+                        same[my_new_or_edited_game.game_images[key1].description_control].add(key1)
+                        same[my_new_or_edited_game.game_images[key1].description_control].add(key2)
                     }else{
-                        same[description_control].add(key1,key2)
+                        same[my_new_or_edited_game.game_images[key1].description_control].add(key1,key2)
                     }
 
                 }
@@ -203,6 +203,12 @@ function check_define_images(){
         for (let same_d_control in same) {
             for (let same_key in same[same_d_control]) {
                 document.getElementById(`card_img_definer_${same_key}`).style.backgroundColor = bg_color
+            }
+        }
+    }else{
+        for (let same_d_control in same) {
+            for (let same_key in same[same_d_control]) {
+                document.getElementById(`card_img_definer_${same_key}`).style.removeProperty('backgroundColor')
             }
         }
     }
