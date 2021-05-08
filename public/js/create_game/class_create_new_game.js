@@ -48,7 +48,7 @@ class NewGame{
                 }else{
                     let last = ''
                     for (let key in main_config_divs) {
-                        if (main_config_divs[key] && key !== 'last'){
+                        if (main_config_divs[key] && key !== 'status'){
                             last = key
                         }
                     }

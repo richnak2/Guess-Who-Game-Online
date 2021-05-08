@@ -1,6 +1,7 @@
 const images_define_images_html = document.getElementById('images_define_images')
 const attributes_define_images_html = document.getElementById('attributes_define_images')
 let see_certain = undefined
+let active_unique = false
 function create_define_image(){
     // check_attributes()
     // check_images()
@@ -28,6 +29,7 @@ function add_images_to_images_define_images_html(){
 
         let div_card_guess = document.createElement('div');
         div_card_guess.className = 'card btn-light card_img_definer create_game mt10'
+        div_card_guess.id = `card_img_definer_${key}`
 
         let image_define = document.createElement('IMG');
         image_define.setAttribute("class", 'wd80 ht80 mt5 mb5 mr5 ml5');
@@ -175,18 +177,47 @@ function add_attributes_to_attributes_define_images_html(){
 
 function check_define_images(){
     let counter = [0,0]
+    let same = {};
     for (let key1 in my_new_or_edited_game.game_images) {
         for (let key2 in my_new_or_edited_game.game_images) {
             if (key1 !== key2){
                 if (my_new_or_edited_game.game_images[key1].description_control === my_new_or_edited_game.game_images[key2].description_control){
                     counter[1] += 1
+                    if (same[description_control] === undefined){
+                        same[description_control] = new Set()
+                        same[description_control].add(key1)
+                        same[description_control].add(key2)
+                    }else{
+                        same[description_control].add(key1,key2)
+                    }
+
                 }
             }
         }
         counter[0] += 1
     }
+    active_unique = !active_unique
+    console.log(same)
+    if (active_unique){
+        let bg_color = getRandomColor()
+        for (let same_d_control in same) {
+            for (let same_key in same[same_d_control]) {
+                document.getElementById(`card_img_definer_${same_key}`).style.backgroundColor = bg_color
+            }
+        }
+    }
+
     return counter
 }
+function getRandomColor() {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
 function delete_all_define_images(){
     let attributes = document.getElementsByClassName('certain_attribute_type')
     while (attributes.length > 0){
