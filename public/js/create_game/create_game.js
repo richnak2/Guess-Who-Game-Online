@@ -107,6 +107,8 @@ function create_html_games(game){
         // for (let key in main_config_divs) {
         //     main_config_divs_html_btn[key] = true
         // }
+        const list_possible_html = document.getElementById('all_games')
+        list_possible_html.style.display =   'none'
         my_new_or_edited_game.load_game(game)
         my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,true,true,'revert')
         my_new_or_edited_game.show_hide(document.getElementById('menu_for_config_game'))

@@ -32,7 +32,7 @@ function add_attribute(display,object_attribute){
         check_file_multiple(object_attribute.image,image_for_description)
     }else{
         if (object_attribute.image !== undefined){
-            image_for_description.setAttribute("src", `./public/images/${my_new_or_edited_game.origin_title}/${object_attribute.image.type}/${object_attribute.image}`) ;
+            image_for_description.setAttribute("src", `./public/images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(object_attribute.image.type)}/${decodeURI(object_attribute.image)}`) ;
         }
     }
     image_for_description.setAttribute("class", 'descriptor_images wd40 ht40');
@@ -105,7 +105,7 @@ function add_more_attribute_images(){
 function recreate_attributes(path){
     for (let key in main_config_divs.game_descriptors) {
         let display = main_config_divs.type === '1 1 1' ? 'revert':'none'
-        my_new_or_edited_game.game_descriptors[key].image = new File([undefined],main_config_divs.game_descriptors[key].type+"|"+main_config_divs.game_descriptors[key].image)
+        my_new_or_edited_game.game_descriptors[key].image = new File([undefined],decodeURI(main_config_divs.game_descriptors[key].type)+"|"+decodeURI(main_config_divs.game_descriptors[key].image))
         add_attribute(display,my_new_or_edited_game.game_descriptors[key])
     }
     create_define_image()

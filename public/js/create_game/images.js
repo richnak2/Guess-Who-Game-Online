@@ -23,7 +23,7 @@ function create_card_guessed(image){
     if (typeof image === 'object'){
         check_file_multiple(image,image_for_guess)
     }else{
-        image_for_guess.setAttribute("src", image);
+        image_for_guess.setAttribute("src", decodeURI(image));
     }
     image_for_guess.setAttribute("class", 'wd80 ht80 mt10 ml10');
     image_for_guess.setAttribute("id", 'guessed_img_'+index_of_img);
@@ -60,8 +60,8 @@ function replace_image_guess(index , file){
 
 function recreate_images(path){
     for (let key in main_config_divs.game_images) {
-        create_card_guessed(`${path}images/${my_new_or_edited_game.game_images[key].image.image}`)
-        my_new_or_edited_game.game_images[key].image = new File([undefined], image.image)
+        create_card_guessed(`${path}images/${decodeURI(my_new_or_edited_game.game_images[key].image.image)}`)
+        my_new_or_edited_game.game_images[key].image = new File([undefined], decodeURI(image.image))
     }
     recreate_attributes(path)
 }

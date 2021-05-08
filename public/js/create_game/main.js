@@ -44,7 +44,7 @@ function recreate_main(){
     switch_page_main = true
     game_name_html.value = my_new_or_edited_game.origin_title;
     game_description_html.value = my_new_or_edited_game.description;
-    let path = './images/'+my_new_or_edited_game.origin_title+'/';
+    let path = './images/'+decodeURI(my_new_or_edited_game.origin_title)+'/';
     game_main_img_of_game_html.src = path+'default.png';
     console.log(path)
     recreate_images(path);
