@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     w8()
 });
 function w8(){
-    if (user_account !== undefined){
+    if (user_account !== undefined && typeof findYourGames === 'function'){
         findYourGames()
         console.log('hladam hry')
     }else{
