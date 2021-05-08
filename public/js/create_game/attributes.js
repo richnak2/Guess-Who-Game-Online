@@ -105,7 +105,7 @@ function add_more_attribute_images(){
 function recreate_attributes(path){
     for (let key in my_new_or_edited_game.game_descriptors) {
         let display = my_new_or_edited_game.type === '1 1 1' ? 'revert':'none'
-        my_new_or_edited_game.game_descriptors[key].image = new File([undefined],decodeURI(my_new_or_edited_game.game_descriptors[key].type)+"|"+decodeURI(main_config_divs.game_descriptors[key].image))
+        my_new_or_edited_game.game_descriptors[key].image = new File([undefined],decodeURI(my_new_or_edited_game.game_descriptors[key].type)+"|"+decodeURI(my_new_or_edited_game.game_descriptors[key].image))
         add_attribute(display,my_new_or_edited_game.game_descriptors[key])
     }
     create_define_image()

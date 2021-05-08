@@ -60,8 +60,8 @@ function replace_image_guess(index , file){
 
 function recreate_images(path){
     for (let key in my_new_or_edited_game.game_images) {
-        create_card_guessed(`${path}images/${decodeURI(my_new_or_edited_game.game_images[key].image.image)}`)
-        my_new_or_edited_game.game_images[key].image = new File([undefined], decodeURI(image.image))
+        create_card_guessed(`${path}images/${decodeURI(my_new_or_edited_game.game_images[key].image)}`)
+        my_new_or_edited_game.game_images[key].image = new File([undefined], decodeURI(my_new_or_edited_game.game_images[key].image))
     }
     recreate_attributes(path)
 }

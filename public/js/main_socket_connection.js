@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     html_img_bg = document.getElementById('background_your_img');
     html_coins = document.getElementById('coins');
     html_name = document.getElementById('name');
-
+    one_time_find()
     waitUntilUserIsLoaded()
 });
 
@@ -24,13 +24,13 @@ function waitUntilUserIsLoaded(){
         typeof createGame === 'function' ? createGame() : console.log('createGame is not defined')
         typeof findYourGames === 'function' ? findYourGames() : console.log('findYourGames is not defined')
     }else{
+
         setTimeout(waitUntilUserIsLoaded,100);
     }
 }
-
-
-socket.emit('find_user' , {my_socket_id});
-// find correct data for user
+function one_time_find(){
+    socket.emit('find_user' , {my_socket_id});
+}
 
 let session_interval = undefined
 function holdSession(){
