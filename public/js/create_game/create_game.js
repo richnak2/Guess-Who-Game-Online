@@ -8,15 +8,21 @@ const my_new_or_edited_game = new NewGame()
 
 document.addEventListener('DOMContentLoaded', function () {
     html_all_games = document.getElementById('all_games');
-    for (let key in main_config_divs) {
-        if (main_config_divs.hasOwnProperty(key)) {
-            main_config_divs_html_btn[key] = document.getElementById(`${key}_btn`)
-        }
-    }
+    // for (let key in main_config_divs) {
+    //     if (main_config_divs.hasOwnProperty(key)) {
+    //         main_config_divs_html_btn[key] = document.getElementById(`${key}_btn`)
+    //     }
+    // }
     w8()
 });
 function w8(){
     if (user_account !== undefined && typeof findYourGames === 'function'){
+        html_all_games = document.getElementById('all_games');
+        for (let key in main_config_divs) {
+            if (main_config_divs.hasOwnProperty(key)) {
+                main_config_divs_html_btn[key] = document.getElementById(`${key}_btn`)
+            }
+        }
         findYourGames()
         console.log('hladam hry')
     }else{
