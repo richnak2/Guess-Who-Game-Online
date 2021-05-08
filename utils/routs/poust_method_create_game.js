@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const fs = require('fs');
 const up = require('express-fileupload');
 
 const router = express.Router();
@@ -8,9 +7,7 @@ router.use(up());
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-// const dbService = require('../DbService');
-// const {remove_dirs_not_origin,delete_folder_r} = require("../create_game");
-// const { getCurrentUser } = require('../users');
+
 const DB = require('../DbService');
 const db = DB.getDbServiceInstance();
 const FM = require('../FileManager');
@@ -233,18 +230,18 @@ async function make_game_images(id_of_game, old_path, new_path,game_img,game_img
 
 }
 
-
-function set_game_category(category){
-    let type;
-    if (category === '1'){
-        type = '1 1 1';
-    }else if(category === '2'){
-        type = '1 0 1';
-    }else{
-        type = '0 0 1';
-    }
-    return type;
-}
+//
+// function set_game_category(category){
+//     let type;
+//     if (category === '1'){
+//         type = '1 1 1';
+//     }else if(category === '2'){
+//         type = '1 0 1';
+//     }else{
+//         type = '0 0 1';
+//     }
+//     return type;
+// }
 async function check1(id_of_game,user_id,main_game_name,game_category_of_players,main_game_description,created){
     return await new Promise((resolve, reject) => {
         if (id_of_game){
@@ -308,7 +305,7 @@ async function check3(req,id_of_game,path_is_renamed,old_path,new_path){
         let old_path_for_images = old_path + '/images';
 
         const is_made_image = make_game_images(id_of_game, old_path_for_images, new_path_for_images, game_img, game_img_descriptor, game_img_question, path_is_renamed);
-        resolve(is_made_image)
+        is_made_image.then(result => resolve(result))
     }).catch(err => {return new Error(`POST => check3 => ${err}`)})
 }
 
@@ -328,7 +325,7 @@ router.post('/upload_new_game', function(req, res) {
         let main_game_img = req.files.main_img_file
         let main_game_description = req.body.game_description;
         let main_game_name = req.body.game_name;
-        let game_category_of_players = set_game_category(req.body.category_of_players);
+        let game_category_of_players = req.body.category_of_players;
         let created = req.body.created;
 
 
@@ -343,14 +340,14 @@ router.post('/upload_new_game', function(req, res) {
             const id_of_game_check1 = check1(id_of_game,user_id,main_game_name,game_category_of_players,main_game_description,created)// main_game_name,game_category_of_players,main_game_description,created
             id_of_game_check1.then(id_of_game => {
                 const is_check2 = check2(req,id_of_game,old_path , new_path,path_is_renamed)
-                is_check2.then(res => {
-                    if (typeof res === 'boolean') {
+                is_check2.then(res_out1 => {
+                    if (typeof res_out1 === 'boolean') {
                         const is_check_3 = check3(req,id_of_game,path_is_renamed,old_path,new_path)
-                        is_check_3.then(res => {
-                            return res.send(res)
+                        is_check_3.then(res_out2 => {
+                            return res.send(res_out2)
                         })
                     }else{
-                        return res.send(res)
+                        return res.send(res_out1)
                     }
                 }).catch(err => {return res.send({data:`Something want wrong ${err}`,time_of_exception:10,type_of_exception:'danger'})})
 

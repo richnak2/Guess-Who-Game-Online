@@ -21,7 +21,7 @@
     position: absolute;
     margin-left: 17px;
 }
-#chat_global_massage{
+#chat_global_message{
     background-clip: border-box;
     border: 10px solid rgba(0,0,0,.125);
     width: 100%;

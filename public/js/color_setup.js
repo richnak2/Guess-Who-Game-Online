@@ -78,7 +78,9 @@ function apply_color_them(){
                 all_light_elem[index].style.filter = 'brightness(100%)';
             }
         }
-        all_light_elem[index].style.background = colors.card_bg_color;
+        if (all_light_elem[index].className.includes('create_game') === false) {
+            all_light_elem[index].style.background = colors.card_bg_color;
+        }
     }
     let all_text_black_elem = document.getElementsByClassName('text_black');
     for (let index = 0; index < all_text_black_elem.length; index++) {

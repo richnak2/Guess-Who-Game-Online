@@ -1,13 +1,13 @@
 let html_all_games = undefined;
 let html_chat_global = undefined;
-let html_chat_global_massage = undefined;
+let html_chat_global_message= undefined;
 let html_massage_buffer_counter = undefined;
 let massage_buffer_counter = 0;
 
 document.addEventListener('DOMContentLoaded', function () {
     html_all_games = document.getElementById('all_games');
     html_chat_global = document.getElementById('chat_global');
-    html_chat_global_massage = document.getElementById('chat_global_massage');
+    html_chat_global_message = document.getElementById('chat_global_message');
     html_massage_buffer_counter  = document.getElementById('buffer_counter');
     check_massage_buffer_counter()
 });
@@ -21,14 +21,13 @@ socket.on('get_all_games' , ({games}) => {
     }
     pre_make_colors_them();
 });
-socket.on('old_list_of_global_massage', ({massage}) =>{
+socket.on('old_list_of_global_message', ({massage}) =>{
     for (let i = 0; i < massage.length; i++) {
-        make_massage(massage[i].massage,massage[i].type)
+        make_message(massage[i].massage,massage[i].type)
     }
-
 })
-socket.on('global_massage', ({massage}) =>{
-    make_massage(massage.massage,massage.type)
+socket.on('global_message', ({massage}) =>{
+    make_message(massage.massage,massage.type)
 })
 
 function create_html_games(game){
@@ -116,41 +115,42 @@ function show_chat(){
     document.getElementById('sp-online').innerHTML =`${user_account.active_players} online players`
     massage_buffer_counter = 0
 }
-function send_massage() {
+function send_message() {
     let msg_val = document.getElementById('chat_input_box').value
     if (msg_val !== ''){
         let massage = {
             massage : `${user_account.game_name} : ${msg_val}`,
             type : "normal"
         }
-        make_massage(msg_val,'you')
-        socket.emit('global_massage',{massage});
+        make_message(msg_val,'you')
+        socket.emit('global_message',{massage});
         document.getElementById('chat_input_box').value = ''
     }
 }
 
-function make_massage(text,type){
+function make_message(text, type){
     if (type === 'you'){
         let new_task = document.createElement('p');
         new_task.className = "btn-primary no_btn text-light chat_massage";
         new_task.innerHTML = `YOU : ${text}`;
-        html_chat_global_massage.append(new_task);
+        html_chat_global_message.append(new_task);
     }else if(type === 'event'){
         html_chat_global.style.display === 'none' ? massage_buffer_counter ++ : null
         let new_task = document.createElement('p');
         new_task.className = "bg-success text-light chat_massage";
         new_task.innerHTML = text;
-        html_chat_global_massage.append(new_task);
+        html_chat_global_message.append(new_task);
     }else{
         html_chat_global.style.display === 'none' ? massage_buffer_counter ++ : null
         let new_task = document.createElement('p');
         new_task.className = "bg-secondary text-light chat_massage";
         new_task.innerHTML = text;
-        html_chat_global_massage.append(new_task);
+        html_chat_global_message.append(new_task);
     }
-    html_chat_global_massage.scrollBy(0,300);
+    html_chat_global_message.scrollBy(0,300);
     apply_color_them();
 }
+
 function check_massage_buffer_counter(){
     if (massage_buffer_counter && html_chat_global.style.display === 'none'){
         html_massage_buffer_counter.style.display = 'flex'

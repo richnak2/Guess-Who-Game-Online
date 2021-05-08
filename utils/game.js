@@ -20,16 +20,14 @@ class AllGames{
                         if (game_finished) {
                             this.games[game_id] = game;
                             user.setGameId(game_id)
-                            console.log(`Games : ${this.strGetAllLength()}`)
                             resolve(this.games[game_id])
-
                         }
                     }
                 }
             }).catch(err => {return new Error(` game_info => ${err}`)})
         }).catch(err => {return new Error(`AllGames.push => game_info => ${err}`)})
-
     }
+
     static async getEventGame() {
         return await new Promise((resolve, reject) => {
             const all_games = db.getAllGames(0)
@@ -121,12 +119,9 @@ class NewGame{
         this.id = id;
         this.list_of_images = undefined;
         this.list_of_definers = undefined;
-        this.state = false;
         this.player1 = player1
         this.player2 = undefined;
-        this.picket_picture_player1 = undefined;
-        this.picket_picture_player2 = undefined;
-        this.picket_picture_pc = undefined;
+        this.picked_picture_pc = undefined;
         this.ask_counter_player1 = 1; // koli tomu ze musi nastat aspon 1 otazka zo strani tohto hraca
         this.ask_counter_player2 = 1; // koli tomu ze division by 0
         this.define_end_of_the_game = undefined;
@@ -225,7 +220,7 @@ class NewGame{
                 }
                 this.list_of_images = new_array_for_this_game;
                 index = Math.floor(Math.random() * this.list_of_images.length)
-                this.picket_picture_pc = this.list_of_images[index];
+                this.picked_picture_pc = this.list_of_images[index];
                 return true
             }
         }else{
@@ -242,7 +237,7 @@ class NewGame{
                     this.list_of_images.splice(index, 1);
                 }
                 this.list_of_images = new_array_for_this_game;
-                this.picket_picture_pc = undefined;//this.list_of_images[index];
+                this.picked_picture_pc = undefined;//this.list_of_images[index];
                 return true
             }
         }
@@ -251,7 +246,7 @@ class NewGame{
         return await new Promise((resolve, reject) => {
             this.ask_counter_player1 ++;
             if (massage.certain){
-                let you_found_picture = this.picket_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
+                let you_found_picture = this.picked_picture_pc.image.split('/').pop() === massage.src.split('/').pop();
                if (you_found_picture){
                     const points_add = this.player1.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000) /this.ask_counter_player1)
                     points_add.then(res => {
@@ -261,7 +256,7 @@ class NewGame{
                     resolve(you_found_picture);
                 }
             }else{
-                resolve(this.picket_picture_pc.description_control.includes(massage.title));
+                resolve(this.picked_picture_pc.description_control.includes(massage.title));
             }
         }).catch(err => {return new Error(`isYourPickedPictureQuestion => ${err}`)})
     }

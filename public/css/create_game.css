@@ -50,6 +50,32 @@ input[type="file"] {
     display: none;
 }
 .label_options{
+    max-height: 300px;
     /*overflow : scroll;*/
     overflow-y: scroll;
 }
+.card_img{
+    width: 100px;
+}
+
+.card_img_definer{
+    width: max-content;
+    display: inline-block;
+}
+.attributes_images{
+    width: 50%;
+    text-align: center;
+}
+/*.type_undefined{*/
+/*    display: none;*/
+/*}*/
+
+/*.type_defined{*/
+/*    display: block;*/
+/*}*/
+/*#list_of_possible_games{*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    flex-wrap: wrap;*/
+/*    align-content: flex-start;*/
+/*}*/

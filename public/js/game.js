@@ -39,13 +39,11 @@ function createGame(){
         if (game_type === 'pc'){
             socket.emit('create_single_player' , {game_name,game_type,my_socket_id}, );
         }else{
-            // console.log(`INFO : ${game_name} ${game_type} ${my_socket_id}`)
             socket.emit('luck_to_game_buffer' , {game_name,game_type,my_socket_id}, );
             animation = true;
             make_waiting_box();
         }
     }else{
-        console.log('SOM TUNA cakam na CREATE GAME')
         setTimeout(createGame,100);
     }
 }
@@ -75,10 +73,9 @@ socket.on('multiplayer_massage', ({broadcast_massage}) => {
     console.log('multiplayer_massage',broadcast_massage)
     if (broadcast_massage === true || broadcast_massage === false){
         let elem_ask_img = document.getElementsByClassName('undefined')[0];
-        // console.log('NACHADZA SA TUNA ' , '/'+game_name.replaceAll(' ','%20')+'/images' , elem_ask_img.childNodes[0].src , elem_ask_img.childNodes[0].src.includes('/'+game_name.replaceAll(' ','%20')+'/images'))
         if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
             if ( broadcast_massage){
-                my_game.state = true;
+                // my_game.state = true;
                 make_win_multiplier("You win");
             }
         }
@@ -96,8 +93,6 @@ socket.on('multiplayer_massage', ({broadcast_massage}) => {
 
 socket.on('obtain_game' , ({game}) => {
     my_game = game;
-    console.log('GAME HAS BEEN OBATINED : ',my_game);
-    // console.log('GAME HAS BEEN OBATINED : ',my_socket_id,my_game.player1,my_game.player2,my_game);//, game
     animation = false;
     create_html_for_game();
     if (my_game.type === 'kid'){
@@ -120,18 +115,13 @@ function w8_until_player_pick_img(){
 }
 
 function make_waiting_box(){
-    // if (animation === true){//option === 'w8'
     html_centered_centered_win.style.display = 'revert';
     html_centered_win.style.display = 'revert';
     html_win_lost.style.display = 'revert';
     html_leave.style.display = 'revert';
     html_play_again.style.display = 'none';
-    // html_report_btn.style.display = 'none';
     html_win_lost.innerHTML = 'waiting for other player to join ';
     run_animation_waiting(0);
-    // }else{
-    //     setTimeout(make_waiting_box,100,option);
-    // }
 }
 
 function run_animation_waiting(count_of_iteration){
@@ -494,12 +484,12 @@ function add_img_to_asked_certain(img){
 
 function make_card_win(witch_player_win){
     if (witch_player_win.includes('lost')){
-        my_game.state = true
+        // my_game.state = true
         my_game.player1.game_name === html_name.innerHTML
             ?make_profile(my_game.player2.game_name,my_game.player2.color,my_game.player2.character)
             :make_profile(my_game.player1.game_name,my_game.player1.color,my_game.player1.character)
     }else{
-        my_game.state = true
+        // my_game.state = true
         my_game.player1.game_name === html_name.innerHTML
             ?make_profile(my_game.player1.game_name,my_game.player1.color,my_game.player1.character)
             :make_profile(my_game.player2.game_name,my_game.player2.color,my_game.player2.character)
@@ -534,7 +524,7 @@ function make_win_multiplier(text){
 
     document.getElementById('yes').disable = false;
     document.getElementById('no').disable = false;
-    my_game.state = true;
+    // my_game.state = true;
 
 }
 

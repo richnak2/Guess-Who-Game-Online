@@ -26,14 +26,6 @@ const io = socket_io(server);
 
 const {format_error} = require('./utils/messages');
 
-// // const {create_game,is_existing_game,search_for_free_game,leave_game,AllGames} = require('./utils/game');
-// const {look_folders,delete_folder_r} = require('./utils/create_game');
-// // const {DbService} = require('./utils/dbService')
-// // DbService.getDbServiceInstance()
-// //
-// // const up = require('express-fileupload')
-// //
-// // app.use(up());
 const create_game_post_method = require('./utils/routs/poust_method_create_game');
 app.use(create_game_post_method);
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -86,7 +78,6 @@ io.on('connection', socket => {
 
     //// PLAEYER MANAGMENT
     socket.on('offline', () => {
-        console.log(socket.id)
         AllUsers.push(socket.id, undefined, undefined, undefined, 10000, '#00000000 def.png', '#00000000 def.png');
     });
     // login_page.js related server error tag => L-O
@@ -97,7 +88,6 @@ io.on('connection', socket => {
             printError(`L-O => ${err}`)
         })
     });
-
     // login.js related server error tag => L-RNU
     socket.on('register_new_user' , ({name_value, password_value,role_value}) => {
         AllUsers.registerNewUser(name_value, password_value,role_value).then(registered => {
@@ -140,7 +130,7 @@ io.on('connection', socket => {
     socket.on('get_all_games' , ({my_socket_id}) => {
         AllUsers.getAllGames(my_socket_id).then(data => {
             socket.emit('get_all_games' , {games : data})
-            socket.emit('old_list_of_global_massage' , {massage: list_of_old_massages})
+            socket.emit('old_list_of_global_message' , {massage: list_of_old_massages})
         }).catch(err =>{
             printError(`M-GAG => ${err}`)
             socket.emit('error_massage', {error_massage : format_error(`M-GAG => ${err}` , 30, 'danger')})
@@ -215,7 +205,6 @@ io.on('connection', socket => {
         }).catch(err =>{
             socket.emit('error_massage',{error_massage:format_error(`Something want wrong.\n ${err}`,100,'danger')})
         });
-
     });
 
     socket.on('ask_single_player_game',({my_socket_id,massage}) =>{
@@ -270,9 +259,9 @@ io.on('connection', socket => {
         }
     })
 
-    socket.on('global_massage', ({massage}) => {
+    socket.on('global_message', ({massage}) => {
         list_of_old_massages.push(massage)
-        socket.broadcast.emit('global_massage', {massage:massage});
+        socket.broadcast.emit('global_message', {massage:massage});
     })
 });
 
@@ -284,7 +273,7 @@ function event(){
             type : 'event'
         }
         list_of_old_massages.push(massage)
-        io.emit('global_massage', {massage:massage});
+        io.emit('global_message', {massage:massage});
     }).catch(err => {printError(`event => ${err}`)})
 
     setTimeout(event,60*1000*5)

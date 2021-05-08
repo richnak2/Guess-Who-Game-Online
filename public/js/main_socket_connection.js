@@ -19,10 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function waitUntilUserIsLoaded(){
     if (user_account !== undefined){
-
         typeof setNavigation === 'function' ? setNavigation() : console.log('setNavigation is not defined')
         typeof setShopImage === 'function' ? setShopImage() : console.log('setShopImage is not defined')
         typeof createGame === 'function' ? createGame() : console.log('createGame is not defined')
+        typeof createGame === 'function' ? findYourGames() : console.log('createGame is not defined')
     }else{
         setTimeout(waitUntilUserIsLoaded,100);
     }
@@ -47,7 +47,7 @@ socket.on('error_massage' ,({error_massage}) => {
 
 let user_account = undefined
 socket.on('user' , ({user_data}) => {
-    if (user_data.game_name !== undefined){//.game_name
+    if (user_data.game_name !== undefined){
         html_name.innerHTML = user_data.game_name;
         html_coins.innerHTML = user_data.points;
 
@@ -57,11 +57,10 @@ socket.on('user' , ({user_data}) => {
             }
         }
         user_account = user_data
-        session_interval = setInterval(holdSession,120*1000)
+        session_interval = setInterval(holdSession,2*60*1000)
     }else{
         reload();
     }
-
 });
 
 

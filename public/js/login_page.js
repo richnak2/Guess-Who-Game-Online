@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 socket.on('log_answer' , ({massage}) => {
     if (massage.type === 'success'){
-
         sessionStorage.setItem("socket_id",socket.id);
         sessionStorage.setItem('game_id','');
         location.assign('menu.html');

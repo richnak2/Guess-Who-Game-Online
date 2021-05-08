@@ -1,4 +1,6 @@
-.ht200{
+.ht300{
+    height: 300px;
+}.ht200{
     height: 200px;
 }
 .ht150{
@@ -86,9 +88,13 @@
 .ml10{
     margin-left: 10px;
 }
+.ml5{
+    margin-left: 5px;
+}
 .ml0{
     margin-left: 0px;
 }
+
 
 .mt50{
     margin-top: 50px;
@@ -104,6 +110,9 @@
 }
 .mt10{
     margin-top: 10px;
+}
+.mt5{
+    margin-top: 5px;
 }
 .mt0{
     margin-top: 0px;
@@ -125,6 +134,9 @@
 .mb10{
     margin-bottom: 10px;
 }
+.mb5{
+    margin-bottom: 5px;
+}
 .mb0{
     margin-bottom: 0px;
 }
@@ -143,6 +155,9 @@
 }
 .mr10{
     margin-right: 10px;
+}
+.mr5{
+    margin-right: 5px;
 }
 .mr0{
     margin-right: 0px;

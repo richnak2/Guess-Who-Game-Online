@@ -99,17 +99,6 @@ class AllUsers {
     }
   }
 
-
-
-  // static async addPoints(time_of_complete, my_socket_id, variable_id_socket, guess_count) {
-  //   let current_user = this.getUserData(my_socket_id, variable_id_socket);
-  //   if (current_user) {
-  //     current_user.addPoints(Math.ceil(500 / guess_count)).then(updated_user => {
-  //       return updated_user;
-  //     }).catch(err => {return new Error(err)});
-  //   }
-  // }
-
   static async setCharacter(socket_id, character) {
     try {
       return await new Promise((resolve, reject) => {
@@ -149,8 +138,6 @@ class AllUsers {
       return new Error(`ALLUsers.getUserData => ${err}`)
     }
   }
-
-
 
   static async getAllGames(socket_id){
     try {
@@ -237,6 +224,8 @@ class Users {
     this.game_name = (game_name === undefined ? user_names[Math.floor(Math.random() * user_names.length)] : game_name)
     this.role = role
     this.points = points
+    this.color = undefined
+    this.character =  undefined
     this.setCharacter(character,id_socket)
     this.bought_characters = bought_characters
     this.session_time = Date.now()
@@ -338,110 +327,5 @@ class Users {
 
 
 }
-// const interval = setInterval(AllUsers.removeLoggedOut,5 * 60 * 1000)
-// AllUsers.removeLoggedOut()
-//
-// // Join user
-// function userJoin(id_socket , id, game_name, role , points , character , bought_characters) {
-//   // let user = { id_socket: (id_socket) ? id_socket : undefined ,
-//   //   id : (id) ? id : undefined ,
-//   //   game_name : (game_name) ? game_name : undefined ,
-//   //   role : (role) ? role : undefined ,
-//   //   points : (points !== undefined) ? points : undefined ,
-//   //   character: (character) ? character : undefined
-//   // };
-//   // AllUsers.push(id_socket , id, game_name, role , points , character , bought_characters).then(data => {
-//   //   console.log(data.GetUserData())
-//   // });
-//   // // AllUsers.push(id_socket , id, game_name, role , points , character , bought_characters).then(data => {
-//   // //   console.log(data)
-//   // // });
-//   // AllUsers.getAllLength().then(data => {
-//   //   console.log(`The length is ${data}`);
-//   // })
-//   //
-//   // AllUsers.getAllToString().then(data => {
-//   //   console.log(`prihlaseni su : \n ${data}`);
-//   // })
-//
-//   let user = {
-//     id_socket: id_socket,
-//     id : id ,
-//     game_name : (game_name === undefined?user_names[Math.floor(Math.random() * user_names.length)]:game_name) ,
-//     role : role ,
-//     points : points ,
-//     character: character ,
-//     bought_characters : bought_characters
-//   };
-//
-//   console.log('ALL USERRS LENGTH : '+users.length)
-//   if (users.length > 200 ){ // tvrdi restart vsetkych hracov bez oboznamenia prekroceni limmit server connection
-//     console.log(users)
-//     users = [];
-//   }
-//   users.push(user);
-//
-//   return user;
-// }
-// function buyCharacter(socket_id, character_or_color) {
-//   const index = users.findIndex(user => user.id_socket === socket_id);
-//   if (index !== -1) {
-//     if (character_or_color.charAt(0) === '#'){ // color
-//       const index_color = color_pallet.findIndex(color => color[0] === character_or_color);
-//       if (index_color !== -1) {
-//         if (users[index].points >= color_pallet[index_color][1] ){
-//           users[index].points -= color_pallet[index_color][1];
-//           users[index].bought_characters += ' '+character_or_color;
-//         }
-//       }else{
-//         console.log('NOT FOUNDED COLOR')
-//       }
-//     }else{ // character
-//       let price = parseInt(character_or_color.split('.')[0])*100;
-//       if (users[index].points >= price  ){
-//         users[index].points -= price;
-//         users[index].bought_characters += ' '+character_or_color;
-//       }
-//     }
-//   }
-//   return users[index];
-// }
-//
-// function setCharacter(socket_id, character) {
-//   const index = users.findIndex(user => user.id_socket === socket_id);
-//   if (index !== -1) {
-//     users[index].character = character;
-//     return users[index];
-//   }
-//
-//
-// }
-// // Get current user
-// function getCurrentUser(socket_id) {
-//   // console.log('GETTING USER WITH SOCKET ID : ',socket_id)
-//   // return users[0];
-//   return users.find(user => user.id_socket === socket_id);
-// }
-//
-// // User leaves chat
-// function userLeave(socket_id) {
-//   const index = users.findIndex(user => user.id_socket === socket_id);
-//   if (index !== -1) {
-//     return users.splice(index, 1)[0];
-//   }
-// }
-// function addPoints(time_of_complete, my_socket_id, guess_count){
-//   console.log(time_of_complete,my_socket_id,guess_count)
-//   const get_current_user = getCurrentUser(my_socket_id);
-//   if (get_current_user !== undefined){
-//     // treba spravit zmenu aby nezalezalo na case lebo to uz nieje odstatna vec pre hraca
-//
-//     let points = Math.ceil(500/guess_count);
-//
-//     get_current_user['points'] += points;
-//   }else{
-//     console.log('Neviem pridat body');
-//   }
-// }
 
 module.exports =  AllUsers

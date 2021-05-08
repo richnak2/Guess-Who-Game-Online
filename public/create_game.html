@@ -16,14 +16,27 @@
 
     <script src="/socket.io/socket.io.js"></script>
 
-    <script src="js/navigation.js"></script>
-    <script src="js/color_setup.js"></script>
-    <script src="js/main_socket_connection.js"></script>
-    <script src="js/create_game/create_game.js"></script>
-    <script src="js/create_game/create_game_check_1.js"></script>
-    <script src="js/create_game/create_game_check_2.js"></script>
-    <script src="js/create_game/create_game_check_3.js"></script>
-    <script src="js/create_game/status.js"></script>
+    <script src="js/navigation.js" ></script>
+    <script src="js/color_setup.js" ></script>
+    <script src="js/create_game/class_create_new_game.js" ></script>
+    <script src="js/main_socket_connection.js" ></script>
+
+    <script src="js/create_game/create_game.js" ></script>
+    <script src="js/create_game/main.js" defer></script>
+    <script src="js/create_game/images.js" defer></script>
+    <script src="js/create_game/attributes.js" ></script>
+    <script src="js/create_game/define_images.js" defer></script>
+    <script src="js/create_game/save.js" ></script>
+
+
+
+    <script src="js/create_game/create_game_check_1.js" ></script>
+    <script src="js/create_game/create_game_check_2.js" ></script>
+    <script src="js/create_game/create_game_check_3.js" ></script>
+
+
+
+    <script src="js/create_game/status.js" ></script>
     <script src="js/alerts.js"></script>
 
     <title>Create Game</title>
@@ -87,43 +100,82 @@
 </nav>
 
 
-<div id="all_games" class="card-columns">
+<div id="all_games" class="card-columns" style="display: contents">
     <div class="card btn-light no_btn">
         <div class=" card-title text-center mb0" >
             <img class="ht80 wd80 mt10" src="./images/create_game.png"  alt=""></div>
         <div class="card-body">
-            <p class=" text-center mb0 text_black" >Create Game</p>
+            <p class=" text-center mb0 text_black" >Create New Game</p>
         </div>
         <div class="text-center">
-            <button class="btn btn-default bg-primary mb10 text-light"  onclick="create_new_game()">create</button>
+            <button class="btn btn-default bg-primary mb10 text-light"  onclick="list_all_possible_games_for_create()">create</button>
         </div>
     </div>
 </div>
-<br>
-<br>
-<div id="menu_for_config_game" >
-<div class="container  text-center" >
-    <div class="col-2-sm mr20 mb20" >
-        <button class="btn btn-default bg-success text-light" id="main_button_allow_check1" onclick="display('check_1')">main</button>
+<div id="list_of_possible_games"  class="card-columns " style="display: none">
+    <h1 class="text-center">Game will be for?</h1>
+    <div class="row d-flex justify-content-center">
+        <div class="card btn-light no_btn ">
+            <p class=" text-center mb0 text_black" >Image attribute type</p>
+            <p class=" text-center mb0 text_black " ><strong>PC</strong></p>
+            <p class=" text-center mb0 text_black" ><strong>Kid</strong></p>
+            <p class=" text-center mb0 text_black" ><strong>Student</strong></p>
+            <div class="text-center">
+                <button class="btn btn-default bg-primary mb10 text-light"  onclick="create_new_game('1 1 1')">create</button>
+            </div>
+        </div>
+        <div class="card btn-light no_btn ">
+            <p class=" text-center mb0 text_black" >Question attribute type</p>
+            <p class=" text-center mb0 text_black " ><strong>PC</strong></p>
+            <p class=" text-center mb0 text_black" ><strong>Student</strong></p>
+            <br>
+            <div class="text-center">
+                <button class="btn btn-default bg-primary mb10 text-light"  onclick="create_new_game('1 0 1')">create</button>
+            </div>
+        </div>
+        <div class="card btn-light no_btn ">
+            <p class=" text-center mb0 text_black" >None attribute type</p>
+            <p class=" text-center mb0 text_black" ><strong>Student</strong></p>
+            <br>
+            <br>
+
+            <div class="text-center">
+                <button class="btn btn-default bg-primary mb10 text-light"  onclick="create_new_game('0 0 1')">create</button>
+            </div>
+        </div>
     </div>
-    <div class="col-2-sm mr20 mb20" >
-        <button class="btn btn-default bg-success text-light" id="main_button_allow_check2" onclick="display('check_2')">descriptions</button>
-    </div>
-    <div class="col-2-sm mr20 mb20" >
-        <button class="btn btn-default bg-success text-light" id="main_button_allow_check3" onclick="display('check_3')">images</button>
-    </div>
-    <div class="col-2-sm mr20 mb20" >
-        <button class="btn btn-default bg-success text-light" id="main_button_allow_save"  onclick="display('save')">save</button>
-    </div>
-    <div class="col-2-sm mr20 mb20" >
-        <button class="btn btn-default bg-success text-light" id="main_button_allow_test" onclick="display('status')">status</button>
-    </div>
-    <div class="col-2-sm mr20 mb20" >
-        <button class="btn btn-default bg-success text-light" id="back_to_list_of_games" onclick="back_to_list_of_your_games()">back to created game</button>
+    <div class="text-center" style="display: revert">
+        <button class="btn btn-default bg-danger mb10 text-light"  onclick="list_all_possible_games_for_create()">back</button>
     </div>
 </div>
+<br>
+<br>
+<div id="menu_for_config_game" style="display:none;" >
+    <div class="container  text-center" >
+        <div class="col-2-sm ml20 mb20" >
+            <button class="btn btn-default bg-success text-light" id="main_btn" onclick="display('main')">main</button>
+        </div>
+        <div class="col-2-sm ml20 mb20" >
+            <button class="btn btn-default bg-success text-light" id="images_btn" onclick="display('images')">images</button>
+        </div>
+        <div class="col-2-sm ml20 mb20" >
+            <button class="btn btn-default bg-success text-light" id="attributes_btn" onclick="display('attributes')">attributes</button>
+        </div>
+        <div class="col-2-sm ml20 mb20" >
+            <button class="btn btn-default bg-success text-light" id="define_images_btn"  onclick="display('define_images')">define images</button>
+        </div>
+        <div class="col-2-sm ml20 mb20" >
+            <button class="btn btn-default bg-success text-light" id="save_btn" onclick="display('save')">save</button>
+        </div>
+        <div class="col-2-sm ml20 mb20" >
+            <button class="btn btn-default bg-success text-light" id="status_btn" onclick="display('status')">status</button>
+        </div>
+        <div class="col-2-sm ml20 mb20" >
+            <button class="btn btn-default bg-success text-light" id="back_to_list_of_games" onclick="back_to_list_of_your_games()">back to created game</button>
+        </div>
+    </div>
 </div>
-<div class="container text_black" id="check_1">
+<div class="container text_black" id="main" style="display:none;">
     <p>In order to successfully create your game you must press the <span><button class="btn btn-default bg-success text-light" >check</button></span> button.</p>
     <p> If you don´t complete the section correctly, a notification reporting the problem will appear.</p>
     <p class="text-danger"> Changing certain thing in the section and not pressing the  <span><button class="btn btn-default bg-success text-light" >check</button></span> will cause the change to be forgotten.</p>
@@ -132,7 +184,7 @@
     <h1 class="text-center">Create your own game</h1>
 
     <div class="form-label-group mt20" >
-        <input type="text" id="game_name" minlength="5" maxlength="30" class="form-control" placeholder="Title of your game"  >
+        <input type="text" id="game_name" minlength="5" maxlength="30" class="form-control" placeholder="* Unique title of your game"  >
         <label for="game_name"></label>
     </div>
     <div class="form-label-group"  >
@@ -157,100 +209,98 @@
 
     </div>
     <div class="text-center">
-        <button class="btn btn-default bg-success mt20 wd300 text-light"  onclick="check_box_1()">check 1</button>
+        <button class="btn btn-default bg-success mt20 wd300 text-light"  onclick="check_main()">check main</button>
     </div>
 
     <br>
     <br>
 </div>
-<div class="container text_black" id="check_2">
-    <p>This section describes which type of game is being created.</p>
-    <p>If you choose between these types, you must obey these rules:</p>
-    <p><strong>Student </strong> - Skip this section by pressing check 2.</p>
-    <p><strong>PC (<img src="./images/pc.png" alt=""></strong>) - Fill the "type" and "descriptor/question" (make sure every box is filled in ) and then press check 2.</p>
-    <p><strong>KID (<img src="./images/kid.png" alt=""></strong>) - Fill the "image" , "type" and "descriptor/question" (make sure every box is filled in ) and then press check 2.</p>
-<!--    <p class="text-success">Multiple buttons may be present within the same type .</p>-->
-    <p class="text-danger">If you are creating game for certain type (PC / kids / students ) make sure you do not mix the options. </p>
-    <p class="text-danger">Be sure to delete unused rows.</p>
-    <p>If you are creating question game type do not use characters as  /\'"?| , the question will be formed as : Your image  " is/has + part of your question (is a piano player / has a piano )" ?</p>
-    <p>If you decide to create a game for Kids, you automatically create a game for PC and Students too.</p>
-    <p>If you decide to create a game for PC, you automatically create a game for Students too.</p>
-    <p>If you decide to create a game for Students, the game will be for Students only.</p>
-    <p>You have an option to create a question game type by skipping to choose an image. This game will also be for all types.</p>
+<div class="container text_black" id="images" style="display:none;">
     <br>
-    <h1 class="text-center">Create details/description</h1>
+    <h1 class="text-center">Add guess images</h1>
+    <p>Minimal amount of images is 25, 30 is optimal. if there are more than 30, the game will randomly pick 30 images.</p>
+    <p class="text-danger">If the game has less than <strong>25</strong> images the game will be considered as "Game in development" which means that only you can play this game.</p>
+    <p>By clicking on already set image, you allowed to change it.</p>
+    <div id="all_guess_img" class="row d-flex justify-content-center">
+    </div>
+    <div class="text-center">
+        <input id="more_files_guess_image" type="file" accept=".png, .jpg, .jpeg, .gif" class="images_of_game" onchange="save_more_guess_img_files(this)" multiple>
+        <button class="btn btn-default bg-success text-light mt20" onclick="add_more_guess_images()">add image</button>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-default bg-success mt20 wd300 text-light"  onclick="check_images(true)">check images</button>
+    </div>
+
+</div>
+<div class="container text_black" id="attributes" style="display:none;">
+    <h1 class="text-center">Create attributes for game </h1>
+    <p>If you are creating question attribute game type do not use characters as  /\'"?| , the question will be formed as : Your image  " is/has + part of your question (is a piano player / has a piano )" ?</p>
+    <p>By clicking on already set image, you allowed to change it.</p>
+    <p>Example with image: <img class="ht20 wd20 ml5"  src="./images/create_game.png"  alt="guessed image"> | attribute : symbol | value/question : plus</p>
+    <p>Example without image: attribute : symbol | value/question : is plus</p>
+
 
     <div class="table-responsive">
-        <table class="table table-striped   bg-light text-center" id="images_of_the_game_descriptors">
-            <caption>
-                <button class="btn btn-default bg-success text-light" onclick="add_descriptor()">add next</button>
-            </caption>
+        <table class="table table-striped bg-light text-center" id="images_of_the_game_descriptors">
             <thead>
 
             </thead>
             <tbody>
             <tr>
-                <td class="font-weight-bold">image<img src="./images/kid.png" alt=""></td>
-                <td class="font-weight-bold">type <img src="./images/pc.png" alt=""><img src="./images/kid.png" alt=""></td>
-                <td class="font-weight-bold">description/question <img src="./images/pc.png" alt=""><img src="./images/kid.png" alt=""></td>
+                <td id="description_image_title" class="font-weight-bold type_defined" >image attribute</td>
+                <td class="font-weight-bold">attribute </td>
+                <td class="font-weight-bold">value/question </td>
                 <td class="font-weight-bold">delete</td>
             </tr>
             </tbody>
         </table>
     </div>
     <div class="text-center">
-        <button class="btn btn-default bg-success mt20 wd300 text-light" onclick="check_box_2()">check 2</button>
+        <input id="more_files_attribute_image" type="file" accept=".png, .jpg, .jpeg, .gif" class="images_of_game" onchange="save_more_attribute_files(this)" multiple>
+        <button class="btn btn-default bg-success text-light mt20"  id="description_add_more" onclick="add_more_attribute_images()">add images</button>
+        <button class="btn btn-default bg-success text-light " id="description_add_row" onclick="add_next_row('none')" >add row</button>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-default bg-success mt20 wd300 text-light" onclick="check_attributes()">check attributes</button>
     </div>
     <br>
     <br>
 </div>
-<div class="container text_black" id="check_3">
-    <p>Minimal amount of images is 25, 30 is optimal. if there are more than 30, the game will randomly pick 30 images.</p>
-    <p class="text-danger">If the game has less than <strong>25</strong> images the game will be considered as "Game in development" which means that only you can play this game.</p>
-    <p class="text-danger">Be sure to delete unused rows.</p>
-    <p class="text-success">To find out more easily which "automatic description" you selected, move the mouse over the image to find out which has been selected.</p>
+<div class="container text_black" id="define_images" style="display:none;">
+    <h1 class="text-center">Define images </h1>
+    <p class="mb0">Optimally each image on the right should have unique attributes form left. By clicking on image on the right, you will select it , then start clicking to atributes witch belonges to him. The atributes wich you selectet will to image on the right will higleted by green color</p>
+    <p>Check button will show you not uniquely defined images</p>
+    <div class="row d-flex justify-content-center">
+        <div class="attributes_images">
+            <h1>Attributes</h1>
+            <div class="label_options" id="attributes_define_images">
+        </div>
+        </div>
+        <div class="attributes_images">
+            <h1>Images</h1>
+            <div class="label_options justify-content-center " id="images_define_images">
 
-    <h1 class="text-center">Create the game images</h1>
-        <div class="table-responsive">
-            <table class="table table-striped   bg-light text-center" id="images_of_the_game">
-                <caption>
-                    <button class="btn btn-default bg-success text-light" onclick="add_row_image_to_game()">add next</button>
-                    <input id="more_files" type="file" accept=".png, .jpg, .jpeg, .gif" class="images_of_game" onchange="save_more_files(this)" multiple>
-                <button class="btn btn-default bg-success text-light" onclick="add_more_images()">add more</button>
-            </caption>
-            <thead>
-
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="font-weight-bold">#</td>
-                    <td class="font-weight-bold">image</td>
-                    <td class="text_descriptor font-weight-bold" >text description</td>
-                    <td id="main_automatic_descriptor" class="automatic_descriptor font-weight-bold" >automatic description</td>
-                    <td class="font-weight-bold">delete</td>
-                </tr>
-            </tbody>
-        </table>
+            </div>
+        </div>
     </div>
+
     <div class="text-center text_black">
-        <button class="btn btn-default bg-success mt20 wd300 text-light" onclick="check_box_3()">check 3</button>
+        <button class="btn btn-default bg-success mt20 wd300 text-light" onclick="check_define_images()">check</button>
     </div>
 </div>
 
 <br>
 <br>
-<div class="container text_black" id="save">
-<!--    <p><button class="btn btn-default bg-success mt20 wd300 text-light" onclick="save_game()">save game</button></p>-->
+<div class="container text_black" id="save" style="display:none;">
+    <p>be sure before saving check each section if error will not occurs <button class="btn btn-default bg-success mt20 wd300 text-light" onclick="save_game()">save</button></p>
 </div>
 <br>
 <br>
-<div class="container text_black" id="status">
-    <p><span class="text-danger">this section will be affected after you´ve checked the image section </span></p>
+<div class="container text_black" id="status" style="display:none;">
     <p>this game is for : <span id="game_is_for"></span> </p>
     <p>development state : <span id="game_state"></span> </p>
-    <p class="atom">worst resemblance of the game : <span id="game_atomicity"></span> </p>
-    <p class="atom" >lesser % of resemblance === better game experience for player, if the % is higher than 20%, please consider changing your automatic description in image section  <button class="btn btn-default bg-success "  onclick="display('check_3')">images</button></p>
-    <button id="show_atomic" class="btn btn-default bg-success atom text-light"  onclick="show_same_automatic_descriptor()">show same pairs of automatic description</button>
+    <p >worst resemblance of the game : <span id="game_atomicity"></span> </p>
+    <p id="percentage" >lesser % of resemblance === better game experience for player, if the % is higher than 20%, please consider changing your automatic description in image section  <button class="btn btn-default bg-success "  onclick="display('define_images')">define images</button></p>
 </div>
 <div id="settings" class="btn-light" onclick="show_settings()"> <img src="./images/setting.png" alt="settings" title="settings"></div>
 </body>
