@@ -36,7 +36,7 @@ function back_to_list_of_your_games(){
     create_exception('loading',3,'success')
 }
 
-const findYourGames = function (){
+function findYourGames (){
     if (user_account.role === "Teacher"){
         socket.emit('get_all_games_by_you',{my_socket_id});
     }else{
