@@ -11,14 +11,15 @@ class NewGame{
     type = undefined
 
     load_game(game) {
-        this.description = game.description
-        this.game_descriptors = game.game_descriptors
-        this.game_images = game.game_images
-        this.id = game.id
-        this.owner_id = game.owner_id
-        this.state = game.state
-        this.origin_title = game.title
-        this.type = game.type
+        let copy_game =  JSON.parse(JSON.stringify(game));
+        this.description = copy_game.description
+        this.game_descriptors = copy_game.game_descriptors
+        this.game_images = copy_game.game_images
+        this.id = copy_game.id
+        this.owner_id = copy_game.owner_id
+        this.state = copy_game.state
+        this.origin_title = copy_game.title
+        this.type = copy_game.type
     }
     setTitle(title){
         this.title = title
