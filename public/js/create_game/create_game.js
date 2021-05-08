@@ -18,7 +18,10 @@ document.addEventListener('DOMContentLoaded', function () {
 function w8(){
     if (user_account !== undefined){
         findYourGames()
+        console.log('hladam hry')
     }else{
+
+        console.log('cakam na socket')
         setTimeout(w8,200);
     }
 
