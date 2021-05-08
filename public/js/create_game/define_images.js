@@ -30,14 +30,16 @@ function add_images_to_images_define_images_html(){
         div_card_guess.className = 'card btn-light card_img_definer create_game mt10'
 
         let image_define = document.createElement('IMG');
+        image_define.setAttribute("class", 'wd80 ht80 mt5 mb5 mr5 ml5');
 
         if (my_new_or_edited_game.game_images[key].id === undefined){
+            console.log(`./images/${my_new_or_edited_game.origin_title}/images/${my_new_or_edited_game.game_images[key].image.name}`)
             image_define.setAttribute("src", `./images/${my_new_or_edited_game.origin_title}/images/${my_new_or_edited_game.game_images[key].image.name}`);
 
         }else{
             check_file_multiple(my_new_or_edited_game.game_images[key].image,image_define)
         }
-        image_define.setAttribute("class", 'wd80 ht80 mt5 mb5 mr5 ml5');
+
 
         div_card_guess.append(image_define)
         div_card_guess.onclick = () => {
@@ -98,12 +100,8 @@ function add_attributes_to_attributes_define_images_html(){
         if(json_of_keys.hasOwnProperty(my_new_or_edited_game.game_descriptors[key].type)){
             json_of_keys[my_new_or_edited_game.game_descriptors[key].type].push(my_new_or_edited_game.game_descriptors[key].description)
         }else{
-            // console.log(my_new_or_edited_game.game_descriptors[key].type)
             json_of_keys[my_new_or_edited_game.game_descriptors[key].type] = []
-            // console.log(json_of_keys[my_new_or_edited_game.game_descriptors[key].type])
-            // console.log(my_new_or_edited_game.game_descriptors[key].description)
             json_of_keys[my_new_or_edited_game.game_descriptors[key].type].push(my_new_or_edited_game.game_descriptors[key].description)
-                // [my_new_or_edited_game.game_descriptors[key].description]
         }
     }
     // console.log(json_of_keys)
@@ -147,6 +145,7 @@ function add_attributes_to_attributes_define_images_html(){
             div_card_attribute.id = my_new_or_edited_game.game_descriptors[key].description
             let image_define = document.createElement('IMG')
             if (my_new_or_edited_game.game_descriptors[key].id === undefined){
+                console.log(`./images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(my_new_or_edited_game.game_images[key].image.name.replace('|','/'))}`)
                 image_define.setAttribute("src", `./images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(my_new_or_edited_game.game_images[key].image.name.replace('|','/'))}`) ;
             }else{
                 check_file_multiple(my_new_or_edited_game.game_descriptors[key].image,image_define)

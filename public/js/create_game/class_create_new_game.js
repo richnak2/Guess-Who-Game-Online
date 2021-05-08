@@ -87,14 +87,14 @@ class NewGame{
     show_user_interface(main,images,attributes,define_images,save,status,show){
         this.color_interface(document.getElementById(`main_btn`),main,show)
         this.color_interface(document.getElementById(`images_btn`),images,show)
-        this.color_interface(document.getElementById(`attributes`),attributes,show)
-        this.color_interface(document.getElementById(`define_images`),define_images,show)
-        this.color_interface(document.getElementById(`save`),save,show)
-        this.color_interface(document.getElementById(`status`),status,show)
+        this.color_interface(document.getElementById(`attributes_btn`),attributes,show)
+        this.color_interface(document.getElementById(`define_images_btn`),define_images,show)
+        this.color_interface(document.getElementById(`save_btn`),save,show)
+        this.color_interface(document.getElementById(`status_btn`),status,show)
 
         if (this.type === '0 0 1'){
-            this.color_interface(document.getElementById(`attributes`),attributes,'none')
-            this.color_interface(document.getElementById(`define_images`),define_images,'none')
+            this.color_interface(document.getElementById(`attributes_btn`),attributes,'none')
+            this.color_interface(document.getElementById(`define_images_btn`),define_images,'none')
         }
     }
 }
