@@ -1,4 +1,4 @@
-let main_config_divs_html_btn = {}
+// let main_config_divs_html_btn = {}
 let html_all_games = undefined;
 const possible_extensions = ['image/png','image/jpeg','image/PNG','image/JPEG',"image/jpg","image/JPG"];
 const allow_buttons = ['main_button_allow_check1','main_button_allow_check2','main_button_allow_check3','main_button_allow_save','main_button_allow_test','back_to_list_of_games']
@@ -14,16 +14,16 @@ document.addEventListener('DOMContentLoaded', function () {
     //         main_config_divs_html_btn[key] = document.getElementById(`${key}_btn`)
     //     }
     // }
-    w8()
+    // w8()
 });
 function w8(){
-    if (user_account !== undefined && typeof findYourGames === 'function' && document.getElementById(`main_btn`) && main_config_divs_html_btn !== undefined){
+    if (user_account !== undefined && typeof findYourGames === 'function' ){
         html_all_games = document.getElementById('all_games');
-        for (let key in main_config_divs) {
-            if (main_config_divs.hasOwnProperty(key)) {
-                main_config_divs_html_btn[key] = document.getElementById(`${key}_btn`)
-            }
-        }
+        // for (let key in main_config_divs) {
+        //     if (main_config_divs.hasOwnProperty(key)) {
+        //         main_config_divs_html_btn[key] = document.getElementById(`${key}_btn`)
+        //     }
+        // }
         findYourGames()
         console.log('hladam hry')
     }else{
@@ -104,9 +104,9 @@ function create_html_games(game){
     buttons_edit.className = 'btn btn-default bg-success mb10 text-light'
     buttons_edit.innerHTML = 'edit'
     buttons_edit.onclick = function (){
-        for (let key in main_config_divs) {
-            main_config_divs_html_btn[key] = true
-        }
+        // for (let key in main_config_divs) {
+        //     main_config_divs_html_btn[key] = true
+        // }
         my_new_or_edited_game.load_game(game)
         my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,true,true,'revert')
         my_new_or_edited_game.show_hide(document.getElementById('menu_for_config_game'))

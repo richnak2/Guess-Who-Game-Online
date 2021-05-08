@@ -85,12 +85,12 @@ class NewGame{
     }
 
     show_user_interface(main,images,attributes,define_images,save,status,show){
-        this.color_interface(main_config_divs_html_btn.main,main,show)
-        this.color_interface(main_config_divs_html_btn.images,images,show)
-        this.color_interface(main_config_divs_html_btn.attributes,attributes,show)
-        this.color_interface(main_config_divs_html_btn.define_images,define_images,show)
-        this.color_interface(main_config_divs_html_btn.save,save,show)
-        this.color_interface(main_config_divs_html_btn.status,status,show)
+        this.color_interface(document.getElementById(`main_btn`),main,show)
+        this.color_interface(document.getElementById(`images_btn`),images,show)
+        this.color_interface(document.getElementById(`attributes`),attributes,show)
+        this.color_interface(document.getElementById(`define_images`),define_images,show)
+        this.color_interface(document.getElementById(`save`),save,show)
+        this.color_interface(document.getElementById(`status`),status,show)
 
         if (this.type === '0 0 1'){
             this.color_interface(main_config_divs_html_btn.attributes,attributes,'none')
