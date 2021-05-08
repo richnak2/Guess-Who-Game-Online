@@ -22,9 +22,9 @@ function waitUntilUserIsLoaded(){
         typeof setNavigation === 'function' ? setNavigation() : console.log('setNavigation is not defined')
         typeof setShopImage === 'function' ? setShopImage() : console.log('setShopImage is not defined')
         typeof createGame === 'function' ? createGame() : console.log('createGame is not defined')
-        typeof findYourGames === 'function' ? findYourGames() : console.log('findYourGames is not defined')
+        // typeof findYourGames === 'function' ? findYourGames() : console.log('findYourGames is not defined')
     }else{
-        setTimeout(waitUntilUserIsLoaded,200);
+        setTimeout(waitUntilUserIsLoaded,100);
     }
 }
 

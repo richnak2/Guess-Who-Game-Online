@@ -13,8 +13,16 @@ document.addEventListener('DOMContentLoaded', function () {
             main_config_divs_html_btn[key] = document.getElementById(`${key}_btn`)
         }
     }
+    w8()
 });
+function w8(){
+    if (user_account !== undefined){
+        findYourGames()
+    }else{
+        setTimeout(w8,200);
+    }
 
+}
 function back_to_list_of_your_games(){
     my_new_or_edited_game.to_default()
     document.getElementById('all_games').style.display = 'contents';
