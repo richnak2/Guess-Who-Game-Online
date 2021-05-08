@@ -185,10 +185,11 @@ function check_define_images(){
                     counter[1] += 1
                     if (same[my_new_or_edited_game.game_images[key1].description_control] === undefined){
                         same[my_new_or_edited_game.game_images[key1].description_control] = []
-                        same[my_new_or_edited_game.game_images[key1].description_control].append(key1)
-                        same[my_new_or_edited_game.game_images[key1].description_control].append(key2)
+                        same[my_new_or_edited_game.game_images[key1].description_control].push(key1)
+                        same[my_new_or_edited_game.game_images[key1].description_control].push(key2)
                     }else{
-                        same[my_new_or_edited_game.game_images[key1].description_control].append(key1,key2)
+                        same[my_new_or_edited_game.game_images[key1].description_control].includes(key1) ? null : same[my_new_or_edited_game.game_images[key1].description_control].push(key1)
+                        same[my_new_or_edited_game.game_images[key1].description_control].includes(key1) ? null : same[my_new_or_edited_game.game_images[key1].description_control].push(key2)
                     }
 
                 }
