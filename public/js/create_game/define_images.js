@@ -146,7 +146,7 @@ function add_attributes_to_attributes_define_images_html(){
             div_card_attribute.id = my_new_or_edited_game.game_descriptors[key].description
             let image_define = document.createElement('IMG')
             if (my_new_or_edited_game.game_descriptors[key].id){
-                image_define.setAttribute("src", `./public/images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(my_new_or_edited_game.game_images[key].image.name.replace('|','/'))}`) ;
+                image_define.setAttribute("src", `./images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(my_new_or_edited_game.game_images[key].image.name.replace('|','/'))}`) ;
             }else{
                 check_file_multiple(my_new_or_edited_game.game_descriptors[key].image,image_define)
             }

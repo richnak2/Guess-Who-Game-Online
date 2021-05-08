@@ -32,7 +32,7 @@ function add_attribute(display,object_attribute){
         check_file_multiple(object_attribute.image,image_for_description)
     }else{
         // if (object_attribute.image !== undefined){
-        image_for_description.setAttribute("src", `./public/images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(object_attribute.image.name.replace('|','/'))}`) ;
+        image_for_description.setAttribute("src", `./images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(object_attribute.image.name.replace('|','/'))}`) ;
         // }
     }
     image_for_description.setAttribute("class", 'descriptor_images wd40 ht40');
