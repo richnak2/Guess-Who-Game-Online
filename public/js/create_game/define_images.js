@@ -184,11 +184,11 @@ function check_define_images(){
                 if (my_new_or_edited_game.game_images[key1].description_control === my_new_or_edited_game.game_images[key2].description_control){
                     counter[1] += 1
                     if (same[my_new_or_edited_game.game_images[key1].description_control] === undefined){
-                        same[my_new_or_edited_game.game_images[key1].description_control] = new Set()
-                        same[my_new_or_edited_game.game_images[key1].description_control].add(key1)
-                        same[my_new_or_edited_game.game_images[key1].description_control].add(key2)
+                        same[my_new_or_edited_game.game_images[key1].description_control] = []
+                        same[my_new_or_edited_game.game_images[key1].description_control].append(key1)
+                        same[my_new_or_edited_game.game_images[key1].description_control].append(key2)
                     }else{
-                        same[my_new_or_edited_game.game_images[key1].description_control].add(key1,key2)
+                        same[my_new_or_edited_game.game_images[key1].description_control].append(key1,key2)
                     }
 
                 }
@@ -200,17 +200,22 @@ function check_define_images(){
     console.log(same)
     if (active_unique){
         let bg_color = getRandomColor()
-        for (let same_d_control in same) {
-            for (let same_key in same[same_d_control]) {
-                console.log(same_key)
-                document.getElementById(`card_img_definer_${same_key}`).style.backgroundColor = bg_color
+        for (let same_d in same) {
+            for (let index = 0 ;index <  same[same_d].length;index++){
+            for (let same_key in same[same_d]) {
+                // for (let same_key in same[same_d_control]) {
+                // console.log(same_key)
+                // console.log()
+                document.getElementById(`card_img_definer_${same[same_d][index]}`).style.backgroundColor = bg_color
+                }
             }
         }
     }else{
-        for (let same_d_control in same) {
-            for (let same_key in same[same_d_control]) {
-                document.getElementById(`card_img_definer_${same_key}`).style.removeProperty('backgroundColor')
-            }
+        for (let same_d in same) {
+            for (let index = 0 ;index <  same[same_d].length;index++)
+                for (let same_key in same[same_d]) {
+                    document.getElementById(`card_img_definer_${same[same_d][index]}`).style.removeProperty('backgroundColor')
+                }
         }
     }
 
