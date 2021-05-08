@@ -2,7 +2,7 @@
 let html_all_games = undefined;
 const possible_extensions = ['image/png','image/jpeg','image/PNG','image/JPEG',"image/jpg","image/JPG"];
 const allow_buttons = ['main_button_allow_check1','main_button_allow_check2','main_button_allow_check3','main_button_allow_save','main_button_allow_test','back_to_list_of_games']
-let main_config_divs = {'main':true,'images':true,'attributes':false,'define_images':false,'save':false,'status':true};
+let main_config_divs = {'main':true,'images':false,'attributes':false,'define_images':false,'save':false,'status':true};
 const illegal_characters = ['-', ':', '<', '>','|' ,'.' , '/' , '\\' , '?' , "*" , "$" , '#' ,'!' ,'@',','];
 let currently_edited_game = undefined;
 const my_new_or_edited_game = new NewGame()

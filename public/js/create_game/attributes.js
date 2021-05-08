@@ -28,12 +28,12 @@ function add_attribute(display,object_attribute){
 
     input_file.setAttribute("class", 'descriptor_images_files');
     label.setAttribute("for", 'descriptor_'+index_of_attribute);
-    if (typeof object_attribute.image === 'object'){
+    if (object_attribute.id === 'object'){
         check_file_multiple(object_attribute.image,image_for_description)
     }else{
-        if (object_attribute.image !== undefined){
-            image_for_description.setAttribute("src", `./public/images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(object_attribute.image.type)}/${decodeURI(object_attribute.image)}`) ;
-        }
+        // if (object_attribute.image !== undefined){
+        image_for_description.setAttribute("src", `./public/images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(object_attribute.image.name.replace('|','/'))}}`) ;
+        // }
     }
     image_for_description.setAttribute("class", 'descriptor_images wd40 ht40');
     input_file.accept = ".png, .jpg, .jpeg, .gif";
@@ -67,7 +67,7 @@ function add_attribute(display,object_attribute){
     input_text_description_question.setAttribute("type", 'text');
     input_text_description_question.setAttribute("class", 'descriptor_definers_or_questions');
     input_text_description_question.maxLength = '50';
-    input_text_type.value = object_attribute.description;
+    input_text_description_question.value = object_attribute.description;
     input_text_description_question.oninput = function () {
         object_attribute.description = input_text_description_question.value
         if (row.className.includes(' bg-warning') ){

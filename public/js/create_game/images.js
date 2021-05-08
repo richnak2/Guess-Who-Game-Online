@@ -78,8 +78,8 @@ function save_more_guess_img_files(elem){
 }
 
 function check_images(switch_page){
-    for (let key1 in main_config_divs.game_images) {
-        for (let key2 in main_config_divs.game_images) {
+    for (let key1 in my_new_or_edited_game.game_images) {
+        for (let key2 in my_new_or_edited_game.game_images) {
             if (key1 !== key2) {
                 if (my_new_or_edited_game.game_images[key1].image.image === my_new_or_edited_game.game_images[key2].image.image) {
                     document.getElementById(`card_guess_${key1}`).className = 'card bg-warning no_btn card_img'
