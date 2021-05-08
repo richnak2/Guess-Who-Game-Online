@@ -47,7 +47,7 @@ class NewGame{
                 }else{
                     let last = ''
                     for (let key in main_config_divs) {
-                        if (main_config_divs[key]){
+                        if (main_config_divs[key] && key !== 'last'){
                             last = key
                         }
                     }
@@ -93,8 +93,8 @@ class NewGame{
         this.color_interface(document.getElementById(`status`),status,show)
 
         if (this.type === '0 0 1'){
-            this.color_interface(main_config_divs_html_btn.attributes,attributes,'none')
-            this.color_interface(main_config_divs_html_btn.define_images,define_images,'none')
+            this.color_interface(document.getElementById(`attributes`),attributes,'none')
+            this.color_interface(document.getElementById(`define_images`),define_images,'none')
         }
     }
 }

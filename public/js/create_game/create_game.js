@@ -104,9 +104,9 @@ function create_html_games(game){
     buttons_edit.className = 'btn btn-default bg-success mb10 text-light'
     buttons_edit.innerHTML = 'edit'
     buttons_edit.onclick = function (){
-        // for (let key in main_config_divs) {
-        //     main_config_divs_html_btn[key] = true
-        // }
+        for (let key in main_config_divs) {
+            main_config_divs[key] = true
+        }
         const list_possible_html = document.getElementById('all_games')
         list_possible_html.style.display =   'none'
         my_new_or_edited_game.load_game(game)
