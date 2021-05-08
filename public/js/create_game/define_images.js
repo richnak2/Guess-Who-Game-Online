@@ -31,7 +31,7 @@ function add_images_to_images_define_images_html(){
 
         let image_define = document.createElement('IMG');
 
-        if (my_new_or_edited_game.game_images[key].id){
+        if (my_new_or_edited_game.game_images[key].id === undefined){
             image_define.setAttribute("src", `./images/${my_new_or_edited_game.origin_title}/images/${my_new_or_edited_game.game_images[key].image.name}`) ;
         }else{
             check_file_multiple(my_new_or_edited_game.game_images[key].image,image_define)

@@ -28,7 +28,7 @@ function add_attribute(display,object_attribute){
 
     input_file.setAttribute("class", 'descriptor_images_files');
     label.setAttribute("for", 'descriptor_'+index_of_attribute);
-    if (object_attribute.id  !== undefined){
+    if (object_attribute.id  === undefined){
         check_file_multiple(object_attribute.image,image_for_description)
     }else{
         // if (object_attribute.image !== undefined){

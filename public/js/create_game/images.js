@@ -5,7 +5,7 @@ function create_card_guessed(objet){
     counter_of_img ++
 
     let div_card_guess = document.createElement('div');
-    div_card_guess.className = 'card btn-light no_btn card_img'
+    div_card_guess.className = 'card btn-light no_btn card_img mb5'
     div_card_guess.id = `card_guess_${index_of_img}`
     let div_card_guess_center_btn = document.createElement('div');
     div_card_guess_center_btn.className = "text-center"
@@ -20,7 +20,7 @@ function create_card_guessed(objet){
 
     input_file.accept = ".png, .jpg, .jpeg, .gif";
     label.setAttribute("for", 'guessed_img_file_input_label'+index_of_img);
-    if (objet.id !== undefined){
+    if (objet.id === undefined){
         check_file_multiple(objet,image_for_guess)
     }else{
         image_for_guess.setAttribute("src", `./images/${my_new_or_edited_game.origin_title}/images/${objet.image.name}`);
