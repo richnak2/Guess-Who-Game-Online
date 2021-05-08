@@ -28,11 +28,11 @@ function add_attribute(display,object_attribute){
 
     input_file.setAttribute("class", 'descriptor_images_files');
     label.setAttribute("for", 'descriptor_'+index_of_attribute);
-    if (object_attribute.id === 'object'){
+    if (object_attribute.id  !== undefined){
         check_file_multiple(object_attribute.image,image_for_description)
     }else{
         // if (object_attribute.image !== undefined){
-        image_for_description.setAttribute("src", `./public/images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(object_attribute.image.name.replace('|','/'))}}`) ;
+        image_for_description.setAttribute("src", `./public/images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(object_attribute.image.name.replace('|','/'))}`) ;
         // }
     }
     image_for_description.setAttribute("class", 'descriptor_images wd40 ht40');
@@ -108,7 +108,7 @@ function recreate_attributes(path){
         my_new_or_edited_game.game_descriptors[key].image = new File([undefined],decodeURI(my_new_or_edited_game.game_descriptors[key].type)+"|"+decodeURI(my_new_or_edited_game.game_descriptors[key].image))
         add_attribute(display,my_new_or_edited_game.game_descriptors[key])
     }
-    create_define_image()
+    create_define_image(path)
 }
 function replace_image_attribute(index,file){
     my_new_or_edited_game.game_descriptors[index] = {'image' : file}

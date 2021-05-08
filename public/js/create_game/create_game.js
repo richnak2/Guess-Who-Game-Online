@@ -132,7 +132,7 @@ function create_new_game(type){
     const list_possible_html = document.getElementById('list_of_possible_games')
     list_possible_html.style.display =  (list_possible_html.style.display === 'contents') ?  'none' :  'contents'
     my_new_or_edited_game.setType(type)
-
+    main_config_divs = {'main':true,'images':false,'attributes':false,'define_images':false,'save':false,'status':true};
     my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,false,true,'revert')
     my_new_or_edited_game.show_hide(document.getElementById('menu_for_config_game'))
     my_new_or_edited_game.show_hide_inside('main')
