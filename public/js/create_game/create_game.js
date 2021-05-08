@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     w8()
 });
 function w8(){
-    if (user_account !== undefined && typeof findYourGames === 'function'){
+    if (user_account !== undefined && typeof findYourGames === 'function' && document.getElementById(`main_btn`)){
         html_all_games = document.getElementById('all_games');
         for (let key in main_config_divs) {
             if (main_config_divs.hasOwnProperty(key)) {
