@@ -33,11 +33,10 @@ function add_images_to_images_define_images_html(){
         image_define.setAttribute("class", 'wd80 ht80 mt5 mb5 mr5 ml5');
 
         if (my_new_or_edited_game.game_images[key].id === undefined){
-            console.log(`./images/${my_new_or_edited_game.origin_title}/images/${my_new_or_edited_game.game_images[key].image.name}`)
-            image_define.setAttribute("src", `./images/${my_new_or_edited_game.origin_title}/images/${my_new_or_edited_game.game_images[key].image.name}`);
+            check_file_multiple(my_new_or_edited_game.game_images[key].image,image_define)
 
         }else{
-            check_file_multiple(my_new_or_edited_game.game_images[key].image,image_define)
+            image_define.setAttribute("src", `./images/${my_new_or_edited_game.origin_title}/images/${my_new_or_edited_game.game_images[key].image.name}`);
         }
 
 
@@ -145,10 +144,9 @@ function add_attributes_to_attributes_define_images_html(){
             div_card_attribute.id = my_new_or_edited_game.game_descriptors[key].description
             let image_define = document.createElement('IMG')
             if (my_new_or_edited_game.game_descriptors[key].id === undefined){
-                console.log(`./images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(my_new_or_edited_game.game_images[key].image.name.replace('|','/'))}`)
-                image_define.setAttribute("src", `./images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(my_new_or_edited_game.game_images[key].image.name.replace('|','/'))}`) ;
-            }else{
                 check_file_multiple(my_new_or_edited_game.game_descriptors[key].image,image_define)
+            }else{
+                image_define.setAttribute("src", `./images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(my_new_or_edited_game.game_images[key].image.name.replace('|','/'))}`) ;
             }
             image_define.setAttribute("class", 'wd80 ht80 mt5 mb5 mr5 ml5')
             div_card_attribute.append(image_define)
