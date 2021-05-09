@@ -4,8 +4,6 @@ function create_status(){
     let elem_atomicity_html = document.getElementById('game_atomicity');
     let elem_percentage_html = document.getElementById('percentage');
 
-
-
     const result_status =  check_define_images()
     if (result_status[0] >= 25){
         elem_state_html.innerHTML = 'created';

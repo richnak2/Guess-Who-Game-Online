@@ -3,28 +3,12 @@ const attributes_define_images_html = document.getElementById('attributes_define
 let see_certain = undefined
 let active_unique = false
 function create_define_image(){
-    // check_attributes()
-    // check_images()
-    // delete_all_define_images()
-    // if ( delete_all_define_images()){
-    //     console.log('vytvaram')
-    // }
-
     delete_all_define_images()
-    // setTimeout(create,500)
-    console.log('uz vytvaram nove')
-    add_images_to_images_define_images_html()
-    add_attributes_to_attributes_define_images_html()
-
-
-}
-function create(){
     add_images_to_images_define_images_html()
     add_attributes_to_attributes_define_images_html()
 }
 
 function add_images_to_images_define_images_html(){
-    // delete_all_define_images()
     for (let key in my_new_or_edited_game.game_images) {
 
         let div_card_guess = document.createElement('div');
@@ -37,7 +21,6 @@ function add_images_to_images_define_images_html(){
         if (my_new_or_edited_game.game_images[key].id === undefined){
             check_file_multiple(my_new_or_edited_game.game_images[key].image,image_define)
         }else{
-            console.log('som tuna')
             image_define.setAttribute("src", `./images/${my_new_or_edited_game.origin_title}/images/${my_new_or_edited_game.game_images[key].image.name}`);
         }
 
@@ -105,7 +88,6 @@ function add_attributes_to_attributes_define_images_html(){
             json_of_keys[my_new_or_edited_game.game_descriptors[key].type].push(my_new_or_edited_game.game_descriptors[key].description)
         }
     }
-    // console.log(json_of_keys)
 
     let json_of_certain_attributes_html = {}
     for (let key in json_of_keys) {
@@ -117,7 +99,6 @@ function add_attributes_to_attributes_define_images_html(){
         certain_div_for_define_attribute.append(tag_p_for_define_attribute)
         json_of_certain_attributes_html[key] = certain_div_for_define_attribute
     }
-    // console.log(json_of_certain_attributes_html)
     for (let key in my_new_or_edited_game.game_descriptors) {
         if (my_new_or_edited_game.game_descriptors[key].image.name.includes('images|create_game.png')){
             let text_define_attribute = document.createElement('p');
@@ -129,11 +110,9 @@ function add_attributes_to_attributes_define_images_html(){
                     if (text_define_attribute.className.includes(' bg-success')){
                         text_define_attribute.className = text_define_attribute.className.replace(' bg-success', '')
                         see_certain.description_control = see_certain.description_control.replace(my_new_or_edited_game.game_descriptors[key].description+',','')
-                        console.log(my_new_or_edited_game.game_images)
                     }else {
                         text_define_attribute.className += ' bg-success'
                         see_certain.description_control += my_new_or_edited_game.game_descriptors[key].description+','
-                        console.log(my_new_or_edited_game.game_images)
                     }
 
                 }
@@ -158,11 +137,9 @@ function add_attributes_to_attributes_define_images_html(){
                     if (div_card_attribute.className.includes(' bg-success')){
                         div_card_attribute.className = div_card_attribute.className.replace(' bg-success', '')
                         see_certain.description_control = see_certain.description_control.replace(my_new_or_edited_game.game_descriptors[key].description+',','')
-                        // console.log(my_new_or_edited_game.game_images)
                     }else {
                         div_card_attribute.className += ' bg-success'
                         see_certain.description_control += my_new_or_edited_game.game_descriptors[key].description+','
-                        // console.log(my_new_or_edited_game.game_images)
                     }
 
                 }
@@ -199,16 +176,12 @@ function check_define_images(){
         counter[0] += 1
     }
     active_unique = !active_unique
-    console.log(same)
-    if (active_unique){
 
+    if (active_unique){
         for (let same_d in same) {
             let bg_color = getRandomColor()
             for (let index = 0 ;index <  same[same_d].length;index++){
             for (let same_key in same[same_d]) {
-                // for (let same_key in same[same_d_control]) {
-                // console.log(same_key)
-                // console.log()
                 document.getElementById(`card_img_definer_${same[same_d][index]}`).style.backgroundColor = bg_color
                 }
             }
@@ -224,6 +197,7 @@ function check_define_images(){
 
     return counter
 }
+
 function getRandomColor() {
     let letters = '0123456789ABCDEF';
     let color = '#';
@@ -243,6 +217,4 @@ function delete_all_define_images(){
     while (images.length > 0){
         images[0].remove()
     }
-    console.log('mazem')
-
 }

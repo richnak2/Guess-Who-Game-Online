@@ -52,10 +52,7 @@ function delete_image_guess(index) {
 }
 
 function replace_image_guess(index , file){
-    console.log(index, file)
     my_new_or_edited_game.game_images[index] = {'image' : file,'description_control':''}
-    console.log(my_new_or_edited_game)
-
 }
 
 function recreate_images(path){
@@ -88,7 +85,6 @@ function check_images(switch_page){
                     create_exception('Same game images are not allowed',20,'warning');
                     config_divs_html.attributes = false
                     config_divs_html.save = false
-                    console.log('som tuna po form')
                     display('images')
                     my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,false,true,'revert')
                     return false
@@ -104,11 +100,11 @@ function check_images(switch_page){
     config_divs_html.save = true
     my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,undefined,true,'revert')
     if (my_new_or_edited_game.type !== '0 0 1' && switch_page ){
-        console.log('som tuna po form')
         display('attributes')
     }
     return true
 }
+
 function delete_all_images(){
     counter_of_img = 0
     let card_images = document.getElementsByClassName('card_img');

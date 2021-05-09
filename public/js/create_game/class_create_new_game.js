@@ -65,7 +65,6 @@ class NewGame{
     }
 
     premake_attributes(){
-        console.log(this.type)
        if(this.type === '1 0 1' ){
            document.getElementById('description_image_title').style.display = "none"
            document.getElementById('description_add_more').style.display = "none"

@@ -10,9 +10,11 @@ game_name_html.onchange =  () =>{
     socket.emit('exist_dir',{game_name_val});
     switch_page_main = false
 }
+
 game_description_html.onchange =  () =>{
     my_new_or_edited_game.description = game_description_html.value;
 }
+
 socket.on('exist_dir',({exist})=>{
     if (exist){
         if (my_new_or_edited_game.id ) {
@@ -69,10 +71,8 @@ function recreate_main(){
     game_description_html.value = my_new_or_edited_game.description;
     let path = `./images/${decodeURI(my_new_or_edited_game.origin_title)}/`;
     game_main_img_of_game_html.src = path+'default.png';
-    console.log(path)
     recreate_images(path);
 }
-
 
 function delete_all_main(){
     game_name_html.value = '';

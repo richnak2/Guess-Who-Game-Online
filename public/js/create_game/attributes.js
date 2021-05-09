@@ -132,7 +132,6 @@ function delete_all_attributes(){
 }
 
 function check_attributes(switch_page){
-    console.log(my_new_or_edited_game.game_descriptors)
     let error = false
     for (let key1 in my_new_or_edited_game.game_descriptors) {
         for (let key2 in my_new_or_edited_game.game_descriptors) {

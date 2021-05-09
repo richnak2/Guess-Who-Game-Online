@@ -4,7 +4,6 @@ function make_form_data(){
         form_data_create_game.append('game_id',my_new_or_edited_game.id);
     }
     form_data_create_game.append('my_socket_id',my_socket_id);
-    /// CHECK 1
     if (check_main(false)){
 
         if (game_input_main_img_html.files[0] !== undefined) {
@@ -16,8 +15,6 @@ function make_form_data(){
         form_data_create_game.append('game_name', my_new_or_edited_game.origin_title === undefined ? my_new_or_edited_game.title  : my_new_or_edited_game.origin_title);
         form_data_create_game.append('game_name', my_new_or_edited_game.title);
         form_data_create_game.append('game_description', my_new_or_edited_game.description);
-
-        /// CHECK 2
 
         if (check_attributes(false)) {
             for (let key in my_new_or_edited_game.game_descriptors) {
@@ -52,11 +49,6 @@ function make_form_data(){
     }else{
         return undefined
     }
-    // console.log('FORM DATA:')
-    // for (let key of form_data_create_game.entries()) {
-    //     console.log(key, form_data_create_game[key]);
-    // }
-    // console.log(form_data_create_game)
     return form_data_create_game
 }
 

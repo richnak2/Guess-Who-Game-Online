@@ -1,11 +1,10 @@
-// let main_config_divs_html_btn = {}
 let html_all_games = undefined;
 const possible_extensions = ['image/png','image/jpeg','image/PNG','image/JPEG',"image/jpg","image/JPG"];
 const allow_buttons = ['main_button_allow_check1','main_button_allow_check2','main_button_allow_check3','main_button_allow_save','main_button_allow_test','back_to_list_of_games']
 let config_divs_html = {'main':true,'images':false,'attributes':false,'define_images':false,'save':false,'status':true};
 const illegal_characters = ['-', ':', '<', '>','|' ,'.' , '/' , '\\' , '?' , "*" , "$" , '#' ,'!' ,'@',','];
 let currently_edited_game = undefined;
-allowed = true
+let allowed = true
 const my_new_or_edited_game = new NewGame()
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -31,7 +30,6 @@ function findYourGames (){
 }
 
 socket.on('get_all_games_by_you' , ({games}) => {
-    console.log("GAMES   : " ,games);
     for (let index_game = 0; index_game < games.length; index_game++) {
         create_html_games(games[index_game]);
     }
@@ -119,12 +117,10 @@ function create_new_game(type){
 }
 
 function display(witch){
-    console.log(witch)
     if ( witch === 'status'){
         create_status()
     }
     if (witch === 'define_images' && config_divs_html.define_images){
-        console.log('d-vytvaram')
         create_define_image()
     }
     my_new_or_edited_game.show_hide_inside(witch)
@@ -139,10 +135,7 @@ function delete_game(game_id, title){
     allowed = false
     socket.emit('delete_game' , {game_id,title,my_socket_id})
     delete_all_html_games();
-    // create_exception('game has been deleted',5,'success');
 }
-
-
 
 function check_file_multiple(file,add_to_this_elem){
     const reader = new FileReader()
@@ -151,6 +144,7 @@ function check_file_multiple(file,add_to_this_elem){
     }
     reader.readAsDataURL(file);
 }
+
 function list_all_possible_games_for_create(){
     if (allowed){
         const list_possible_html = document.getElementById('list_of_possible_games')
