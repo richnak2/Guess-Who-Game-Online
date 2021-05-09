@@ -5,10 +5,12 @@ const game_main_img_of_game_html = document.getElementById('main_img_of_game')
 let switch_page_main = true
 
 game_name_html.onchange =  () =>{
-    console.log('change',game_name_html.value)
+    my_new_or_edited_game.title = game_name_html.value
+    let game_name_val = game_name_html.value
+    socket.emit('exist_dir',{game_name_val});
 }
 game_description_html.onchange =  () =>{
-    console.log('change',game_description_html.value)
+    my_new_or_edited_game.description = game_description_html.value;
 }
 socket.on('exist_dir',({exist})=>{
     if (exist){
@@ -16,8 +18,7 @@ socket.on('exist_dir',({exist})=>{
             if (my_new_or_edited_game.origin_title === game_name_html.value) {
                 config_divs_html.images = true
                 config_divs_html.save = true // asi
-                my_new_or_edited_game.title = game_name_html.value
-                my_new_or_edited_game.description = game_description_html.value;
+
                 my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,undefined,true,'revert')
                 if (switch_page_main){
                     display('images');
