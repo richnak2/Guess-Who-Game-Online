@@ -41,14 +41,14 @@ class NewGame{
 
     // user interface
     show_hide_inside(what_div_html){
-        for (let key in main_config_divs) {
+        for (let key in config_divs_html) {
             if (what_div_html === key ){
-                if (main_config_divs[key]){
+                if (config_divs_html[key]){
                     document.getElementById(key).style.display = 'revert';
                 }else{
                     let last = ''
-                    for (let key in main_config_divs) {
-                        if (main_config_divs[key] && key !== 'status'){
+                    for (let key in config_divs_html) {
+                        if (config_divs_html[key] && key !== 'status'){
                             last = key
                         }
                     }

@@ -2,7 +2,7 @@
 let html_all_games = undefined;
 const possible_extensions = ['image/png','image/jpeg','image/PNG','image/JPEG',"image/jpg","image/JPG"];
 const allow_buttons = ['main_button_allow_check1','main_button_allow_check2','main_button_allow_check3','main_button_allow_save','main_button_allow_test','back_to_list_of_games']
-let main_config_divs = {'main':true,'images':false,'attributes':false,'define_images':false,'save':false,'status':true};
+let config_divs_html = {'main':true,'images':false,'attributes':false,'define_images':false,'save':false,'status':true};
 const illegal_characters = ['-', ':', '<', '>','|' ,'.' , '/' , '\\' , '?' , "*" , "$" , '#' ,'!' ,'@',','];
 let currently_edited_game = undefined;
 const my_new_or_edited_game = new NewGame()
@@ -38,7 +38,7 @@ function back_to_list_of_your_games(){
     document.getElementById('all_games').style.display = 'contents';
     document.getElementById('menu_for_config_game').style.display = 'none';
     delete_all_main()
-    main_config_divs = {'main':true,'images':false,'attributes':false,'define_images':false,'save':false,'status':true};
+    config_divs_html = {'main':true,'images':false,'attributes':false,'define_images':false,'save':false,'status':true};
     display('abstract')
     create_exception('loading',3,'success')
 }
@@ -104,13 +104,13 @@ function create_html_games(game){
     buttons_edit.className = 'btn btn-default bg-success mb10 text-light'
     buttons_edit.innerHTML = 'edit'
     buttons_edit.onclick = function (){
-        for (let key in main_config_divs) {
-            main_config_divs[key] = true
+        for (let key in config_divs_html) {
+            config_divs_html[key] = true
         }
         const list_possible_html = document.getElementById('all_games')
         list_possible_html.style.display =   'none'
         my_new_or_edited_game.load_game(game)
-        my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,true,true,'revert')
+        my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,true,true,'revert')
         my_new_or_edited_game.show_hide(document.getElementById('menu_for_config_game'))
         my_new_or_edited_game.show_hide_inside('main')
         recreate_main()
@@ -132,8 +132,8 @@ function create_new_game(type){
     const list_possible_html = document.getElementById('list_of_possible_games')
     list_possible_html.style.display =  (list_possible_html.style.display === 'contents') ?  'none' :  'contents'
     my_new_or_edited_game.setType(type)
-    main_config_divs = {'main':true,'images':false,'attributes':false,'define_images':false,'save':false,'status':true};
-    my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,false,true,'revert')
+    config_divs_html = {'main':true,'images':false,'attributes':false,'define_images':false,'save':false,'status':true};
+    my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,false,true,'revert')
     my_new_or_edited_game.show_hide(document.getElementById('menu_for_config_game'))
     my_new_or_edited_game.show_hide_inside('main')
 
@@ -144,7 +144,7 @@ function display(witch){
     if ( witch === 'status'){
         create_status()
     }
-    if (witch === 'define_images' && main_config_divs.define_images){
+    if (witch === 'define_images' && config_divs_html.define_images){
         console.log('d-vytvaram')
         create_define_image()
     }

@@ -27,24 +27,24 @@ function make_form_data(){
         /// CHECK 2
 
         if (check_attributes()) {
-            for (let key in main_config_divs.game_descriptors) {
-                form_data_create_game.append('d_img',  main_config_divs.game_descriptors[key].image);
-                form_data_create_game.append('d_type', main_config_divs.game_descriptors[key].type);
-                form_data_create_game.append('d_descriptor_question',  main_config_divs.game_images[key].description);
+            for (let key in my_new_or_edited_game.game_descriptors) {
+                form_data_create_game.append('d_img',  my_new_or_edited_game.game_descriptors[key].image);
+                form_data_create_game.append('d_type', my_new_or_edited_game.game_descriptors[key].type);
+                form_data_create_game.append('d_descriptor_question',  my_new_or_edited_game.game_images[key].description);
             }
         }else{
             return undefined
         }
         if ( check_images(false)) {
-            for (let key in main_config_divs.game_images) {
-                form_data_create_game.append('game_img', main_config_divs.game_images[key].image);
-                form_data_create_game.append('game_img_auto_descriptor',main_config_divs.game_images[key].description_control);
+            for (let key in my_new_or_edited_game.game_images) {
+                form_data_create_game.append('game_img', my_new_or_edited_game.game_images[key].image);
+                form_data_create_game.append('game_img_auto_descriptor',my_new_or_edited_game.game_images[key].description_control);
                 form_data_create_game.append('game_img_question', '');
             }
         }else{
             return undefined
         }
-        form_data_create_game.append('category_of_players', main_config_divs.type);
+        form_data_create_game.append('category_of_players', my_new_or_edited_game.type);
 
         let counter = 0
         for (let key1 in my_new_or_edited_game.game_images) {
@@ -61,7 +61,7 @@ function make_form_data(){
     }
     console.log('FORM DATA:')
     for (let key of form_data_create_game.entries()) {
-        console.log(key,':', form_data_create_game[key]);
+        console.log(key, form_data_create_game[key]);
     }
     console.log(form_data_create_game)
     return form_data_create_game

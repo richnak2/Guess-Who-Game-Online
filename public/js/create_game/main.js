@@ -7,37 +7,37 @@ socket.on('exist_dir',({exist})=>{
     if (exist){
         if (my_new_or_edited_game.id ) {
             if (my_new_or_edited_game.origin_title === game_name_html.value) {
-                main_config_divs.images = true
-                main_config_divs.save = true // asi
+                config_divs_html.images = true
+                config_divs_html.save = true // asi
                 my_new_or_edited_game.title = game_name_html.value
                 my_new_or_edited_game.description = game_description_html.value;
-                my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,undefined,true,'revert')
+                my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,undefined,true,'revert')
                 if (switch_page_main){
                     display('images');
                 }
 
             } else {
-                main_config_divs.images = false
-                main_config_divs.save = false
+                config_divs_html.images = false
+                config_divs_html.save = false
                 display('main');
-                my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,true,true,'revert')
+                my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,true,true,'revert')
 
                 create_exception('Game title already exist', 5, 'warning');
             }
         }else{
-            main_config_divs.images = false
-            main_config_divs.save = false
+            config_divs_html.images = false
+            config_divs_html.save = false
             display('main');
-            my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,false,true,'revert')
+            my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,false,true,'revert')
 
             create_exception('Game title already exist',5,'warning');
         }
     }else{
-        main_config_divs.images = true
-        main_config_divs.save = true // asi
+        config_divs_html.images = true
+        config_divs_html.save = true // asi
         my_new_or_edited_game.title = game_name_html.value
         my_new_or_edited_game.description = game_description_html.value;
-        my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,undefined,true,'revert')
+        my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,undefined,true,'revert')
         if (switch_page_main){
             display('images');
         }
@@ -79,8 +79,8 @@ function check_main(){
         if (check_for_illegal_characters(game_name_val)) {
             create_exception(`illegal characters in title of the game <strong>${illegal_characters.join(' ')}</strong>`,5,'warning');
             game_name_html.style.border = " 2px solid #fff3cd";
-            main_config_divs.save = false
-            my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,undefined,true,'revert')
+            config_divs_html.save = false
+            my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,undefined,true,'revert')
             display('main');
             return false
         }
@@ -94,8 +94,8 @@ function check_main(){
         }else{
             game_name_html.style.border = " 2px solid #ced4da";
         }
-        main_config_divs.save = false
-        my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,undefined,true,'revert')
+        config_divs_html.save = false
+        my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,undefined,true,'revert')
         display('main');
         return false
     }

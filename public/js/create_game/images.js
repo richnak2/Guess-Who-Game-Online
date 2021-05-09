@@ -86,10 +86,10 @@ function check_images(switch_page){
                     document.getElementById(`card_guess_${key1}`).className = 'card bg-warning no_btn card_img'
                     document.getElementById(`card_guess_${key2}`).className = 'card bg-warning no_btn card_img'
                     create_exception('Same game images are not allowed',20,'warning');
-                    main_config_divs.attributes = false
-                    main_config_divs.save = false
+                    config_divs_html.attributes = false
+                    config_divs_html.save = false
                     display('images')
-                    my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,false,true,'revert')
+                    my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,false,true,'revert')
                     return false
 
                 }else{
@@ -99,10 +99,11 @@ function check_images(switch_page){
             }
         }
     }
-    main_config_divs.attributes = true
-    main_config_divs.save = true
-    my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,undefined,true,'revert')
+    config_divs_html.attributes = true
+    config_divs_html.save = true
+    my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,undefined,true,'revert')
     if (this.type !== '0 0 1' && switch_page){
+        console.log('som tuna po form')
         display('attributes')
     }
     return true

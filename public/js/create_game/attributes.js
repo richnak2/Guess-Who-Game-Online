@@ -156,15 +156,15 @@ function check_attributes(){
         }
     }
     if (error){
-        main_config_divs.define_images = false
-        main_config_divs.save = false
-        my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,false,true,'revert')
+        config_divs_html.define_images = false
+        config_divs_html.save = false
+        my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,false,true,'revert')
         display('attributes')
         return false
     }
-    main_config_divs.define_images = true
-    main_config_divs.save = true
-    my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,undefined,true,'revert')
+    config_divs_html.define_images = true
+    config_divs_html.save = true
+    my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,undefined,true,'revert')
     display('define_images')
     return true
 }
