@@ -8,6 +8,7 @@ game_name_html.onchange =  () =>{
     my_new_or_edited_game.title = game_name_html.value
     let game_name_val = game_name_html.value
     socket.emit('exist_dir',{game_name_val});
+    switch_page_main = false
 }
 game_description_html.onchange =  () =>{
     my_new_or_edited_game.description = game_description_html.value;
@@ -27,7 +28,9 @@ socket.on('exist_dir',({exist})=>{
             } else {
                 config_divs_html.images = false
                 config_divs_html.save = false
-                display('main');
+                if (switch_page_main) {
+                    display('main');
+                }
                 my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,true,true,'revert')
 
                 create_exception('Game title already exist', 5, 'warning');
@@ -35,7 +38,9 @@ socket.on('exist_dir',({exist})=>{
         }else{
             config_divs_html.images = false
             config_divs_html.save = false
-            display('main');
+            if (switch_page_main) {
+                display('main');
+            }
             my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,false,true,'revert')
 
             create_exception('Game title already exist',5,'warning');
