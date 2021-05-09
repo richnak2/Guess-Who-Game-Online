@@ -3,6 +3,13 @@ const game_description_html = document.getElementById('game_description')
 const game_input_main_img_html = document.getElementById('input_main_img')
 const game_main_img_of_game_html = document.getElementById('main_img_of_game')
 let switch_page_main = true
+
+game_name_html.onchange =  () =>{
+    console.log('change',game_name_html.value)
+}
+game_description_html.onchange =  () =>{
+    console.log('change',game_description_html.value)
+}
 socket.on('exist_dir',({exist})=>{
     if (exist){
         if (my_new_or_edited_game.id ) {
