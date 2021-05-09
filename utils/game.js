@@ -277,16 +277,21 @@ class NewGame{
 
     async answerToQuestionMultiplayer(player, massage){
         return await new Promise((resolve, reject) => {
+            console.log('define_end_of_the_game1 : ',this.define_end_of_the_game)
             if (this.define_end_of_the_game !== undefined){
+                console.log('define_end_of_the_game2 : ',this.define_end_of_the_game)
                 if (massage){
+                    console.log('define_end_of_the_game3 : ',this.define_end_of_the_game)
                    const points_add_player1 = this.player1.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/ ((this.player1.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player1))
                     points_add_player1.then(res => {
                        const points_add_player2 = this.player2.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/((this.player2.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player2))
                         points_add_player2.then(res => {
+                            massage.certain = false
                             resolve(massage)
                         }).catch(err => new Error(`answerToQuestionMultiplayer => certain image => ${err}`))
                     }).catch(err => new Error(`answerToQuestionMultiplayer => certain image => ${err}`))
                 }else{
+                    massage.certain = false
                     resolve(massage)
                 }
             }else{

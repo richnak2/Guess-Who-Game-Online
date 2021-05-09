@@ -64,6 +64,7 @@ socket.on('answer_to_is_you_picture_pc',({answer}) =>{
     }
 })
 socket.on('opponent_left',({}) => {
+    console.log('oppp left')
     make_win_multiplier("You win");
     socket.emit('leave_game',{my_socket_id});
 
@@ -71,10 +72,10 @@ socket.on('opponent_left',({}) => {
 // answer_to_question(false)
 socket.on('multiplayer_massage', ({broadcast_massage}) => {
     console.log('multiplayer_massage',broadcast_massage)
-    if (broadcast_massage === true || broadcast_massage === false){
+    if (broadcast_massage.certain === true || broadcast_massage.certain === false){
         let elem_ask_img = document.getElementsByClassName('undefined')[0];
         if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
-            if ( broadcast_massage){
+            if ( broadcast_massage.certain){
                 // my_game.state = true;
                 make_win_multiplier("You win");
             }
