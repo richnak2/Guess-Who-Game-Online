@@ -200,8 +200,9 @@ function check_define_images(){
     active_unique = !active_unique
     console.log(same)
     if (active_unique){
-        let bg_color = getRandomColor()
+
         for (let same_d in same) {
+            let bg_color = getRandomColor()
             for (let index = 0 ;index <  same[same_d].length;index++){
             for (let same_key in same[same_d]) {
                 // for (let same_key in same[same_d_control]) {
@@ -215,7 +216,7 @@ function check_define_images(){
         for (let same_d in same) {
             for (let index = 0 ;index <  same[same_d].length;index++)
                 for (let same_key in same[same_d]) {
-                    document.getElementById(`card_img_definer_${same[same_d][index]}`).style.removeProperty('backgroundColor')
+                    document.getElementById(`card_img_definer_${same[same_d][index]}`).style.backgroundColor = "";
                 }
         }
     }
