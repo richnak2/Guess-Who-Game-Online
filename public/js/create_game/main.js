@@ -43,8 +43,6 @@ socket.on('exist_dir',({exist})=>{
     }else{
         config_divs_html.images = true
         config_divs_html.save = true // asi
-        my_new_or_edited_game.title = game_name_html.value
-        my_new_or_edited_game.description = game_description_html.value;
         my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,undefined,true,'revert')
         if (switch_page_main){
             display('images');
