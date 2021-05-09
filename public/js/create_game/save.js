@@ -70,21 +70,21 @@ function save_game() {
         return false
     }else{
         console.log(form_data_create_game);
-        const response = fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
-            method: 'POST',
-            body: form_data_create_game
-        }).catch(err => {
-            create_exception('Something want wrong with saving', 10, 'danger');
-            // delete_all_html_games();
-        })
-        const json  = response.json()
-        if (json.data === undefined){
-            create_exception('Game saved', 10, 'success');
-            // delete_all_html_games();
-        }
-        else{
-            create_exception(json.data, json.time_of_exception, json.type_of_exception);
-            // delete_all_html_games();
-        }
+        // const response = fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
+        //     method: 'POST',
+        //     body: form_data_create_game
+        // }).catch(err => {
+        //     create_exception('Something want wrong with saving', 10, 'danger');
+        //     // delete_all_html_games();
+        // })
+        // const json  = response.json()
+        // if (json.data === undefined){
+        //     create_exception('Game saved', 10, 'success');
+        //     // delete_all_html_games();
+        // }
+        // else{
+        //     create_exception(json.data, json.time_of_exception, json.type_of_exception);
+        //     // delete_all_html_games();
+        // }
     }
 }

@@ -9,6 +9,8 @@ socket.on('exist_dir',({exist})=>{
             if (my_new_or_edited_game.origin_title === game_name_html.value) {
                 main_config_divs.images = true
                 main_config_divs.save = true // asi
+                my_new_or_edited_game.title = game_name_html.value
+                my_new_or_edited_game.description = game_description_html.value;
                 my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,undefined,true,'revert')
                 if (switch_page_main){
                     display('images');
@@ -33,6 +35,8 @@ socket.on('exist_dir',({exist})=>{
     }else{
         main_config_divs.images = true
         main_config_divs.save = true // asi
+        my_new_or_edited_game.title = game_name_html.value
+        my_new_or_edited_game.description = game_description_html.value;
         my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,undefined,true,'revert')
         if (switch_page_main){
             display('images');
