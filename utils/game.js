@@ -286,7 +286,7 @@ class NewGame{
                     points_add_player1.then(res => {
                        const points_add_player2 = this.player2.addPoints((AllGames.game_with_bonus === this.game_name ? 2000 : 1000)/((this.player2.id_socket === player.id_socket ? 10:0 )+ this.ask_counter_player2))
                         points_add_player2.then(res => {
-                            massage['certain'] =  true
+                            // massage['certain'] =  true
                             resolve(massage)
                         }).catch(err => new Error(`answerToQuestionMultiplayer => certain image => ${err}`))
                     }).catch(err => new Error(`answerToQuestionMultiplayer => certain image => ${err}`))
