@@ -36,8 +36,8 @@ function add_images_to_images_define_images_html(){
 
         if (my_new_or_edited_game.game_images[key].id === undefined){
             check_file_multiple(my_new_or_edited_game.game_images[key].image,image_define)
-
         }else{
+            console.log('som tuna')
             image_define.setAttribute("src", `./images/${my_new_or_edited_game.origin_title}/images/${my_new_or_edited_game.game_images[key].image.name}`);
         }
 
@@ -148,6 +148,7 @@ function add_attributes_to_attributes_define_images_html(){
             if (my_new_or_edited_game.game_descriptors[key].id === undefined){
                 check_file_multiple(my_new_or_edited_game.game_descriptors[key].image,image_define)
             }else{
+
                 image_define.setAttribute("src", `./images/${decodeURI(my_new_or_edited_game.origin_title)}/${decodeURI(my_new_or_edited_game.game_descriptors[key].image.name.replace('|','/'))}`) ;
             }
             image_define.setAttribute("class", 'wd80 ht80 mt5 mb5 mr5 ml5')
