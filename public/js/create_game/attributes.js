@@ -39,7 +39,7 @@ function add_attribute(display,object_attribute){
     input_file.accept = ".png, .jpg, .jpeg, .gif";
     input_file.onchange = function (){
         replace_image_attribute(index_of_attribute,input_file.files[0]);
-        check_file_img(input_file,image_for_description);
+        check_file_multiple(input_file,image_for_description);
     }
     label.append(image_for_description);
     cell1.append(label,input_file);

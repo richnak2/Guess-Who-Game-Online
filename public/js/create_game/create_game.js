@@ -96,7 +96,7 @@ function create_html_games(game){
     div_body_card.className = "card-body";
     card_title.className = " text-center mb0 text_black";
 
-    card_title.innerHTML = (game['title'].slice(0,10) !== game['title'] ? game['title'].slice(0,10)+'...' : game['title']);
+    card_title.innerHTML = (game['title'].slice(0,10) !== game['title'] ? game['title'].slice(0,10)+'...' : game['title']);//description
     div_card_buttons.className = 'text-center';
 
 
@@ -162,14 +162,7 @@ function delete_game(game_id, title){
     // create_exception('game has been deleted',5,'success');
 }
 
-function check_file_img(which,add_to_this_elem){
-    const reader = new FileReader()
-    reader.onload = function (){
-        add_to_this_elem.src = reader.result
-    }
-    reader.readAsDataURL(which.files[0]);
-    return true;
-}
+
 
 function check_file_multiple(file,add_to_this_elem){
     const reader = new FileReader()
