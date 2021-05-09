@@ -291,7 +291,7 @@ class NewGame{
                         }).catch(err => new Error(`answerToQuestionMultiplayer => certain image => ${err}`))
                     }).catch(err => new Error(`answerToQuestionMultiplayer => certain image => ${err}`))
                 }else{
-                    massage['certain'] =  false
+                    // massage['certain'] =  false
                     resolve(massage)
                 }
             }else{

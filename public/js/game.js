@@ -74,25 +74,30 @@ socket.on('multiplayer_massage', ({broadcast_massage}) => {
     console.log('multiplayer_massage',broadcast_massage)
     if (broadcast_massage === true || broadcast_massage === false ){
         let elem_ask_img = document.getElementsByClassName('undefined')[0];
-        elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage ? 'bg-success':'bg-danger')
-        // if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
-        //     elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage ? 'bg-success':'bg-danger')
-        // }
+        if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
+            if (last_massage_is_certain && broadcast_massage){ // last_massage_is_certain && broadcast_massage
+                // my_game.state = true;
+                make_win_multiplier("You win");
+            }
+        }
+            elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage ? 'bg-success':'bg-danger')
+
 
     }else{
         console.log('masage make question is : ',broadcast_massage);
         if (broadcast_massage.title !== undefined){
             last_massage_is_certain = broadcast_massage.certain !== undefined
             make_question_for_opponent(broadcast_massage);
-        }else if (broadcast_massage.src === undefined && broadcast_massage.certain){
-            let elem_ask_img = document.getElementsByClassName('undefined')[0];
-            elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage.certain ? 'bg-success':'bg-danger')
-            if (broadcast_massage.certain){
-                make_win_multiplier("You win");
-            }
         }else{
             make_massage(broadcast_massage,'opponent')
         }
+    // else if (broadcast_massage.src === undefined && broadcast_massage.certain){
+    //         let elem_ask_img = document.getElementsByClassName('undefined')[0];
+    //         elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage.certain ? 'bg-success':'bg-danger')
+    //         if (broadcast_massage.certain){
+    //             make_win_multiplier("You win");
+    //         }
+    //     }
     }
 })
 
