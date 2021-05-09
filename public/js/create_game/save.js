@@ -8,7 +8,7 @@ function make_form_data(){
     form_data_create_game.append('my_socket_id',my_socket_id);
 
     /// CHECK 1
-    let check_main =  check_main('no_switch')
+    let check_main =  check_main()
     if (check_main){
 
         if (game_input_main_img_html.files[0] !== undefined) {
@@ -58,21 +58,21 @@ function make_form_data(){
     return form_data_create_game
 }
 
-async function save_game() {
+function save_game() {
     let form_data_create_game = make_form_data();
     if (form_data_create_game === undefined) {
         create_exception('somthing wand wnog fith formating of request', 10, 'warning')
         return false
     }else{
         console.log(form_data_create_game);
-        const response = await fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
+        const response = fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
             method: 'POST',
             body: form_data_create_game
         }).catch(err => {
             create_exception('Something want wrong with saving', 10, 'danger');
             delete_all_html_games();
         })
-        const json  = await response.json()
+        const json  = response.json()
         if (json.data === undefined){
             create_exception('Game saved', 10, 'success');
             delete_all_html_games();

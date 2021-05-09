@@ -60,13 +60,16 @@ function delete_all_main(){
 }
 
 function check_main(page_switch_allowed){
-    switch_page_main = !page_switch_allowed
+    // switch_page_main = !page_switch_allowed
     let game_name_val = game_name_html.value;
 
     if (game_name_val && (game_name_val.length < 30 && game_name_val.length >= 5)) {
         if (check_for_illegal_characters(game_name_val)) {
             create_exception(`illegal characters in title of the game <strong>${illegal_characters.join(' ')}</strong>`,5,'warning');
             game_name_html.style.border = " 2px solid #fff3cd";
+            main_config_divs.save = false
+            my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,undefined,true,'revert')
+            display('main');
             return false
         }
         game_name_html.style.border = " 2px solid #ced4da";
@@ -79,6 +82,9 @@ function check_main(page_switch_allowed){
         }else{
             game_name_html.style.border = " 2px solid #ced4da";
         }
+        main_config_divs.save = false
+        my_new_or_edited_game.show_user_interface(main_config_divs.main,main_config_divs.images,main_config_divs.attributes,main_config_divs.define_images,undefined,true,'revert')
+        display('main');
         return false
     }
     return true
