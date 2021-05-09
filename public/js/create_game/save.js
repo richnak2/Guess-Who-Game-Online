@@ -46,9 +46,12 @@ function make_form_data(){
         }
         form_data_create_game.append('category_of_players', main_config_divs.type);
 
-        let check_define_images = check_define_images()
+        let counter = 0
+        for (let key1 in my_new_or_edited_game.game_images) {
+            counter += 1
+        }
 
-        if (check_define_images[0] >= 25) {
+        if (counter >= 25) {
             form_data_create_game.append('created', '1');
         } else {
             form_data_create_game.append('created', '0');
