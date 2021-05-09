@@ -537,14 +537,15 @@ function answer_to_question(bull){
         if (game_type === 'kid') {
             lock_unlock_buttons();
         }
-        // hide_win_lost()
+        hide_win_lost()
     }
 }
 
-// function hide_win_lost(){
-//     html_centered_win.style.display = 'none';
-//     html_centered_centered_win.style.display = 'none';
-// }
+function hide_win_lost(){
+    html_centered_win.style.display = 'none';
+    html_centered_centered_win.style.display = 'none';
+}
+
 function make_question_for_opponent(question){
 
     console.log('THE QUESTION IS : ',question)
