@@ -59,6 +59,10 @@ function make_form_data(){
     }else{
         return undefined
     }
+    console.log('FORM DATA:')
+    for (let key of form_data_create_game.entries()) {
+        console.log(key,':', form_data_create_game[key]);
+    }
     console.log(form_data_create_game)
     return form_data_create_game
 }
