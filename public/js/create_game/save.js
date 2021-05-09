@@ -20,6 +20,7 @@ function make_form_data(){
             let blob = new File([undefined], game_main_img_of_game_html.src.split('/').pop());
             form_data_create_game.append('main_img_file', blob);
         }
+        console.log(my_new_or_edited_game.origin_title === undefined ? my_new_or_edited_game.title  : my_new_or_edited_game.origin_title)
         form_data_create_game.append('game_name', my_new_or_edited_game.origin_title === undefined ? my_new_or_edited_game.title  : my_new_or_edited_game.origin_title);
         form_data_create_game.append('game_name', my_new_or_edited_game.title);
         form_data_create_game.append('game_description', my_new_or_edited_game.description);

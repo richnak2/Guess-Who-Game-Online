@@ -340,7 +340,7 @@ router.post('/upload_new_game', function(req, res) {
         console.log(old_path, new_path)
         let path_is_renamed = old_path !== new_path;
         // CHECK 1
-        let check_1 = makeMainDir(main_game_img, './public/images/', new_path, path_is_renamed);
+        let check_1 = makeMainDir(main_game_img, old_path, new_path, path_is_renamed);
         if (typeof check_1 === 'boolean') {
             const id_of_game_check1 = check1(id_of_game,user_id,main_game_name,game_category_of_players,main_game_description,created)// main_game_name,game_category_of_players,main_game_description,created
             id_of_game_check1.then(id_of_game => {
