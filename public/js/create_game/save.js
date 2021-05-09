@@ -31,7 +31,7 @@ function make_form_data(){
             for (let key in my_new_or_edited_game.game_descriptors) {
                 form_data_create_game.append('d_img',  my_new_or_edited_game.game_descriptors[key].image);
                 form_data_create_game.append('d_type', my_new_or_edited_game.game_descriptors[key].type);
-                form_data_create_game.append('d_descriptor_question',  my_new_or_edited_game.game_images[key].description);
+                form_data_create_game.append('d_descriptor_question',  my_new_or_edited_game.game_descriptors[key].description);
             }
         }else{
             return undefined

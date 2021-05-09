@@ -19,24 +19,24 @@ function printError(err){
 }
 
 function makeMainDir(main_img,old_path, new_path, path_is_renamed) {
-    console.log(main_img,old_path, new_path, path_is_renamed)
+    // console.log(main_img,old_path, new_path, path_is_renamed)
     FileManager.makeDir(new_path)
     if (path_is_renamed){
         if (main_img.mimetype.includes('image')){
-            console.log('makeMainDir - 1')
+            // console.log('makeMainDir - 1')
             main_img.mv(new_path+ '/default.png');
         }else{
-            console.log('makeMainDir - 2')
+            // console.log('makeMainDir - 2')
             let copied = FileManager.copyFile(old_path+ "/default.png",new_path+ "/default.png")
             if (copied){return copied}
         }
     }else{
         if (main_img.mimetype.includes('image')){
-            console.log('makeMainDir - 3')
+            // console.log('makeMainDir - 3')
             main_img.mv(new_path+ '/default.png');
         }else{
             if (main_img.name === 'create_game.png') {
-                console.log('makeMainDir - 4')
+                // console.log('makeMainDir - 4')
                 let copied = FileManager.copyFile('./public/images/create_game.png',new_path+ "/default.png")
                 if (copied){return copied}
             }
@@ -46,6 +46,7 @@ function makeMainDir(main_img,old_path, new_path, path_is_renamed) {
 }
 
 function makeGameDescriptors(id_of_game,description_img,description_type,description_question,old_path,new_path,path_is_renamed){
+    console.log(id_of_game,description_img,description_type,description_question,old_path,new_path,path_is_renamed)
     let result =  undefined;
     if (description_img ===  undefined){
         if (description_type === undefined){
