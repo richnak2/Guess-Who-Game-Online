@@ -285,6 +285,9 @@ function send_massage() {
     socket.emit('multiplayer_massage',{my_socket_id, massage});
 }
 function make_massage(text,type){
+    if (text === ''){
+        return 
+    }
     if (type === 'disappear'){
         let ask_for_kids = document.getElementById('chat_for_kids');
         let new_task = document.createElement('p');
