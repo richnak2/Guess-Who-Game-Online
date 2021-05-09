@@ -115,6 +115,7 @@ io.on('connection', socket => {
     })
 
     socket.on('remove_player_from_connection',({my_socket_id}) =>{
+        console.log('connection error')
         const game_id = AllUsers.all_clients[my_socket_id].getGameId()
         if (game_id !== undefined){
             AllGames.leaveGame(game_id,AllUsers.all_clients[my_socket_id].id_socket)
@@ -222,6 +223,7 @@ io.on('connection', socket => {
         });
     });
     socket.on('leave_game',({my_socket_id}) => {
+        console.log('just leave')
         AllUsers.getUser(my_socket_id).then(user => {
                 if (user.getGameId() !== undefined ){
                     socket.broadcast.to(user.getGameId()).emit('opponent_left',{})
@@ -233,6 +235,7 @@ io.on('connection', socket => {
     })
 
     socket.on('multiplayer_massage',({my_socket_id,massage}) =>{
+        console.log(massage)
         if (massage === true || massage === false ){// otazka na ktora prichadza od hraca na server certain image pod tlacidlom guess
             let player = AllUsers.getUser(my_socket_id)
             player.then(user => {

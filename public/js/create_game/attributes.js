@@ -37,10 +37,7 @@ function add_attribute(display,object_attribute){
     }
     image_for_description.setAttribute("class", 'descriptor_images wd40 ht40');
     input_file.accept = ".png, .jpg, .jpeg, .gif";
-    input_file.onchange = function (){
-        replace_image_attribute(index_of_attribute,input_file.files[0]);
-        check_file_multiple(input_file.files[0],image_for_description);
-    }
+
     label.append(image_for_description);
     cell1.append(label,input_file);
     let input_text_type = document.createElement("INPUT");
@@ -89,6 +86,13 @@ function add_attribute(display,object_attribute){
         delete my_new_or_edited_game.game_descriptors[index_of_attribute]
         row.remove();
     }
+    input_file.onchange = function (){
+        input_text_type.value = ''
+        input_text_description_question.value = ''
+        replace_image_attribute(index_of_attribute,input_file.files[0]);
+        check_file_multiple(input_file.files[0],image_for_description);
+    }
+
     cell4.append(button);
 }
 

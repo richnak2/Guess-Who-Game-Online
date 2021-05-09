@@ -262,6 +262,7 @@ class NewGame{
     }
 
     addQuestionMultiplayer(player, massage){
+        console.log(massage)
         if (player.id_socket === this.player1.id_socket){
             this.ask_counter_player1 ++;
         }else{
