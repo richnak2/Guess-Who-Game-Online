@@ -70,6 +70,11 @@ function save_game() {
             method: 'POST',
             body: form_data_create_game
         })
+        document.getElementById('all_games').style.display = 'contents';
+        document.getElementById('menu_for_config_game').style.display = 'none';
+        config_divs_html = {'main':true,'images':false,'attributes':false,'define_images':false,'save':false,'status':true};
+        display('abstract')
+        create_exception('loading',3,'success')
         delete_all_html_games();
     }
 }
