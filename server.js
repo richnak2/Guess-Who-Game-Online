@@ -244,7 +244,7 @@ io.on('connection', socket => {
                     const massage_from_server = game.answerToQuestionMultiplayer(user, massage);
                     massage_from_server.then(answer => {
                         socket.broadcast.to(user.getGameId()).emit('multiplayer_massage', {broadcast_massage: answer});
-                        if (massage.certain){
+                        if (answer.certain){
                             AllGames.leaveGame(user.getGameId(),undefined,true)
                         }
                     })
