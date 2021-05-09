@@ -6,10 +6,13 @@ function make_form_data(){
 
     // ktori user to vlastne vytvara hru
     form_data_create_game.append('my_socket_id',my_socket_id);
+    console.log(my_socket_id)
+    console.log(my_new_or_edited_game.id)
+
 
     /// CHECK 1
-    let check_main =  check_main()
-    if (check_main){
+    // let check_m =  check_main()
+    if (check_main()){
 
         if (game_input_main_img_html.files[0] !== undefined) {
             form_data_create_game.append('main_img_file', game_input_main_img_html.files[0]);
@@ -22,8 +25,8 @@ function make_form_data(){
         form_data_create_game.append('game_description', my_new_or_edited_game.description);
 
         /// CHECK 2
-        let check_attributes =  check_attributes(false)
-        if (check_attributes) {
+
+        if (check_attributes()) {
             for (let key in main_config_divs.game_descriptors) {
                 form_data_create_game.append('d_img',  main_config_divs.game_descriptors[key].image);
                 form_data_create_game.append('d_type', main_config_divs.game_descriptors[key].type);
@@ -32,8 +35,7 @@ function make_form_data(){
         }else{
             return undefined
         }
-        let check_image =  check_images(false)
-        if (check_image) {
+        if ( check_images(false)) {
             for (let key in main_config_divs.game_images) {
                 form_data_create_game.append('game_img', main_config_divs.game_images[key].image);
                 form_data_create_game.append('game_img_auto_descriptor',main_config_divs.game_images[key].description_control);

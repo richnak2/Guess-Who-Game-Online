@@ -59,7 +59,7 @@ function delete_all_main(){
     delete_all_images()
 }
 
-function check_main(page_switch_allowed){
+function check_main(){
     // switch_page_main = !page_switch_allowed
     let game_name_val = game_name_html.value;
 
