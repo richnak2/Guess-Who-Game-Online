@@ -72,15 +72,19 @@ socket.on('opponent_left',({}) => {
 // answer_to_question(false)
 socket.on('multiplayer_massage', ({broadcast_massage}) => {
     console.log('multiplayer_massage',broadcast_massage)
-    if (broadcast_massage === true || broadcast_massage === false){
+    if (broadcast_massage === true || broadcast_massage === false || broadcast_massage.certain){
         let elem_ask_img = document.getElementsByClassName('undefined')[0];
         if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
             if ( broadcast_massage.certain){
                 // my_game.state = true;
                 make_win_multiplier("You win");
+            }else{
+                elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage.certain ? 'bg-success':'bg-danger')
             }
+        }else{
+            elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage ? 'bg-success':'bg-danger')
         }
-        elem_ask_img.className = elem_ask_img.className.replace('undefined' , broadcast_massage? 'bg-success':'bg-danger')
+
     }else{
         console.log('masage make question is : ',broadcast_massage);
         if (broadcast_massage.title !== undefined){
