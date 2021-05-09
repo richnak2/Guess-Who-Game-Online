@@ -29,6 +29,8 @@ function make_form_data(){
                 form_data_create_game.append('d_type', main_config_divs.game_descriptors[key].type);
                 form_data_create_game.append('d_descriptor_question',  main_config_divs.game_images[key].description);
             }
+        }else{
+            return undefined
         }
         let check_image =  check_images(false)
         if (check_image) {
@@ -37,6 +39,8 @@ function make_form_data(){
                 form_data_create_game.append('game_img_auto_descriptor',main_config_divs.game_images[key].description_control);
                 form_data_create_game.append('game_img_question', '');
             }
+        }else{
+            return undefined
         }
         form_data_create_game.append('category_of_players', main_config_divs.type);
 
@@ -47,6 +51,8 @@ function make_form_data(){
         } else {
             form_data_create_game.append('created', '0');
         }
+    }else{
+        return undefined
     }
     console.log(form_data_create_game)
     return form_data_create_game
@@ -55,23 +61,25 @@ function make_form_data(){
 async function save_game() {
     let form_data_create_game = make_form_data();
     if (form_data_create_game === undefined) {
-        return create_exception('somthing wand wnog fith formating of request', 10, 'warning')
-    }
-    console.log(form_data_create_game);
-    const response = await fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
-        method: 'POST',
-        body: form_data_create_game
-    }).catch(err => {
-        create_exception('Something want wrong with saving', 10, 'danger');
-        delete_all_html_games();
-    })
-    const json  = await response.json()
-    if (json.data === undefined){
-        create_exception('Game saved', 10, 'success');
-        delete_all_html_games();
-    }
-    else{
-        create_exception(json.data, json.time_of_exception, json.type_of_exception);
-        delete_all_html_games();
+        create_exception('somthing wand wnog fith formating of request', 10, 'warning')
+        return false
+    }else{
+        console.log(form_data_create_game);
+        const response = await fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
+            method: 'POST',
+            body: form_data_create_game
+        }).catch(err => {
+            create_exception('Something want wrong with saving', 10, 'danger');
+            delete_all_html_games();
+        })
+        const json  = await response.json()
+        if (json.data === undefined){
+            create_exception('Game saved', 10, 'success');
+            delete_all_html_games();
+        }
+        else{
+            create_exception(json.data, json.time_of_exception, json.type_of_exception);
+            delete_all_html_games();
+        }
     }
 }
