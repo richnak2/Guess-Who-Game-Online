@@ -5,7 +5,7 @@ function create_card_guessed(objet){
     counter_of_img ++
 
     let div_card_guess = document.createElement('div');
-    div_card_guess.className = 'card btn-light no_btn card_img mb5'
+    div_card_guess.className = 'card btn-light no_btn card_img mb10'
     div_card_guess.id = `card_guess_${index_of_img}`
     let div_card_guess_center_btn = document.createElement('div');
     div_card_guess_center_btn.className = "text-center"
@@ -83,8 +83,8 @@ function check_images(switch_page){
         for (let key2 in my_new_or_edited_game.game_images) {
             if (key1 !== key2) {
                 if (my_new_or_edited_game.game_images[key1].image.name === my_new_or_edited_game.game_images[key2].image.name) {
-                    document.getElementById(`card_guess_${key1}`).className = 'card bg-warning no_btn card_img'
-                    document.getElementById(`card_guess_${key2}`).className = 'card bg-warning no_btn card_img'
+                    document.getElementById(`card_guess_${key1}`).className = 'card bg-warning no_btn card_img mb10'
+                    document.getElementById(`card_guess_${key2}`).className = 'card bg-warning no_btn card_img mb10'
                     create_exception('Same game images are not allowed',20,'warning');
                     config_divs_html.attributes = false
                     config_divs_html.save = false
@@ -94,8 +94,8 @@ function check_images(switch_page){
                     return false
 
                 }else{
-                    document.getElementById(`card_guess_${key1}`).className = 'card btn-light no_btn card_img'
-                    document.getElementById(`card_guess_${key2}`).className = 'card btn-light no_btn card_img'
+                    document.getElementById(`card_guess_${key1}`).className = 'card btn-light no_btn card_img mb10'
+                    document.getElementById(`card_guess_${key2}`).className = 'card btn-light no_btn card_img mb10'
                 }
             }
         }

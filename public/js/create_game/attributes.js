@@ -126,7 +126,7 @@ function delete_all_attributes(){
     delete_all_define_images()
 }
 
-function check_attributes(){
+function check_attributes(switch_page){
     console.log(my_new_or_edited_game.game_descriptors)
     let error = false
     for (let key1 in my_new_or_edited_game.game_descriptors) {
@@ -165,6 +165,8 @@ function check_attributes(){
     config_divs_html.define_images = true
     config_divs_html.save = true
     my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,undefined,true,'revert')
-    display('define_images')
+    if (switch_page){
+        display('define_images')
+    }
     return true
 }
