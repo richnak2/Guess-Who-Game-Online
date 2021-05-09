@@ -539,6 +539,7 @@ function answer_to_question(bull){
         }
         hide_win_lost()
     }
+    your_turn = true;
 }
 
 function hide_win_lost(){
