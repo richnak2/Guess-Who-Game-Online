@@ -82,7 +82,7 @@ function check_images(switch_page){
     for (let key1 in my_new_or_edited_game.game_images) {
         for (let key2 in my_new_or_edited_game.game_images) {
             if (key1 !== key2) {
-                if (my_new_or_edited_game.game_images[key1].image.image === my_new_or_edited_game.game_images[key2].image.image) {
+                if (my_new_or_edited_game.game_images[key1].image.name === my_new_or_edited_game.game_images[key2].image.name) {
                     document.getElementById(`card_guess_${key1}`).className = 'card bg-warning no_btn card_img'
                     document.getElementById(`card_guess_${key2}`).className = 'card bg-warning no_btn card_img'
                     create_exception('Same game images are not allowed',20,'warning');
