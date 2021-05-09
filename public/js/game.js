@@ -72,7 +72,7 @@ socket.on('opponent_left',({}) => {
 // answer_to_question(false)
 socket.on('multiplayer_massage', ({broadcast_massage}) => {
     console.log('multiplayer_massage',broadcast_massage)
-    if (broadcast_massage.certain === true || broadcast_massage.certain === false){
+    if (broadcast_massage === true || broadcast_massage === false){
         let elem_ask_img = document.getElementsByClassName('undefined')[0];
         if (elem_ask_img.childNodes[0].src.includes(game_name.replaceAll(' ','%20')+'/images') ){
             if ( broadcast_massage.certain){
