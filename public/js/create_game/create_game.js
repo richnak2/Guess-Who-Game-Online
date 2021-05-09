@@ -5,34 +5,13 @@ const allow_buttons = ['main_button_allow_check1','main_button_allow_check2','ma
 let config_divs_html = {'main':true,'images':false,'attributes':false,'define_images':false,'save':false,'status':true};
 const illegal_characters = ['-', ':', '<', '>','|' ,'.' , '/' , '\\' , '?' , "*" , "$" , '#' ,'!' ,'@',','];
 let currently_edited_game = undefined;
+allowed = true
 const my_new_or_edited_game = new NewGame()
 
 document.addEventListener('DOMContentLoaded', function () {
     html_all_games = document.getElementById('all_games');
-    // for (let key in main_config_divs) {
-    //     if (main_config_divs.hasOwnProperty(key)) {
-    //         main_config_divs_html_btn[key] = document.getElementById(`${key}_btn`)
-    //     }
-    // }
-    // w8()
 });
-function w8(){
-    if (user_account !== undefined && typeof findYourGames === 'function' ){
-        html_all_games = document.getElementById('all_games');
-        // for (let key in main_config_divs) {
-        //     if (main_config_divs.hasOwnProperty(key)) {
-        //         main_config_divs_html_btn[key] = document.getElementById(`${key}_btn`)
-        //     }
-        // }
-        findYourGames()
-        console.log('hladam hry')
-    }else{
 
-        console.log('cakam na socket')
-        setTimeout(w8,200);
-    }
-
-}
 function back_to_list_of_your_games(){
     my_new_or_edited_game.to_default()
     document.getElementById('all_games').style.display = 'contents';
@@ -157,6 +136,7 @@ function do_you_wont_to_delete_game(game_id, title){
 }
 
 function delete_game(game_id, title){
+    allowed = false
     socket.emit('delete_game' , {game_id,title,my_socket_id})
     delete_all_html_games();
     // create_exception('game has been deleted',5,'success');
@@ -172,8 +152,11 @@ function check_file_multiple(file,add_to_this_elem){
     reader.readAsDataURL(file);
 }
 function list_all_possible_games_for_create(){
-    const list_possible_html = document.getElementById('list_of_possible_games')
-    list_possible_html.style.display =  (list_possible_html.style.display === 'contents') ?  'none' :  'contents'
-    const all_games_html = document.getElementById('all_games')
-    all_games_html.style.display =  (all_games_html.style.display === 'none') ?  'contents' : 'none'
+    if (allowed){
+        const list_possible_html = document.getElementById('list_of_possible_games')
+        list_possible_html.style.display =  (list_possible_html.style.display === 'contents') ?  'none' :  'contents'
+        const all_games_html = document.getElementById('all_games')
+        all_games_html.style.display =  (all_games_html.style.display === 'none') ?  'contents' : 'none'
+    }
+
 }

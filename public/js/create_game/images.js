@@ -103,7 +103,7 @@ function check_images(switch_page){
     config_divs_html.attributes = true
     config_divs_html.save = true
     my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,undefined,true,'revert')
-    if (this.type !== '0 0 1' && switch_page ){
+    if (my_new_or_edited_game.type !== '0 0 1' && switch_page ){
         console.log('som tuna po form')
         display('attributes')
     }
