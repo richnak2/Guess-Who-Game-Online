@@ -289,20 +289,20 @@ function make_massage(text,type){
         let ask_for_kids = document.getElementById('chat_for_kids');
         let new_task = document.createElement('p');
         new_task.className = "bg-success";
-        new_task.innerHTML = text;
+        new_task.innerHTML = `SERVER : ${text}`;
         ask_for_kids.append(new_task);
         check_if_img_is_picket(new_task,60);
     }else if (type === 'you'){
         let ask_for_kids = document.getElementById('chat_for_kids');
         let new_task = document.createElement('p');
         new_task.className = "bg-primary text-light";
-        new_task.innerHTML = text;
+        new_task.innerHTML = `You : ${text}`;
         ask_for_kids.append(new_task);
     }else{
         let ask_for_kids = document.getElementById('chat_for_kids');
         let new_task = document.createElement('p');
-        new_task.className = "bg-light ";
-        new_task.innerHTML = text;
+        new_task.className = 'bg-light'
+        new_task.innerHTML = `Opponent : ${text}`;
         ask_for_kids.append(new_task);
     }
     chat_box.scrollBy(0,300);
@@ -457,11 +457,7 @@ function add_img_to_asked_certain(img){
     massage.src = img.src;
     massage.title = img.title;
     massage.certain = img.src.includes((game_name.replaceAll(' ','%20')) + '/images');
-    // if (game_type === 'pc'){
-    //     massage.certain = img.src.includes((game_name.replaceAll(' ','%20')) + '/images');
-    // }else{
-    //     console.log('certain NOT')
-    // }
+
     if (game_type !== 'pc'){
         socket.emit('multiplayer_massage',{my_socket_id, massage});
     }else{
@@ -494,12 +490,10 @@ function add_img_to_asked_certain(img){
 
 function make_card_win(witch_player_win){
     if (witch_player_win.includes('lost')){
-        // my_game.state = true
         my_game.player1.game_name === html_name.innerHTML
             ?make_profile(my_game.player2.game_name,my_game.player2.color,my_game.player2.character)
             :make_profile(my_game.player1.game_name,my_game.player1.color,my_game.player1.character)
     }else{
-        // my_game.state = true
         my_game.player1.game_name === html_name.innerHTML
             ?make_profile(my_game.player1.game_name,my_game.player1.color,my_game.player1.character)
             :make_profile(my_game.player2.game_name,my_game.player2.color,my_game.player2.character)
@@ -529,7 +523,6 @@ function make_win_multiplier(text){
     document.getElementById('opponent_profile_card').style.display = 'revert';
     make_card_win(text);
     document.getElementById('asked_img_question').style.display = 'none';
-    // document.getElementById('report_btn').style.display = 'revert';
 
 
     document.getElementById('yes').disable = false;
