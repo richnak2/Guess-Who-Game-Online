@@ -6,13 +6,13 @@ function make_form_data(){
 
     // ktori user to vlastne vytvara hru
     form_data_create_game.append('my_socket_id',my_socket_id);
-    console.log(my_socket_id)
-    console.log(my_new_or_edited_game.id)
+    // console.log(my_socket_id)
+    // console.log(my_new_or_edited_game.id)
 
 
     /// CHECK 1
     // let check_m =  check_main()
-    if (check_main()){
+    if (check_main(false)){
 
         if (game_input_main_img_html.files[0] !== undefined) {
             form_data_create_game.append('main_img_file', game_input_main_img_html.files[0]);

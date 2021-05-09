@@ -19,6 +19,7 @@ class NewGame{
         this.owner_id = copy_game.owner_id
         this.state = copy_game.state
         this.origin_title = copy_game.title
+        this.title = copy_game.title
         this.type = copy_game.type
     }
     setTitle(title){

@@ -88,6 +88,7 @@ function check_images(switch_page){
                     create_exception('Same game images are not allowed',20,'warning');
                     config_divs_html.attributes = false
                     config_divs_html.save = false
+                    console.log('som tuna po form')
                     display('images')
                     my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,false,true,'revert')
                     return false
@@ -102,7 +103,7 @@ function check_images(switch_page){
     config_divs_html.attributes = true
     config_divs_html.save = true
     my_new_or_edited_game.show_user_interface(config_divs_html.main,config_divs_html.images,config_divs_html.attributes,config_divs_html.define_images,undefined,true,'revert')
-    if (this.type !== '0 0 1' && switch_page){
+    if (this.type !== '0 0 1' && switch_page ){
         console.log('som tuna po form')
         display('attributes')
     }
