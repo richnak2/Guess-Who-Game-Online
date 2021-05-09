@@ -83,6 +83,9 @@ function add_attribute(display,object_attribute){
     button.className = 'btn btn-default bg-danger text-light';
     button.innerHTML = 'delete';
     button.onclick = function (){
+        for (let key in my_new_or_edited_game.game_images) {
+            my_new_or_edited_game.game_images[key].description_control = my_new_or_edited_game.game_images[key].description_control.replace(my_new_or_edited_game.game_descriptors[index_of_attribute].description+',','')
+        }
         delete my_new_or_edited_game.game_descriptors[index_of_attribute]
         row.remove();
     }

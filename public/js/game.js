@@ -286,7 +286,7 @@ function send_massage() {
 }
 function make_massage(text,type){
     if (text === ''){
-        return 
+        return
     }
     if (type === 'disappear'){
         let ask_for_kids = document.getElementById('chat_for_kids');
