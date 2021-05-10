@@ -22,6 +22,9 @@ class AllUsers {
   static async ping(id_socket){
     try{
       return await new Promise((resolve, reject) => {
+        if ( Date.now() + 2*60000 > this.all_clients[id_socket].session_time){
+          reject(`user no allowed`);
+        }
         this.all_clients[id_socket].setSession();
         resolve()
       })
@@ -237,7 +240,7 @@ class Users {
   }
   // ping from active user
   setSession(){
-      this.session_time = Date.now()
+      this.session_time =  Date.now() + 3*60000
   }
   getId(){
     return this.id === undefined ? false : this.id;
