@@ -52,21 +52,24 @@ function make_form_data(){
     return form_data_create_game
 }
 
-function save_game() {
+async function save_game() {
     let form_data_create_game = make_form_data();
     if (form_data_create_game === undefined) {
         create_exception('somthing wand wnog fith formating of request', 10, 'warning')
         return false
     }else{
-        const response = fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
+        create_exception('Please wait game is being uploaded to server.',10,'success')
+        const response = await fetch('https://guess-who-online-game.herokuapp.com/upload_new_game', {
             method: 'POST',
             body: form_data_create_game
+        }).catch(err => {
+            create_exception(`something went wrong ${err} `,10,'success')
         })
         document.getElementById('all_games').style.display = 'contents';
         document.getElementById('menu_for_config_game').style.display = 'none';
         config_divs_html = {'main':true,'images':false,'attributes':false,'define_images':false,'save':false,'status':true};
         display('abstract')
-        create_exception('loading',3,'success')
+        // create_exception('loading',3,'success')
         delete_all_html_games();
     }
 }
