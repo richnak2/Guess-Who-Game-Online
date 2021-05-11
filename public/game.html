@@ -63,14 +63,12 @@
         <h1 id="win_lost" class="mb20"></h1>
         <div id="opponent_profile_card" class="card  wd200 ht200 ">
             <div class="card-body pd_all0">
-            <div class=" card-title text-center  ht100 mb0">
-                <img id="opponent_profile_img" class="wd100 ht100" src="#" alt="img">
-            </div>
-
+                <div class=" card-title text-center  ht100 mb0">
+                    <img id="opponent_profile_img" class="wd100 ht100" src="#" alt="img">
+                </div>
             </div>
             <div class="text-center">
                 <p id="opponent_name" class="mt30 pd_all0 ">XXX</p>
-
             </div>
         </div>
         <button class="btn btn-default bg-success ht70 mb20 text-light" id="again" onclick="play_again()">play again</button>
@@ -230,12 +228,12 @@
     </div>
 </div>
 <div class="container btn-light no_btn" id="guess" onselectstart="return false;">
-        <div  id="guess_box">
-            <p class="text-center btn-primary no_btn text-light" id="guess_title"> Guess</p>
-            <div class="row m-auto justify-content-center" id="guess_button_box">
-                <button class="btn btn-default bg-success guess_btn text-light" id="guess_certain" disabled onclick="guess_certain()">guess</button>
-                <button class="btn btn-default bg-danger guess_btn text-light" id="guess_back" onclick="guess_back()">back</button>
-            </div>
+    <div  id="guess_box">
+        <p class="text-center btn-primary no_btn text-light" id="guess_title"> Guess</p>
+        <div class="row m-auto justify-content-center" id="guess_button_box">
+            <button class="btn btn-default bg-success guess_btn text-light" id="guess_certain" disabled onclick="guess_certain()">guess</button>
+            <button class="btn btn-default bg-danger guess_btn text-light" id="guess_back" onclick="guess_back()">back</button>
+        </div>
     </div>
 </div>
 

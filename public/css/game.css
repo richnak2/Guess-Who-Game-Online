@@ -1,5 +1,4 @@
 .possible_image{
-    /*margin: auto;*/
     max-width: 72px;
     max-height: 72px;
     margin-left: 20%;
@@ -17,10 +16,6 @@
     margin-right: 12px;
 }
 .container{
-    /*-fluid*/
-    /*padding-left: 5%;*/
-    /*padding-right: 5%;*/
-    /*height: 446px;*/
     margin-right: auto;
     margin-left: auto;
 }
@@ -52,12 +47,10 @@
     border-radius: 35px;
 }
 #chat_box_top_div{
-    /*width: max-content;*/
     float: right
 }
 
 #chat_for_kids{
-    /*chat_box*/
     background-clip: border-box;
     border: 10px solid rgba(0,0,0,.125);
     border-radius: 1rem;
@@ -94,8 +87,7 @@ p{
     border-radius: 10px;
 }
 #top_title_container{
-  margin-bottom: 25px;
-  /*  height: 100px;*/
+    margin-bottom: 25px;
 }
 #title_your_image{
     margin-bottom: 0px;
@@ -108,15 +100,12 @@ p{
 }
 
 #chat_title,#guess_title{
-    border-radius: 25px;//0px 0px 20px 20px
+    border-radius: 25px;
     padding-bottom: 5px;
 }
 .your_text .opponent_text{
     margin-left: 10px;
     margin-right: 10px;
-}
-#guess_button_box{
-    //padding-bottom: 20px;
 }
 .guess_btn{
     margin-left: 10px;
@@ -138,14 +127,8 @@ p{
     position: relative;
     right: 2.5px;
     margin: auto;
-
-    /*float: left;*/
 }
-#chat_for_kids{
 
-    /*margin: auto;*/
-    /*display: table-cell;*/
-}
 .card_kid_img{
     width: 75px;
     height: 75px;
@@ -175,21 +158,7 @@ p{
 p{
     display: grid;
 }
-/*#shopping_card_img,#log_out_img{*/
-/*    background-color: #fefefe;*/
-/*    padding: 10px;*/
-/*    border-radius: 10px;*/
-/*}*/
-/*#shopping_card_img:hover,#log_out_img:hover{*/
-/*    background-color: #cbc9c9;*/
-/*}*/
-/*#shopping_card_img,#log_out_img,#coin_img{*/
-/*    width: 50px;*/
-/*    height: 50px;*/
-/*}*/
-/*#coins{*/
-/*    margin-top: 13px;*/
-/*}*/
+
 @media (min-width: 576px) {
     #title,#chat_title{
         font-size: 20px;
@@ -226,50 +195,42 @@ p{
         height: 30px;
         right: 6px;
     }
-    /*.possible_image{*/
-    /*    min-width: 40px;*/
-    /*    min-height: 40px;*/
-    /*    */
-    /*}*/
-    /*#guess_box{*/
-    /*    !*padding-bottom: 20px;*!*/
-    /*    height: 90px;*/
-    /*}*/
 }
 
 /*// Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) {
-    #title,#chat_title{
+    #title, #chat_title {
         font-size: 25px;
     }
 
-    .container{
+    .container {
         margin-right: 5%;
         margin-left: 5%;
     }
-    #chat_for_kids{
+
+    #chat_for_kids {
         height: 190px;
     }
-    #chat_for_kids,#chat_box_input,#chat_title{
+
+    #chat_for_kids, #chat_box_input, #chat_title {
         width: 130%;
     }
-    .possible_image_guess{
+
+    .possible_image_guess {
         width: 60px;
         height: 60px;
     }
-    .card_kid_img{
+
+    .card_kid_img {
         width: 60px;
         height: 60px;
     }
-    .task_img{
+
+    .task_img {
         width: 40px;
         height: 40px;
         right: 6px;
     }
-    /*#guess_box{*/
-    /*    !*padding-bottom: 20px;*!*/
-    /*    height: 100px;*/
-    /*}*/
 }
 
 /*// Large devices (desktops, 992px and up)*/
@@ -297,7 +258,6 @@ p{
         right: 6px;
     }
     #guess_box{
-        /*padding-bottom: 20px;*/
         height: 120px;
     }
 }
@@ -319,7 +279,6 @@ p{
         max-height: 100px;
     }
     #guess_box{
-        /*padding-bottom: 20px;*/
         height: 130px;
     }
 }
