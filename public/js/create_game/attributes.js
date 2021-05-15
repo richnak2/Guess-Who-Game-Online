@@ -45,7 +45,7 @@ function add_attribute(display,object_attribute){
     input_text_type.setAttribute("class", 'descriptor_types');
     input_text_type.maxLength = '15';
     input_text_type.value = object_attribute.type;
-    input_text_type.oninput = function () {
+    input_text_type.onchange = function () {
         object_attribute.type = input_text_type.value
         if (row.className.includes(' bg-warning') ){
             row.className = row.className.replace(' bg-warning' ,'')
@@ -53,7 +53,7 @@ function add_attribute(display,object_attribute){
         illegal_characters.forEach(illegal =>{
             if (input_text_type.value.includes(illegal)){
                 row.className += ' bg-warning'
-                create_exception('not allowed character <span class="font-weight-bold">\"/,?|\'\</span>',5,'warning')
+                create_exception('not allowed character <span class="font-weight-bold">(-, :, <, >, |, ., /, \\\\, ?, *, $, #, !, @, , )\</span>',5,'warning')
             }
         })
     }
@@ -65,7 +65,7 @@ function add_attribute(display,object_attribute){
     input_text_description_question.setAttribute("class", 'descriptor_definers_or_questions');
     input_text_description_question.maxLength = '50';
     input_text_description_question.value = object_attribute.description;
-    input_text_description_question.oninput = function () {
+    input_text_description_question.onchange = function () {
         object_attribute.description = input_text_description_question.value
         if (row.className.includes(' bg-warning') ){
             row.className = row.className.replace(' bg-warning' ,'')

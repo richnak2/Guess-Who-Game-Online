@@ -23,8 +23,9 @@ function create_define_image(){
     if (array_of_attributes_descriptions.includes('') === false){
         add_images_to_images_define_images_html()
         add_attributes_to_attributes_define_images_html()
+    }else{
+        create_exception('In section attributes you missing something please check the section <button class="btn btn-default bg-success text-light" id="attributes_btn" onclick="display(\'attributes\')">attributes</button>' , 10, 'warning')
     }
-    create_exception('In section attributes you missing something please check the section <button class="btn btn-default bg-success text-light" id="attributes_btn" onclick="display(\'attributes\')">attributes</button>' , 10, 'warning')
 }
 
 function add_images_to_images_define_images_html(){
