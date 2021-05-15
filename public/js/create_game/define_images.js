@@ -62,6 +62,8 @@ function add_images_to_images_define_images_html(){
                     console.log(id_attribute)
                     if (id_attribute !== '' && document.getElementById(id_attribute) !== null){
                         document.getElementById(id_attribute).className += ' bg-success'
+                    }else if (id_attribute !== ''){
+                        my_new_or_edited_game.game_images[key].description_control = my_new_or_edited_game.game_images[key].description_control.replace(id_attribute+',','')
                     }
                 })
             }
