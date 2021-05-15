@@ -5,25 +5,26 @@ let active_unique = false
 function create_define_image(){
     let array_of_attributes_descriptions = []
     for (let key_attribute in my_new_or_edited_game.game_descriptors) {
-        if (my_new_or_edited_game.game_descriptors[key_attribute].description !== '' && my_new_or_edited_game.game_descriptors[key_attribute].description !== undefined) {
+        // if (my_new_or_edited_game.game_descriptors[key_attribute].description !== '' && my_new_or_edited_game.game_descriptors[key_attribute].description !== undefined) {
             array_of_attributes_descriptions.push(my_new_or_edited_game.game_descriptors[key_attribute].description)
-        }
+        // }
     }
     // console.log(array_of_attributes_descriptions)
     for (let key_img in my_new_or_edited_game.game_images) {
         let new_created_string = '';
         array_of_attributes_descriptions.forEach(attribute => {
-            if (my_new_or_edited_game.game_images[key_img].description_control.includes(attribute) ){
+            if (my_new_or_edited_game.game_images[key_img].description_control.includes(attribute) && attribute !== ''){
                 new_created_string += `${attribute},`
             }
         })
         my_new_or_edited_game.game_images[key_img].description_control = new_created_string
     }
-    // console.log(my_new_or_edited_game.game_descriptors)
-    // console.log(my_new_or_edited_game.game_images)
     delete_all_define_images()
-    add_images_to_images_define_images_html()
-    add_attributes_to_attributes_define_images_html()
+    if (array_of_attributes_descriptions.includes('') === false){
+        add_images_to_images_define_images_html()
+        add_attributes_to_attributes_define_images_html()
+    }
+    create_exception('In section attributes you missing something please check the section <button class="btn btn-default bg-success text-light" id="attributes_btn" onclick="display(\'attributes\')">attributes</button>' , 10, 'warning')
 }
 
 function add_images_to_images_define_images_html(){
