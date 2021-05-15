@@ -12,8 +12,8 @@ function create_define_image(){
 
     for (let key_img in my_new_or_edited_game.game_images) {
         array_of_attributes_descriptions.forEach(attribute => {
-            if (my_new_or_edited_game.game_descriptors[key_img].description.includes(attribute) === false){
-                my_new_or_edited_game.game_descriptors[key_img].description = my_new_or_edited_game.game_descriptors[key_img].description.replace(`${attribute},`,'')
+            if (my_new_or_edited_game.game_images[key_img].description.includes(attribute) === false){
+                my_new_or_edited_game.game_images[key_img].description = my_new_or_edited_game.game_images[key_img].description.replace(`${attribute},`,'')
             }
         })
     }
