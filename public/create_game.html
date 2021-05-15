@@ -156,7 +156,7 @@
             <button class="btn btn-default bg-success text-light" id="attributes_btn" onclick="display('attributes')">attributes</button>
         </div>
         <div class="col-2-sm ml20 mb20" >
-            <button class="btn btn-default bg-success text-light" id="define_images_btn"  onclick="display('define_images')">define images</button>
+            <button class="btn btn-default bg-success text-light" id="define_images_btn"  onclick="display('define_images')">describe images</button>
         </div>
         <div class="col-2-sm ml20 mb20" >
             <button class="btn btn-default bg-success text-light" id="save_btn" onclick="display('save')">save</button>
@@ -173,7 +173,7 @@
     <p>In order to successfully create your game you must press the <span><button class="btn btn-default bg-success text-light" >check</button></span> button.</p>
     <p> If you don´t complete the section correctly, a notification reporting the problem will appear.</p>
     <p class="text-danger"> Changing certain thing in the section and not pressing the  <span><button class="btn btn-default bg-success text-light" >check</button></span> will cause the change to be forgotten.</p>
-    <p>If you want edit the game later, you must save your game <span><button class="btn btn-default bg-success text-light" >save</button></span>.</p>
+    <p>If you want to edit the game later, you must <span><button class="btn btn-default bg-success text-light" >save</button></span> your game .</p>
 
     <h1 class="text-center">Create your own game</h1>
 
@@ -211,10 +211,10 @@
 </div>
 <div class="container text_black" id="images" style="display:none;">
     <br>
-    <h1 class="text-center">Add guess images</h1>
-    <p>Minimal amount of images is 25, 30 is optimal. if there are more than 30, the game will randomly pick 30 images.</p>
+    <h1 class="text-center">Add game images</h1>
+    <p>Minimal amount of images is 25, 30 is optimal. If there are more than 30, the game will randomly pick 30 images.</p>
     <p class="text-danger">If the game has less than <strong>25</strong> images the game will be considered as "Game in development" which means that only you can play this game.</p>
-    <p>By clicking on already set image, you allowed to change it.</p>
+    <p>By clicking on image, you are allowed to change it.</p>
     <div id="all_guess_img" class="row d-flex justify-content-center">
     </div>
     <div class="text-center">
@@ -228,8 +228,8 @@
 </div>
 <div class="container text_black" id="attributes" style="display:none;">
     <h1 class="text-center">Create attributes for game </h1>
-    <p>If you are creating question attribute game type do not use characters as  /\'"?| , the question will be formed as : Your image  " is/has + part of your question (is a piano player / has a piano )" ?</p>
-    <p>By clicking on already set image, you allowed to change it.</p>
+    <p>If you are creating question attribute game type do not use characters as  (-', ':', '<', '>','|' ,'.' , '/' , '\\' , '?' , "*" , "$" , '#' ,'!' ,'@',',). The question will be formed as : Your image  " is/has + part of your question (is a piano player / has a piano )" ?</p>
+    <p>By clicking on image, you are allowed to change it.</p>
     <p>Example with image: <img class="ht20 wd20 ml5"  src="./images/create_game.png"  alt="guessed image"> | attribute : symbol | value/question : plus</p>
     <p>Example without image: attribute : symbol | value/question : is plus</p>
 
@@ -261,9 +261,10 @@
     <br>
 </div>
 <div class="container text_black" id="define_images" style="display:none;">
-    <h1 class="text-center">Define images </h1>
-    <p class="mb0">Optimally each image on the right should have unique attributes form left. By clicking on image on the right, you will select it , then start clicking to atributes witch belonges to him. The atributes wich you selectet will to image on the right will higleted by green color</p>
-    <p>Check button will show you not uniquely defined images click again to desible it</p>
+    <h1 class="text-center">Describe images </h1>
+    <p class="mb0">Optimally each image on the right should have unique attributes from the left. By clicking on image on the right, you will select it , then start clicking to attributes belonging to it. Pri nadideni misou nad obrazok vrpavo sa zviraznia ich atributi vlavo.</p>
+    <p>After clicking chack button  all not uniqly described images will be hilited.</p>
+    <p> -- > The atributes wich you selectet will to image on the right will higleted by green color</p>
     <div class="row d-flex justify-content-center">
         <div class="attributes_images">
             <h1>Attributes</h1>
@@ -286,15 +287,15 @@
 <br>
 <br>
 <div class="container text_black" id="save" style="display:none;">
-    <p>be sure before saving check each section if error will not occurs <button class="btn btn-default bg-success mt20 wd300 text-light" onclick="save_game()">save</button></p>
+    <p>be sure every saving was checked before saving <button class="btn btn-default bg-success mt20 wd300 text-light" onclick="save_game()">save</button></p>
 </div>
 <br>
 <br>
 <div class="container text_black" id="status" style="display:none;">
-    <p>this game is for : <span id="game_is_for"></span> </p>
+    <p>this game is <span id="game_is_for"></span> </p>
     <p>development state : <span id="game_state"></span> </p>
     <p >worst resemblance of the game : <span id="game_atomicity"></span> </p>
-    <p id="percentage" >lesser % of resemblance === better game experience for player, if the % is higher than 20%, please consider changing your automatic description in image section  <button class="btn btn-default bg-success "  onclick="display('define_images')">define images</button></p>
+    <p id="percentage" >lesser % of resemblance === better game experience for player, if the % is higher than 20%, please consider changing your automatic description in image section  <button class="btn btn-default bg-success "  onclick="display('define_images')">describe images</button></p>
 </div>
 <div id="settings" class="btn-light" onclick="show_settings()"> <img src="./images/setting.png" alt="settings" title="settings"></div>
 </body>

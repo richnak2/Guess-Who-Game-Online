@@ -6,7 +6,7 @@ function create_status(){
 
     const result_status =  check_define_images()
     if (result_status[0] >= 25){
-        elem_state_html.innerHTML = 'created';
+        elem_state_html.innerHTML = 'Finished';
     }else{
         elem_state_html.innerHTML = 'in development (you need at least 25 images)';
     }
@@ -15,7 +15,7 @@ function create_status(){
         elem_atomicity_html.innerHTML = 'Your targeted group does not have attributes. ';
         elem_percentage_html.style.display = 'none'
     }else if(my_new_or_edited_game.type === '1 1 1'){
-        elem_type_html.innerHTML = 'For : Student / Pc / kids | Image attribute type';
+        elem_type_html.innerHTML = 'For : Student / PC / Kids | Image attribute type';
         elem_atomicity_html.innerHTML = (result_status[1]/result_status[0])*100+'%';
         elem_percentage_html.style.display = 'revert'
     }else if(my_new_or_edited_game.type === '1 0 1'){

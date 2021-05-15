@@ -16,7 +16,7 @@ socket.on('log_answer' , ({massage}) => {
         sessionStorage.setItem('game_id','');
         location.assign('menu.html');
     }else{
-        create_exception(massage.massage,massage.time,massage.type);
+        create_exception('<strong> Wrong game name or password.</strong>',5, 'warning');
     }
 });
 
