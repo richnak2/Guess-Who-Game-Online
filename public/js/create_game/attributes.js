@@ -122,7 +122,9 @@ function recreate_attributes(path){
 }
 function replace_image_attribute(index,file){
 
-    my_new_or_edited_game.game_descriptors[index] = {'image' : file,'description':'','type':''}
+    my_new_or_edited_game.game_descriptors[index].image = file
+    my_new_or_edited_game.game_descriptors[index].description = ''
+    my_new_or_edited_game.game_descriptors[index].type = ''
 }
 
 function delete_all_attributes(){

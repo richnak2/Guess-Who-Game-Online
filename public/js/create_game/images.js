@@ -70,7 +70,8 @@ function add_more_guess_images(){
 
 function save_more_guess_img_files(elem){
     for(let i  = 0 ; i < elem.files.length; i++){
-        my_new_or_edited_game.game_images[counter_of_img] = {'image' : elem.files[i],'description_control':''}
+        my_new_or_edited_game.game_images[counter_of_img].image = elem.files[i]
+        my_new_or_edited_game.game_images[counter_of_img].description_control = ''
         create_card_guessed(elem.files[i])
     }
 }
