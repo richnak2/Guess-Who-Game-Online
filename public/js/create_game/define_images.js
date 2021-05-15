@@ -9,13 +9,18 @@ function create_define_image(){
             array_of_attributes_descriptions.push(my_new_or_edited_game.game_descriptors[key_attribute].description)
         }
     }
+    // console.log(array_of_attributes_descriptions)
     for (let key_img in my_new_or_edited_game.game_images) {
+        let new_created_string = '';
         array_of_attributes_descriptions.forEach(attribute => {
-            if (my_new_or_edited_game.game_images[key_img].description_control.includes(attribute) === false){
-                my_new_or_edited_game.game_images[key_img].description_control = my_new_or_edited_game.game_images[key_img].description_control.replace(`${attribute},`,'')
+            if (my_new_or_edited_game.game_images[key_img].description_control.includes(attribute) ){
+                new_created_string += `${attribute},`
             }
         })
+        my_new_or_edited_game.game_images[key_img].description_control = new_created_string
     }
+    // console.log(my_new_or_edited_game.game_descriptors)
+    // console.log(my_new_or_edited_game.game_images)
     delete_all_define_images()
     add_images_to_images_define_images_html()
     add_attributes_to_attributes_define_images_html()
@@ -61,7 +66,7 @@ function add_images_to_images_define_images_html(){
                 }
                 let show_attributes_witch_belongs_to_image =  my_new_or_edited_game.game_images[key].description_control.split(',')
                 show_attributes_witch_belongs_to_image.forEach(id_attribute =>{
-                    if (id_attribute !== ''){
+                    if (id_attribute !== '' && document.getElementById(id_attribute) !== null){
                         document.getElementById(id_attribute).className += ' bg-success'
                     }
                 })
