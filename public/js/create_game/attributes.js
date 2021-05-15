@@ -125,6 +125,7 @@ function replace_image_attribute(index,file){
     my_new_or_edited_game.game_descriptors[index].image = file
     my_new_or_edited_game.game_descriptors[index].description = ''
     my_new_or_edited_game.game_descriptors[index].type = ''
+    my_new_or_edited_game.game_descriptors[index].id = undefined
 }
 
 function delete_all_attributes(){
