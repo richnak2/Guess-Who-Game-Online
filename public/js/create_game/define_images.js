@@ -5,15 +5,20 @@ let active_unique = false
 function create_define_image(){
     let array_of_attributes_descriptions = []
     for (let key_attribute in my_new_or_edited_game.game_descriptors) {
-        if (my_new_or_edited_game.game_descriptors[key_attribute].description !== '') {
+        if (my_new_or_edited_game.game_descriptors[key_attribute].description !== '' && my_new_or_edited_game.game_descriptors[key_attribute].description !== undefined) {
             array_of_attributes_descriptions.push(my_new_or_edited_game.game_descriptors[key_attribute].description)
         }
     }
-
+    console.log(array_of_attributes_descriptions)
     for (let key_img in my_new_or_edited_game.game_images) {
         array_of_attributes_descriptions.forEach(attribute => {
+
+            console.log(attribute)
+            if (attribute !== undefined){
+            
             if (my_new_or_edited_game.game_images[key_img].description.includes(attribute) === false){
                 my_new_or_edited_game.game_images[key_img].description = my_new_or_edited_game.game_images[key_img].description.replace(`${attribute},`,'')
+            }
             }
         })
     }
